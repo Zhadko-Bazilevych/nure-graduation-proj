@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using recipes_backend.Common;
 using recipes_backend.Models;
-using recipes_backend.Operations.Refresh;
+using recipes_backend.Operations.OAuth.Refresh;
 using recipes_backend.Services;
 
 namespace recipes_backend.Operations.OAuth.Refresh

@@ -6,6 +6,7 @@ using recipes_backend.Models;
 using recipes_backend.Services;
 using recipes_backend.Operations.OAuth.AuthByCode;
 using recipes_backend.Operations.OAuth.Refresh;
+using Microsoft.Extensions.FileProviders;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<GoogleOAuthService>();
+builder.Services.AddScoped<ImageService>();
 
 builder.Services.AddScoped<AuthByCodeOperation>();
 builder.Services.AddScoped<RefreshOperation>();
@@ -59,6 +61,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "Images")),
+    RequestPath = "/Images"
+});
 
 app.UseHttpsRedirection();
 app.UseCors("CorsPolicy");

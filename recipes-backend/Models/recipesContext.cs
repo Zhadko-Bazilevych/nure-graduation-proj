@@ -70,13 +70,13 @@ namespace recipes_backend.Models
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
-                entity.HasOne(d => d.Authors)
+                entity.HasOne(d => d.Author)
                     .WithMany(p => p.SubscriptionAuthors)
                     .HasForeignKey(d => d.AuthorId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Subscription_User1");
 
-                entity.HasOne(d => d.Users)
+                entity.HasOne(d => d.User)
                     .WithMany(p => p.SubscriptionUsers)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)

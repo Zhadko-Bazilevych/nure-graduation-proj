@@ -14,15 +14,17 @@ namespace recipes_backend.Operations.OAuth.AuthByCode
         recipesContext db;
         GoogleOAuthService oauthService;
         TokenService tokenService;
+        ImageService imageService;
         private readonly IMapper _mapper;
 
 
-        public AuthByCodeOperation(recipesContext db, GoogleOAuthService oauthService, TokenService tokenService, IMapper mapper)
+        public AuthByCodeOperation(recipesContext db, GoogleOAuthService oauthService, TokenService tokenService, IMapper mapper, ImageService imageService)
         {
             this.db = db;
             this.oauthService = oauthService;
             this.tokenService = tokenService;
             this._mapper = mapper;
+            this.imageService = imageService;
         }
 
         public async Task<AuthByCodeResponse> Execute(AuthByCodeRequest request)

@@ -1,6 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using recipes_backend.Models;
-using recipes_backend.Operations.Refresh;
+using recipes_backend.Operations.OAuth.Refresh;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;

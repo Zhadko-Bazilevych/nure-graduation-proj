@@ -21,6 +21,9 @@ namespace recipes_backend.Models
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string? Image { get; set; }
+
+        [NotMapped]
+        public IFormFile? ImageFile { get; set; }
         public string Mail { get; set; } = null!;
         public string? Description { get; set; }
         public string? Role { get; set; }

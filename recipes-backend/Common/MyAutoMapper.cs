@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using recipes_backend.Models;
-using recipes_backend.Operations.AuthByCode;
+using recipes_backend.Operations.OAuth.AuthByCode;
 using recipes_backend.Services.GoogleOAuthServiceModels;
 using System.Runtime;
 
