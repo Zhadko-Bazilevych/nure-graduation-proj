@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace recipes_backend.Models
 {
@@ -19,7 +20,9 @@ namespace recipes_backend.Models
         }
 
         public int Id { get; set; }
-        public string UserId { get; set; }
+        
+        [NotMapped]
+        public int UserId { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public int? Difficulty { get; set; }
@@ -39,6 +42,8 @@ namespace recipes_backend.Models
 
         public virtual DishType DishType { get; set; } = null!;
         public virtual FoodType FoodType { get; set; } = null!;
+
+        [NotMapped]
         public virtual User User { get; set; } = null!;
         public virtual ICollection<AdditionalTip> AdditionalTips { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }

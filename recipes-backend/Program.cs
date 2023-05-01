@@ -3,11 +3,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using recipes_backend.Models;
+using recipes_backend.Services;
+using recipes_backend.Operations.OAuth.AuthByCode;
+using recipes_backend.Operations.OAuth.Refresh;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHttpClient();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -16,21 +20,15 @@ builder.Services.AddDbContext<recipesContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddHttpClient();
-//builder.Services.AddScoped<SomeService>();
+builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<GoogleOAuthService>();
 
-builder.Services.AddIdentityCore<User>(y =>
-{
-    y.Password.RequiredLength = 5;
-    y.Password.RequireLowercase = false;
-    y.Password.RequireNonAlphanumeric = false;
-}).AddEntityFrameworkStores<recipesContext>()
-    .AddSignInManager<SignInManager<User>>();
+builder.Services.AddScoped<AuthByCodeOperation>();
+builder.Services.AddScoped<RefreshOperation>();
 
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"]));
 builder.Services

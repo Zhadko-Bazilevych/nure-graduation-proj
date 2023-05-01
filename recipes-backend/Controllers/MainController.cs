@@ -18,6 +18,7 @@ namespace recipes_backend.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult> Register(int request)
         {
+            db.SaveChanges();
             return new JsonResult(request);
         }
 
