@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams  } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { Observable, ReplaySubject, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, Subscription, throwError } from 'rxjs';
 import { User } from '../models/user.model';
 import { BaseResponse } from '../models/baseResponse';
+import { Refresh } from '../models/refresh.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,10 +27,10 @@ export class AuthenticationService {
   }
 
   logout() {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('role');
-    localStorage.removeItem('id');
+    localStorage.removeItem('accessToken');
     localStorage.removeItem('mail');
+    localStorage.removeItem('name');
+    localStorage.removeItem('refreshToken');
   }
 
   RedirectLogin(){
@@ -45,8 +46,7 @@ export class AuthenticationService {
     window.location.href = urlWithParams;
   }
 
-  GetTokens(code: string){
-
+  async GetTokens(code: string){
     let params = new HttpParams();
 
     const request = {
@@ -54,15 +54,26 @@ export class AuthenticationService {
       code: code
     };
 
-    this.httpClient.post<User>(this.BaseURL + 'AuthByCode', request).subscribe(
+    await this.httpClient.post<User>(this.BaseURL + 'AuthByCode', request).toPromise().then(
       response => {
-        localStorage.setItem('name', response['name'])
-        localStorage.setItem('mail', response['mail'])
-        localStorage.setItem('accessToken', response['accessToken'])
-        localStorage.setItem('refreshToken', response['refreshToken'])
+        localStorage.setItem('name', response['name']);
+        localStorage.setItem('mail', response['mail']);
+        localStorage.setItem('accessToken', response['accessToken']);
+        localStorage.setItem('refreshToken', response['refreshToken']);
       }
-
-    )
+    );
   }
 
+  refreshToken(): Observable<{ accessToken: string; refreshToken: string }>{
+    let params = new HttpParams();
+
+    const request = {
+      refreshToken: localStorage.getItem('refreshToken')!,
+      device: localStorage.getItem('device')!
+    };
+
+    if(request.refreshToken == null)
+    return throwError('Cannot find user data');
+    return this.httpClient.post<Refresh>(this.BaseURL + 'Refresh', request)
+  }
 }
