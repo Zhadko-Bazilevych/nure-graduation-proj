@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ElementRef, NgModule, Renderer2 } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -10,7 +10,6 @@ import { TokenInterceptorService } from './interceptors/token-interceptor.servic
 import { RecipeInfoComponent } from './components/recipe-info/recipe-info.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
 @NgModule({
   declarations: [
     AppComponent,

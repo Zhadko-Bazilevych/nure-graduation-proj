@@ -5,7 +5,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
 import { RecipeInfo, RecipeResponse } from 'src/app/models/recipe.model';
 import { faStar, faBookmark, faBowlFood, faTriangleExclamation, faWheatAwn, faDroplet, faBacon, faUtensils } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as faBookmarkOut, faStar as faStarOutline, faClock} from '@fortawesome/free-regular-svg-icons';
-
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-recipe-info',
@@ -13,8 +13,9 @@ import { faBookmark as faBookmarkOut, faStar as faStarOutline, faClock} from '@f
   styleUrls: ['./recipe-info.component.scss']
 })
 export class RecipeInfoComponent implements OnInit {
+  BaseUrl: string = "https://localhost:7137/"
 
-  constructor(private route: ActivatedRoute, private router: Router, private recipeService: RecipeService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private recipeService: RecipeService, private sanitizer: DomSanitizer) { }
 
   Recipe: RecipeInfo
   starIcon = faStar;
@@ -29,6 +30,7 @@ export class RecipeInfoComponent implements OnInit {
   proteinsIcon = faBacon;
   caloricIcon = faUtensils;
 
+  sanitizedVideo: SafeResourceUrl;
 
   choosingStar: number;
 
@@ -42,6 +44,7 @@ export class RecipeInfoComponent implements OnInit {
     const response = this.recipeService.recipeInfo(id).then(response => {
       this.Recipe = response.recipe
       this.choosingStar = this.Recipe.userRate
+      this.sanitizedVideo = this.sanitizer.bypassSecurityTrustResourceUrl(this.Recipe.video)
     });
   }
 
@@ -79,5 +82,9 @@ export class RecipeInfoComponent implements OnInit {
           this.Recipe.amountOfFavorites!--;
       }
     })    
+  }
+
+  getEmbedUrl(){
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.Recipe.video)
   }
 }
