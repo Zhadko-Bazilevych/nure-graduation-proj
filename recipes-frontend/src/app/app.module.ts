@@ -6,19 +6,24 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
-import { NgxDeviceInfoModule } from 'ngx-device-info';
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
+import { RecipeInfoComponent } from './components/recipe-info/recipe-info.component';
+import { GalleryComponent } from './components/gallery/gallery.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
+    RecipeInfoComponent,
+    GalleryComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     OAuthModule.forRoot(),
+    FontAwesomeModule,
   ],
   providers: [
     {

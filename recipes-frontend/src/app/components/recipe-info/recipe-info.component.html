@@ -1,0 +1,132 @@
+<div class="flex justify-center">
+    <div class="flex w-4/5 mt-3 flex-col">
+        <div class="flex gap-5">
+            <div class="w-[30%]">
+                <app-gallery [Images]="Recipe.images" class="flex h-[400px]"></app-gallery>
+                <div>
+                    <div>
+                        <span class="text-2xl">Інгредієнти</span>
+                    </div>
+                    <div class="grid grid-cols-[max-content_auto] gap-x-3">
+                        <ng-container *ngFor="let ingr of Recipe.ingredients">
+                            <div>
+                                    - {{ingr.name}}:
+                            </div>
+                            <div>
+                                    {{ingr.amount}} {{ingr.measurement}}   
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col gap-2 w-[70%]">
+                <div>
+                    <h1 class="flex items-end gap-1 text-3xl">
+                        {{Recipe.name}}
+                    </h1>
+                    <div>
+                        <p class="text-md">Автор: <a href="#" class="text-blue-900">{{Recipe.userName}}</a></p>
+                    </div>
+                </div>
+                <div class="flex flex-row gap-2">
+                    <a
+                        class="bg-gray-500 text-gray-50 rounded-full px-2 hover:cursor-pointer hover:bg-gray-400 transition-colors">
+                        {{Recipe.foodType}} </a>
+                    <a
+                        class="bg-gray-500 text-gray-50 rounded-full px-2 hover:cursor-pointer hover:bg-gray-400 transition-colors">
+                        {{Recipe.dishType}} </a>
+                    <a class="bg-gray-500 text-gray-50 rounded-full px-2 hover:cursor-pointer hover:bg-gray-400 transition-colors"
+                        *ngFor="let menuTypes of Recipe.menuTypes">{{menuTypes}}</a>
+                </div>
+                <div class="flex flex-row gap-5">
+                    <div class="flex-row gap-1">
+                        <div class="flex relative w-min">
+                            <div class="flex flex-row rounded text-yellow-500 absolute overflow-hidden" style="width:{{(Recipe.rating??0)*20}}%">
+                                <fa-icon [icon]="starIcon"></fa-icon>
+                                <fa-icon [icon]="starIcon"></fa-icon>
+                                <fa-icon [icon]="starIcon"></fa-icon>
+                                <fa-icon [icon]="starIcon"></fa-icon>
+                                <fa-icon [icon]="starIcon"></fa-icon>
+                            </div>
+                            <div class="flex flex-row rounded text-red-500 absolute justify-around items-center w-full h-full">
+                                <fa-icon (mouseenter)="hoverStar(1)" (mouseleave)="unhoverStar()" (click)="chooseStar(1)" [ngClass]="choosingStar == 1 ? 'text-red-500' : 'text-transparent'" class="text-[10px] cursor-pointer p-[0.2rem]" [icon]="starIcon"></fa-icon>
+                                <fa-icon (mouseenter)="hoverStar(2)" (mouseleave)="unhoverStar()" (click)="chooseStar(2)" [ngClass]="choosingStar == 2 ? 'text-red-500' : 'text-transparent'" class="text-[10px] cursor-pointer p-[0.2rem]" [icon]="starIcon"></fa-icon>
+                                <fa-icon (mouseenter)="hoverStar(3)" (mouseleave)="unhoverStar()" (click)="chooseStar(3)" [ngClass]="choosingStar == 3 ? 'text-red-500' : 'text-transparent'" class="text-[10px] cursor-pointer p-[0.2rem]" [icon]="starIcon"></fa-icon>
+                                <fa-icon (mouseenter)="hoverStar(4)" (mouseleave)="unhoverStar()" (click)="chooseStar(4)" [ngClass]="choosingStar == 4 ? 'text-red-500' : 'text-transparent'" class="text-[10px] cursor-pointer p-[0.2rem]" [icon]="starIcon"></fa-icon>
+                                <fa-icon (mouseenter)="hoverStar(5)" (mouseleave)="unhoverStar()" (click)="chooseStar(5)" [ngClass]="choosingStar == 5 ? 'text-red-500' : 'text-transparent'" class="text-[10px] cursor-pointer p-[0.2rem]" [icon]="starIcon"></fa-icon>
+                            </div>
+                            <div class="flex flex-row rounded text-gray-200">
+                                <fa-icon [icon]="starIcon"></fa-icon>
+                                <fa-icon [icon]="starIcon"></fa-icon>
+                                <fa-icon [icon]="starIcon"></fa-icon>
+                                <fa-icon [icon]="starIcon"></fa-icon>
+                                <fa-icon [icon]="starIcon"></fa-icon>
+                            </div>
+                        </div>
+                        <div>
+                            {{Recipe.amountOfRates??0}} відгуків
+                        </div>
+                    </div>
+                    <div>
+                        <fa-icon *ngIf="Recipe.isFavorite" (click)="changeFav()" [icon]="favIcon" class="transition-colors text-gray-700 hover:cursor-pointer"></fa-icon>
+                        <fa-icon *ngIf="!Recipe.isFavorite" (click)="changeFav()"  [icon]="favIconOut" class="transition-colors text-gray-700 hover:cursor-pointer"></fa-icon>
+                        {{Recipe.amountOfFavorites??0}} доданих до обраного
+                    </div>
+                </div>
+                <div class="flex flex-row gap-5">
+                    <div class="flex-row gap-1">
+                        <fa-icon [icon]="clockIcon" class="text-gray-700"></fa-icon>
+                        <div *ngIf="Recipe.requiredTime<=60">
+                            {{Recipe.requiredTime}} хвилин
+                        </div>
+                        <div *ngIf="Recipe.requiredTime>60">
+                            {{Recipe.requiredTime/60}} годин
+                        </div>
+                    </div>
+                    <div class="flex-row gap-2">
+                        <fa-icon [icon]="portionIcon" class="text-gray-700"></fa-icon>
+                        <div>
+                            {{Recipe.amountOfServings}} порцій
+                        </div>
+                    </div>
+                    <div class="flex-row gap-2">
+                        <fa-icon [icon]="difficultyIcon" class="text-gray-700"></fa-icon>
+                        <div class="flex-row gap-2">
+                            <span>Складність:</span> 
+                            <div class="flex w-[4rem] h-1/2 border-2 border-gray-600 rounded-full p-[1px] mt-[8px] gap-[1px]">
+                                <div *ngIf="Recipe.difficulty >= 1" class="w-1/5 h-full bg-green-500 rounded-l"></div>
+                                <div *ngIf="Recipe.difficulty >= 2" class="w-1/5 h-full bg-lime-500"></div>
+                                <div *ngIf="Recipe.difficulty >= 3" class="w-1/5 h-full bg-yellow-500"></div>
+                                <div *ngIf="Recipe.difficulty >= 4" class="w-1/5 h-full bg-orange-500"></div>
+                                <div *ngIf="Recipe.difficulty >= 5" class="w-1/5 h-full bg-red-500 rounded-r"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-col gap-1">
+                    <div *ngIf="Recipe.caloricValue!=null" class="flex-row gap-1">
+                        <fa-icon [icon]="caloricIcon" class="text-gray-700 w-5"></fa-icon>
+                        <span> Калорійність: {{Recipe.caloricValue}} ккал. </span>
+                    </div>
+                    <div *ngIf="Recipe.proteins!=null" class="flex-row gap-1">
+                        <fa-icon [icon]="proteinsIcon" class="text-gray-700 w-5"></fa-icon>
+                        <span> Білків: {{Recipe.proteins}} гр. </span>
+                    </div>
+                    <div *ngIf="Recipe.fats!=null" class="flex-row gap-1">
+                        <fa-icon [icon]="fatsIcon" class="text-gray-700 w-5"></fa-icon>
+                        <span> Жирів: {{Recipe.fats}} гр. </span>
+                    </div>
+                    <div *ngIf="Recipe.carbohydrates!=null" class="flex-row gap-1">
+                        <fa-icon [icon]="carboIcon" class="text-gray-700 w-5"></fa-icon>
+                        <span> Вуглеводів: {{Recipe.carbohydrates}} гр. </span>
+                    </div>
+                </div>
+                <p>
+                    {{Recipe.description}}
+                </p>
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
