@@ -19,6 +19,7 @@ namespace recipes_backend.Models
         public int UserId { get; set; }
         public DateTime DateCreated { get; set; }
         public string Content { get; set; } = null!;
+        public string? Image { get; set; }
 
         [NotMapped]
         public virtual Comment? ParentComment { get; set; }

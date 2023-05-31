@@ -27,18 +27,21 @@ namespace recipes_backend.Models
         public string? Description { get; set; }
         public int? Difficulty { get; set; }
         public int? RequiredTime { get; set; }
-        public int? CaloricValue { get; set; }
-        public int? Proteins { get; set; }
-        public int? Fats { get; set; }
+        public int Servings { get; set; }
+        public double? CaloricValue { get; set; }
+        public double? Proteins { get; set; }
+        public double? Fats { get; set; }
+        public double? Carbohydrates { get; set; }
         public string? Video { get; set; }
         public int? AmountOfRates { get; set; }
+        public int? totalRates { get; set; }
         public int? AmountOfServings { get; set; }
         public int? AmountOfFavorites { get; set; }
         public int FoodTypeId { get; set; }
         public int DishTypeId { get; set; }
-        public decimal? Rating { get; set; }
+        public double? Rating { get; set; }
         public DateTime? CreationDate { get; set; }
-        public int? IsPublished { get; set; }
+        public bool IsPublished { get; set; }
 
         public virtual DishType DishType { get; set; } = null!;
         public virtual FoodType FoodType { get; set; } = null!;
