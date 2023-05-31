@@ -1,0 +1,95 @@
+<div class="flex justify-center">
+    <div class="flex w-4/5 mt-3 flex-col">
+        <div class="flex gap-5">
+            <div class="w-[70%]">
+
+            </div>
+            <div class="flex flex-col gap-2 w-[30%]">
+                <!--FORM-->
+                <form [formGroup]="forma">
+                    <div class="">
+                        <input type="text" id="name" formControlName="name" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          placeholder="Назва рецепту" />
+                    </div>
+                    <div class="custom-slider">
+                      <ngx-slider [(value)]="difficultyMin" [(highValue)]="difficultyMax" [options]="sliderDifficultyOptions"></ngx-slider>
+                    </div>
+                    <div class="flex">
+                      <div class="custom-slider">
+                        <input type="number" id="requiredTimeMin" formControlName="requiredTimeMin" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          placeholder="Мін" />
+                      </div>
+                      <div class="custom-slider">
+                        <input type="number" id="requiredTimeMin" formControlName="requiredTimeMin" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          placeholder="Макс" />
+                      </div>
+                    </div>
+
+                    <ng-multiselect-dropdown
+                    [placeholder]="'Виберіть тип кухні'"
+                    [settings]="multipleDropdownSettings"
+                    [data]="foodList"
+                    [(ngModel)]="selectedFoodItems"
+                    [ngModelOptions]="{standalone: true}"
+                    >
+                    </ng-multiselect-dropdown>
+
+                    <ng-multiselect-dropdown
+                    [placeholder]="'Виберіть тип блюда'"
+                    [settings]="multipleDropdownSettings"
+                    [data]="dishList"
+                    [(ngModel)]="selectedDishItems"
+                    [ngModelOptions]="{standalone: true}"
+                    >
+                    </ng-multiselect-dropdown>
+
+                    <ng-multiselect-dropdown
+                    [placeholder]="'Виберіть тип меню'"
+                    [settings]="multipleDropdownSettings"
+                    [data]="menuList"
+                    [(ngModel)]="selectedMenuItems"
+                    [ngModelOptions]="{standalone: true}"
+                    >
+                    </ng-multiselect-dropdown>
+
+                    <ng-multiselect-dropdown
+                    [placeholder]="'Виберіть інгредієнти'"
+                    [settings]="multipleDropdownSettings"
+                    [data]="ingredientList"
+                    [(ngModel)]="selectedIngredientItems"
+                    (onFilterChange)="onFilterChange($event)"
+                    [ngModelOptions]="{standalone: true}"
+                    >
+                    </ng-multiselect-dropdown>
+
+                    <div class="flex sortDropdown gap-2">
+                        <ng-multiselect-dropdown class="w-full"
+                        [placeholder]="'Метод сортування'"
+                        [settings]="dropdownSettings"
+                        [data]="sortList"
+                        [(ngModel)]="selectedSortItem"
+                        [ngModelOptions]="{standalone: true}"
+                        >
+                        </ng-multiselect-dropdown>
+
+                        <div (click)="isDescending=!isDescending" *ngIf="!isDescending" class="h-full aspect-square border border-gray-400 rounded text-center hover:cursor-pointer hover:bg-gray-200 hover:transition-colors group hover:border-gray-700">
+                            <fa-icon [icon]="ascIcon" class="text-2xl text-gray-800 group-hover:text-gray-950 transition-colors"></fa-icon>
+                        </div>
+                        <div (click)="isDescending=!isDescending" *ngIf="isDescending" class="h-full aspect-square border border-gray-400 rounded text-center hover:cursor-pointer hover:bg-gray-200 hover:transition-colors group hover:border-gray-700">
+                            <fa-icon [icon]="descIcon" class="text-2xl text-gray-800 group-hover:text-gray-950 transition-colors"></fa-icon>
+                        </div>
+                    </div>
+
+                    <div>
+                      <input type="radio" value=false formControlName="asIngredientPool" checked="checked">Required
+                      <input type="radio" value=true formControlName="asIngredientPool">In Hands
+                    </div>
+
+                    <div class="text-center pt-1 mb-5 pb-1 mt-4">
+                      <button (click)="Filtered()" class="" type="button">Search</button>
+                    </div>
+                  </form>
+            </div>
+        </div>
+    </div>
+</div>

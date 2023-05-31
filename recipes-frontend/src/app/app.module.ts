@@ -10,12 +10,20 @@ import { TokenInterceptorService } from './interceptors/token-interceptor.servic
 import { RecipeInfoComponent } from './components/recipe-info/recipe-info.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FilterComponent } from './components/filter/filter.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSliderModule } from '@angular/material/slider';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     RecipeInfoComponent,
     GalleryComponent,
+    FilterComponent,
   ],
   imports: [
     BrowserModule,
@@ -23,6 +31,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HttpClientModule,
     OAuthModule.forRoot(),
     FontAwesomeModule,
+    NgMultiSelectDropDownModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    NgxSliderModule,
   ],
   providers: [
     {

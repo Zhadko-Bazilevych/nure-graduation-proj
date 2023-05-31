@@ -114,28 +114,32 @@
         </div>
 
         <div class="flex gap-5">
-            <div class="flex flex-col w-[29%] gap-3">
-                <div>
-                    <div>
-                        <span class="text-2xl">Інгредієнти</span>
-                    </div>
-                    <div class="grid grid-cols-[max-content_auto] gap-x-3">
-                        <ng-container *ngFor="let ingr of Recipe.ingredients">
-                            <div>
-                                    - {{ingr.name}}:
+            <div class="flex flex-col w-[29%] gap-3 relative">
+                <div class="flex flex-col sticky top-0 gap-4">
+                    <div class="flex flex-col h-full overflow-y-auto max-h-screen scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-track-gray-100">
+                        <div class="relative">
+                            <div *ngIf="Recipe.video !== null" class="">
+                                <h2 class="text-2xl">Відео рецетпу</h2>
+                                <div class="relative h-full w-full">
+                                    <div class="absolute w-full aspect-video bg-gray-100 z-[-1] animate-pulse rounded"></div>
+                                    <iframe class="w-full aspect-video rounded" [src]="sanitizedVideo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                </div>
                             </div>
+                        </div>
+                        <div>
                             <div>
-                                    {{ingr.amount}} {{ingr.measurement}}   
+                                <span class="text-2xl">Інгредієнти</span>
                             </div>
-                        </ng-container>
-                    </div>
-                </div>
-                <div class="relative h-full">
-                    <div *ngIf="Recipe.video !== null" class="sticky top-0">
-                        <h2 class="text-2xl">Відео</h2>
-                        <div class="relative h-full w-full">
-                            <div class="absolute w-full aspect-video bg-gray-100 z-[-1] animate-pulse rounded"></div>
-                            <iframe class="w-full aspect-video rounded" [src]="sanitizedVideo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <div class="grid grid-cols-[max-content_auto] gap-x-3">
+                                <ng-container *ngFor="let ingr of Recipe.ingredients">
+                                    <div>
+                                            - {{ingr.name}}:
+                                    </div>
+                                    <div>
+                                            {{ingr.amount}} {{ingr.measurement}}   
+                                    </div>
+                                </ng-container>
+                            </div>
                         </div>
                     </div>
                 </div>
