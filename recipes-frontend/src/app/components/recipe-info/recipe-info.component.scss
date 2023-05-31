@@ -1,0 +1,9 @@
+@tailwind components;
+
+@layer components {
+
+    .star:hover~:star,
+    .star:hover {
+        @apply text-yellow-500
+    }
+}
