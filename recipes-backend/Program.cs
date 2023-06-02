@@ -8,6 +8,12 @@ using recipes_backend.Operations.OAuth.AuthByCode;
 using recipes_backend.Operations.OAuth.Refresh;
 using Microsoft.Extensions.FileProviders;
 using System.Text;
+using recipes_backend.Operations.Recipe.RecipeInfo;
+using recipes_backend.Operations.Recipe.Rate;
+using recipes_backend.Operations.Recipe.changeFavorite;
+using recipes_backend.Operations.Recipe.Filter;
+using recipes_backend.Operations.Recipe.GetFilterData;
+using recipes_backend.Operations.Recipe.FilterIngredient;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,10 +31,20 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<GoogleOAuthService>();
 builder.Services.AddScoped<ImageService>();
 
+
+builder.Services.AddScoped<FilterOperation>();
+builder.Services.AddScoped<GetFilterDataOperation>();
+builder.Services.AddScoped<FilterIngredientOperation>();
+
+builder.Services.AddScoped<RecipeInfoOperation>();
+builder.Services.AddScoped<RateOperation>();
+builder.Services.AddScoped<changeFavoriteOperation>();
 builder.Services.AddScoped<AuthByCodeOperation>();
 builder.Services.AddScoped<RefreshOperation>();
 

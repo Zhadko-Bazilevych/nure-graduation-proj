@@ -18,7 +18,7 @@ namespace recipes_backend.Services
         private const string OAuthServerEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
         private const string TokenServerEndpoint = "https://oauth2.googleapis.com/token";
 
-        private const string RedirectUrl = "https://localhost:5001/GoogleOAuth/Code";
+        private const string RedirectUrl = "http://localhost:4200";
         private const string emailScope = "https://www.googleapis.com/auth/userinfo.email";
         private const string profileScope = "https://www.googleapis.com/auth/userinfo.profile";
         private const string profileData = "https://www.googleapis.com/oauth2/v3/userinfo";

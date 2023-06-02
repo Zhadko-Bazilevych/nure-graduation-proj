@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using recipes_backend.Models;
+using System.Security.Claims;
 
 namespace recipes_backend.Controllers
 {
@@ -15,6 +17,7 @@ namespace recipes_backend.Controllers
             this.db = db;
         }
 
+        [Authorize]
         [HttpPost("Register")]
         public async Task<ActionResult> Register(int request)
         {

@@ -17,7 +17,7 @@ namespace recipes_backend.Models
             : base(options)
         {
             //Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
 
             //Seeder.Seed(this);
         }
@@ -48,6 +48,139 @@ namespace recipes_backend.Models
         {
             public static void Seed(recipesContext db)
             {
+                db.Users.Add(new User
+                {
+                    Name = "Сергій Жадько-Базілевич",
+                    Image = "Images/Users/Default.png",
+                    Mail = "lysergidi@gmail.com"
+                });
+                db.FoodTypes.AddRange(new List<FoodType>
+                {
+                    new FoodType { Name = "Французька" },
+                    new FoodType { Name = "Японська" },
+                    new FoodType { Name = "Китайська" },
+                    new FoodType { Name = "Українська" },
+                });
+                db.DishTypes.AddRange( new List<DishType>
+                {
+                    new DishType { Name = "Випічка" },
+                    new DishType { Name = "Салат" },
+                    new DishType { Name = "Закуска" },
+                    new DishType { Name = "Суп" },
+                    new DishType { Name = "Десерт" },
+                    new DishType { Name = "Вареники" },
+                    new DishType { Name = "Борщ" },
+                });
+                db.MenuTypes.AddRange(new List<MenuType>
+                {
+                    new MenuType { Name = "Веганське" },
+                    new MenuType { Name = "Вегетаріанське" },
+                    new MenuType { Name = "Пісне" },
+                    new MenuType { Name = "Безглютенове" },
+                    new MenuType { Name = "Малокалорійне" },
+                    new MenuType { Name = "Сезонне" },
+                    new MenuType { Name = "TestMenuType" },
+                });
+                db.Ingredients.AddRange(new List<Ingredient>
+                {
+                    new Ingredient { Name = "Яйце" },
+                    new Ingredient { Name = "Мука" },
+                    new Ingredient { Name = "Сіль" },
+                    new Ingredient { Name = "Картофель" },
+                    new Ingredient { Name = "Цибуля ріпчаста" },
+                    new Ingredient { Name = "Перець чорний" },
+                    new Ingredient { Name = "Олія" },
+                    new Ingredient { Name = "Сметана" }
+                });
+                db.Measurements.AddRange(new List<Measurement>
+                {
+                    new Measurement{ Name = "гр." },
+                    new Measurement{ Name = "мл." },
+                    new Measurement{ Name = "шт." },
+                    new Measurement{ Name = "ст.л." },
+                    new Measurement{ Name = "щіпка(и)" },
+                });
+                db.SaveChanges();
+                db.Recipes.Add(new Recipe
+                {
+                    UserId = 1,
+                    Name = "Вареники з картоплею",
+                    Description = "Готуємо дуже смачні домашні вареники з картоплею, ніжне тісто для вареників. Просте та недороге блюдо.",
+                    Difficulty = 2,
+                    RequiredTime = 30,
+                    Servings = 6,
+                    CaloricValue = 157.37,
+                    Proteins = 4.7,
+                    Fats = 4.9,
+                    Carbohydrates = 30.1,
+                    FoodTypeId = 4,
+                    DishTypeId = 6,
+                    CreationDate = DateTime.Now,
+                    IsPublished = true,
+                    AmountOfServings = 6,
+                });
+                db.Recipes.Add(new Recipe
+                {
+                    UserId = 1,
+                    Name = "Боржч смачний",
+                    Description = "Звичайний борщ. Нічого зайвого.",
+                    Difficulty = 3,
+                    RequiredTime = 120,
+                    Servings = 6,
+                    CaloricValue = 57.7,
+                    Proteins = 3.8,
+                    Fats = 2.9,
+                    Carbohydrates = 4.3,
+                    FoodTypeId = 4,
+                    DishTypeId = 7,
+                    CreationDate = DateTime.Now,
+                    IsPublished = true,
+                    AmountOfServings = 6,
+                });
+                db.SaveChanges();
+                db.MenuTypeLists.AddRange(new List<MenuTypeList>
+                {
+                    new MenuTypeList { RecipeId = 1, MenuTypeId = 2 },
+                    new MenuTypeList { RecipeId = 1, MenuTypeId = 7 },
+                });
+
+                db.RecipeIngredients.AddRange(new List<RecipeIngredient>
+                {
+                    new RecipeIngredient{ RecipeId = 1, IngredientId = 1, MeasurementId = 3, Amount = 1 },
+                    new RecipeIngredient{ RecipeId = 1, IngredientId = 2, MeasurementId = 1, Amount = 300 },
+                    new RecipeIngredient{ RecipeId = 1, IngredientId = 3, MeasurementId = 5, Amount = 1 },
+                    new RecipeIngredient{ RecipeId = 1, IngredientId = 4, MeasurementId = 1, Amount = 600 },
+                    new RecipeIngredient{ RecipeId = 1, IngredientId = 5, MeasurementId = 3, Amount = 1 },
+                    new RecipeIngredient{ RecipeId = 1, IngredientId = 6, MeasurementId = 5, Amount = 1 },
+                    new RecipeIngredient{ RecipeId = 1, IngredientId = 7, MeasurementId = 2, Amount = 30 },
+                    new RecipeIngredient{ RecipeId = 1, IngredientId = 8, MeasurementId = 1, Amount = 100 }
+                });
+                db.PreparationTips.AddRange(new List<PreparationTip>
+                {
+                    new PreparationTip {RecipeId = 1, Description = "Чорний перець необов'язковий."},
+                    new PreparationTip {RecipeId = 1, Description = "Додавайте власні приправи на свій смак"}
+                });
+                db.AdditionalTips.AddRange(new List<AdditionalTip>
+                {
+                    new AdditionalTip {RecipeId = 1, Description = "В залежності від кількості пельменів, кількість доданої сметани може відрізнятися. Додавайте стільки, скільки вважатимете доцільним."},
+                });
+                db.RecipeSteps.AddRange(new List<RecipeStep>
+                {
+                    new RecipeStep { RecipeId = 1, StepNumber = 1, Title = "Підготовлюємо картоплю", Description = "Беремо 600 грам картоплі (4-5 штук), чистимо від кожури та ріжемо на чотири частини кожну.", Image = "Images/RecipeSteps/PotatoDumplings1.png"},
+                    new RecipeStep { RecipeId = 1, StepNumber = 2, Title = "Варимо картоплю", Description = "Варимо картоплю у кастрюлі з підсоленою водою 25 хвилин."},
+                    new RecipeStep { RecipeId = 1, StepNumber = 3, Title = "Готуємо цибулю", Description = "Дрібно нарізаємо цибулю та обсмажуємо на сковорідці на малому вогні до золотистої скоринки.", Image = "Images/RecipeSteps/PotatoDumplings3.png"},
+                    new RecipeStep { RecipeId = 1, StepNumber = 4, Title = "Готуємо тісто", Description = "Додаємо у посудину 110мл води, 1 яйце, пару грамів солі та 300гр муки. Перемішуємо тісто до однорідної консистенції.", Image = "Images/RecipeSteps/PotatoDumplings4.png"},
+                    new RecipeStep { RecipeId = 1, StepNumber = 5, Title = "Замішуємо начинку пельменів", Description = "Після того, як картопля зварилася, перетовчемо картоплю для перетворення вареної картоплі в пюреподібну субстанцію. Додаємо жарену цибулю та чорний перець на свій смак.", Image = "Images/RecipeSteps/PotatoDumplings5.png"},
+                    new RecipeStep { RecipeId = 1, StepNumber = 6, Title = "Оброблюємо тісто", Description = "Розкатуємо тісто та формуємо круглі зліпки 6 см у діаметрі. Повинно вийти 40-45 заготівок під вареники.", Image = "Images/RecipeSteps/PotatoDumplings6.png"},
+                    new RecipeStep { RecipeId = 1, StepNumber = 7, Title = "Начиняємо вареник", Description = "Кладемо близько 10 грамів начинки на кожен вареник та згортаємо зліпок у полукруг, зліплюючи кінці вареника.", Image = "Images/RecipeSteps/PotatoDumplings7.png"},
+                    new RecipeStep { RecipeId = 1, StepNumber = 8, Title = "Результат", Description = "Готові вареники заморожуємо. За надібністю варимо готові вареники не більше 8 хвилин.", Image = "Images/RecipeSteps/PotatoDumplings8.png"},
+                });
+                db.RecipeImages.AddRange(new List<RecipeImage>
+                {
+                    new RecipeImage { RecipeId = 1, Image = "Images/Recipes/PotatoDumplingsI1.png"},
+                    new RecipeImage { RecipeId = 1, Image = "Images/Recipes/PotatoDumplingsI2.png"},
+                    new RecipeImage { RecipeId = 1, Image = "Images/Recipes/PotatoDumplingsI3.png"},
+                });
                 db.SaveChanges();
             }
         }

@@ -15,13 +15,15 @@ namespace recipes_backend.Models
         public int UserId { get; set; }
         public string? Name { get; set; }
         public string? FilterString { get; set; }
-        public int? Difficulty { get; set; }
+        public int? DifficultyMin { get; set; }
+        public int? DifficultyMax { get; set; }
         public int? MinReqTime { get; set; }
         public int? MaxReqTime { get; set; }
         public int? DishTypeId { get; set; }
         public int? FoodTypeId { get; set; }
         public string? SortType { get; set; }
-        public string? SearchType { get; set; }
+        public bool isDescending { get; set; }
+        public bool asIngredientPool { get; set; }
 
         public virtual ICollection<PatternIngridientList> PatternIngridientLists { get; set; }
         public virtual ICollection<PatternMenuType> PatternMenuTypes { get; set; }
