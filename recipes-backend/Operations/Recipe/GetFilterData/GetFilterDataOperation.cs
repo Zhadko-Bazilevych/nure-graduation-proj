@@ -34,9 +34,9 @@ namespace recipes_backend.Operations.Recipe.GetFilterData
 
             return new GetFilterDataResponse
             {
-                DishTypes = _mapper.Map<List<IdItem>>(await db.DishTypes.ToListAsync()),
-                MenuTypes = _mapper.Map<List<IdItem>>(await db.MenuTypes.ToListAsync()),
-                FoodTypes = _mapper.Map<List<IdItem>>(await db.FoodTypes.ToListAsync()),
+                DishTypes = _mapper.Map<List<IdItem>>(await db.DishTypes.OrderBy(o=>o.Name).ToListAsync()),
+                MenuTypes = _mapper.Map<List<IdItem>>(await db.MenuTypes.OrderBy(o => o.Name).ToListAsync()),
+                FoodTypes = _mapper.Map<List<IdItem>>(await db.FoodTypes.OrderBy(o => o.Name).ToListAsync()),
             };
         }
 

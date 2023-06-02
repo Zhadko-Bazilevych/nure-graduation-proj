@@ -8,11 +8,13 @@ namespace recipes_backend.Models
         public FoodType()
         {
             Recipes = new HashSet<Recipe>();
-        }
+            PatternFoodTypes = new HashSet<PatternFoodType>();
+    }
 
         public int Id { get; set; }
         public string Name { get; set; } = null!;
 
         public virtual ICollection<Recipe> Recipes { get; set; }
+        public virtual ICollection<PatternFoodType> PatternFoodTypes { get; set; }
     }
 }

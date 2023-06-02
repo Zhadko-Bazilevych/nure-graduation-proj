@@ -7,14 +7,14 @@ namespace recipes_backend.Models
     {
         public Ingredient()
         {
-            PatternIngridientLists = new HashSet<PatternIngridientList>();
+            PatternIngredientLists = new HashSet<PatternIngredientList>();
             RecipeIngredients = new HashSet<RecipeIngredient>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; } = null!;
 
-        public virtual ICollection<PatternIngridientList> PatternIngridientLists { get; set; }
+        public virtual ICollection<PatternIngredientList> PatternIngredientLists { get; set; }
         public virtual ICollection<RecipeIngredient> RecipeIngredients { get; set; }
     }
 }

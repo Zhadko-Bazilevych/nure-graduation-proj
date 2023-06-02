@@ -81,7 +81,6 @@ namespace recipes_backend.Operations.Recipe.Filter
                     filterResult = filterResult.Where(x => x.RecipeIngredients.Any(i => i.IngredientId == ingredient));
                 }
             }
-            var tempRes = filterResult.ToList();
             switch (request.SortType)
             {
                 case "Назва":
@@ -106,7 +105,6 @@ namespace recipes_backend.Operations.Recipe.Filter
                     if (!request.isDescending) filterResult = filterResult.OrderBy(o => o.CreationDate); else filterResult = filterResult.OrderByDescending(o => o.CreationDate);
                     break;
             }
-            var tempRes2 = filterResult.ToList();
             return new FilterResponse { Recipes = _mapper.Map<List<RecipeShort>>(await filterResult.Take(30).ToListAsync()) };
         }
 

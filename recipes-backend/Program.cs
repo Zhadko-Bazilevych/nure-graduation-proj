@@ -14,6 +14,9 @@ using recipes_backend.Operations.Recipe.changeFavorite;
 using recipes_backend.Operations.Recipe.Filter;
 using recipes_backend.Operations.Recipe.GetFilterData;
 using recipes_backend.Operations.Recipe.FilterIngredient;
+using recipes_backend.Operations.Recipe.PatternList;
+using recipes_backend.Operations.Recipe.PatternUpdate;
+using recipes_backend.Operations.Recipe.PatternDelete;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +50,10 @@ builder.Services.AddScoped<RateOperation>();
 builder.Services.AddScoped<changeFavoriteOperation>();
 builder.Services.AddScoped<AuthByCodeOperation>();
 builder.Services.AddScoped<RefreshOperation>();
+
+builder.Services.AddScoped<PatternListOperation>();
+builder.Services.AddScoped<PatternUpdateOperation>();
+builder.Services.AddScoped<PatternDeleteOperation>();
 
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"]));
 builder.Services
