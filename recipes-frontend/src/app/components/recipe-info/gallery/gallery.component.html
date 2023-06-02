@@ -1,14 +1,15 @@
 <div class="flex w-full h-full flex-col gap-1">
-    <div class="flex relative h-3/4 w-full justify-center border-2 border-gray-500 bg-gray-100 rounded aspect-square overflow-hidden">
-        <img src="{{BaseUrl+Images[index]}}" class="object-contain">
+    <div class="flex relative w-full justify-center border-2 border-gray-500 bg-gray-100 rounded aspect-square overflow-hidden" [ngClass]="{'h-3/4' : Images.length != 0}">
+        <img *ngIf="Images.length != 0" src="{{BaseUrl+Images[index]}}" class="object-contain">
+        <img *ngIf="Images.length == 0" src="../../../assets/images/recipeStepPlaceholderTransparent.png" class="object-contain">
         <button *ngIf="index !== 0" class="flex absolute z-10 top-1/2 left-2 -translate-y-1/2" (click)="clickHandler(index-1)">
             <fa-icon [icon]="leftArrow" class="text-2xl transition-colors text-gray-700 hover:text-gray-400"></fa-icon>
         </button>
-        <button *ngIf="index !== Images.length - 1" class="flex absolute z-10 top-1/2 right-2 -translate-y-1/2" (click)="clickHandler(index+1)">
+        <button *ngIf="index !== Images.length - 1 && Images.length != 0 " class="flex absolute z-10 top-1/2 right-2 -translate-y-1/2" (click)="clickHandler(index+1)">
             <fa-icon [icon]="rightArrow" class="text-2xl transition-colors text-gray-700 hover:text-gray-400"></fa-icon>
         </button>
     </div>
-    <div class="overflow-x-auto border-2 border-gray-500 rounded p-0.5 bg-gray-100 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-track-gray-100">
+    <div *ngIf="Images.length != 0" class="overflow-x-auto border-2 border-gray-500 rounded p-0.5 bg-gray-100 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-track-gray-100">
         <div class="flex gap-2 w-max">
             <div *ngFor="let image of Images; let i = index" class="relative overflow-hidden group hover:cursor-pointer h-[70px]" (click)="clickHandler(i)">
                 <img src="{{BaseUrl+image}}" alt="recipeImage" class="h-full">

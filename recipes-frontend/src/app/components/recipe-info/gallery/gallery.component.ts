@@ -18,7 +18,6 @@ export class GalleryComponent implements OnInit {
   constructor() { }
   
   ngOnInit(): void {
-
   }
 
   clickHandler(i: number) {

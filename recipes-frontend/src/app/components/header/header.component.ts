@@ -40,6 +40,7 @@ export class HeaderComponent implements OnInit {
     this.authenticationService.logout()
     this.codeUpdating = false;
     this.isAuth = false;
+    window.location.reload();
   }
 
   random() {
@@ -58,7 +59,7 @@ export class HeaderComponent implements OnInit {
                 await this.authenticationService.GetTokens(params['code'])
                 this.UserName = localStorage.getItem('name') ?? '';
                 this.isAuth = this.UserName == '' ? false : true;
-                this.router.navigate([''])
+                window.location.replace("http://localhost:4200");
               }
             })
         }

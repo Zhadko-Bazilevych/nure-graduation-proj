@@ -1,7 +1,7 @@
 ::ng-deep {
   $base-color: #337ab7;
   $disable-background-color: #eceeef;
-  .sortDropdown .multiselect-dropdown {
+  .customDropdown .multiselect-dropdown {
     position: relative;
     width: 100%;
     font-size: inherit;
@@ -61,7 +61,7 @@
     }
   }
 
-  .sortDropdown .multiselect-dropdown .dropdown-btn .selected-item-container .selected-item{
+  .customDropdown .multiselect-dropdown .dropdown-btn .selected-item-container .selected-item{
     margin-bottom: 0px !important;
     margin-right: 0px !important;
   }
@@ -101,6 +101,7 @@
       }
     }
   }
+  
 
   .multiselect-item-checkbox input[type='checkbox'] {
     border: 0;
@@ -120,12 +121,14 @@
   }
 
   .multiselect-item-checkbox input[type='checkbox']:active + div:before {
+    width: 0;
     transition-duration: 0s;
   }
 
-  .multiselect-item-checkbox input[type='checkbox'] + div {
+  .customDropdown .multiselect-item-checkbox input[type='checkbox'] + div {
+
     position: relative;
-    padding-left: 2em;
+    padding-left: 0em !important;
     vertical-align: middle;
     user-select: none;
     cursor: pointer;
@@ -133,7 +136,9 @@
     color: #000;
   }
 
-  .multiselect-item-checkbox input[type='checkbox'] + div:before {
+  .customDropdown .multiselect-item-checkbox input[type='checkbox'] + div:before {
+    display: none !important;
+    width: 0;
     box-sizing: content-box;
     content: '';
     color: $base-color;
@@ -148,7 +153,9 @@
     transition: all 0.4s ease;
   }
 
-  .multiselect-item-checkbox input[type='checkbox'] + div:after {
+  .customDropdown .multiselect-item-checkbox input[type='checkbox'] + div:after {
+    display: none !important;
+    width: 0;
     box-sizing: content-box;
     content: '';
     background-color: $base-color;
