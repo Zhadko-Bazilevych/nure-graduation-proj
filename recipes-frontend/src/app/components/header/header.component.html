@@ -9,7 +9,7 @@
   </div>
   <div class="flex items-center space-x-3 mr-2">
     <div *ngIf="isAuth" class="text-textPrimary">Hello, {{UserName}}</div>
-    <button (click)="random()" class="rounded text-textPrimary bg-googleRed p-1.5 ">Random</button>
+    <button (click)="random()" class="rounded text-textPrimary bg-googleRed p-1.5">Random</button>
     <button *ngIf="!isAuth && !codeUpdating" (click)="loginRedir()" class="rounded text-textPrimary bg-googleRed p-1.5 ">Sign In with Google</button>
     <button *ngIf="isAuth" (click)="logout()" class="rounded text-textPrimary bg-googleRed p-1.5 ">LogOut</button>
   </div>

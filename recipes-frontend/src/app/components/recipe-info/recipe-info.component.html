@@ -2,7 +2,7 @@
     <div class="flex w-4/5 mt-3 flex-col">
         <div class="flex gap-5">
             <div class="w-[29%]">
-                <app-gallery [Images]="Recipe.images" class="flex h-[400px]"></app-gallery>
+                <app-gallery [Images]="Recipe.images" class="flex" [ngClass]="{'h-[400px]': Recipe.images.length != 0, 'h-[300px]': Recipe.images.length == 0}"></app-gallery>
                 
             </div>
             <div class="flex flex-col gap-2 w-[71%]">
@@ -79,13 +79,7 @@
                         <fa-icon [icon]="difficultyIcon" class="text-gray-700"></fa-icon>
                         <div class="flex flex-row gap-2">
                             <span>Складність:</span> 
-                            <div class="flex w-[4rem] h-1/2 border-2 border-gray-600 rounded-full p-[1px] mt-[8px] gap-[1px]">
-                                <div *ngIf="Recipe.difficulty >= 1" class="w-1/5 h-full bg-green-500 rounded-l"></div>
-                                <div *ngIf="Recipe.difficulty >= 2" class="w-1/5 h-full bg-lime-500"></div>
-                                <div *ngIf="Recipe.difficulty >= 3" class="w-1/5 h-full bg-yellow-500"></div>
-                                <div *ngIf="Recipe.difficulty >= 4" class="w-1/5 h-full bg-orange-500"></div>
-                                <div *ngIf="Recipe.difficulty >= 5" class="w-1/5 h-full bg-red-500 rounded-r"></div>
-                            </div>
+                            <app-bar [value]="Recipe.difficulty"></app-bar>
                         </div>
                     </div>
                 </div>
@@ -118,15 +112,15 @@
                 <div class="flex flex-col sticky top-0 gap-4">
                     <div class="flex flex-col h-full overflow-y-auto max-h-screen scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-track-gray-100">
                         <div class="relative">
-                            <div *ngIf="Recipe.video !== null" class="">
-                                <h2 class="text-2xl">Відео рецетпу</h2>
+                            <div *ngIf="Recipe.video !== null">
+                                <h2 class="text-2xl pb-2">Відео рецетпу</h2>
                                 <div class="relative h-full w-full">
                                     <div class="absolute w-full aspect-video bg-gray-100 z-[-1] animate-pulse rounded"></div>
                                     <iframe class="w-full aspect-video rounded" [src]="sanitizedVideo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                                 </div>
                             </div>
                         </div>
-                        <div>
+                        <div *ngIf="Recipe.ingredients.length != 0">
                             <div>
                                 <span class="text-2xl">Інгредієнти</span>
                             </div>
@@ -144,7 +138,7 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col w-[71%] gap-2">
+            <div *ngIf="Recipe.preparationTips.length != 0 || Recipe.additionalTips.length != 0 || Recipe.steps.length != 0" class="flex flex-col w-[71%] gap-2">
                 <h2 class="text-2xl">Рецепт</h2>
                 <div class="flex flex-col gap-1">
                     <p *ngFor="let prep of Recipe.preparationTips" class="indent-8 text-justify">

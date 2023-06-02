@@ -8,14 +8,14 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
 import { RecipeInfoComponent } from './components/recipe-info/recipe-info.component';
-import { GalleryComponent } from './components/gallery/gallery.component';
+import { GalleryComponent } from './components/recipe-info/gallery/gallery.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FilterComponent } from './components/filter/filter.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSliderModule } from '@angular/material/slider';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { DifficultyComponent } from './components/common/bar/bar.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +24,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     RecipeInfoComponent,
     GalleryComponent,
     FilterComponent,
+    DifficultyComponent,
   ],
   imports: [
     BrowserModule,

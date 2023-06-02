@@ -1,92 +1,201 @@
 <div class="flex justify-center">
     <div class="flex w-4/5 mt-3 flex-col">
-        <div class="flex gap-5">
+        <div class="flex gap-5 w-full">
             <div class="w-[70%]">
-
+              <div class="flex justify-center">
+                <div class="text-xl">Рецепти</div>
+              </div>
+              <div *ngIf="Recipes.length == 0" class="flex justify-center">
+                <div >За заданим фільтром пошуку нічого не знайдено</div>
+              </div>
+              <div *ngFor="let item of Recipes">
+                <section class="flex m-1 hover:cursor-pointer gap-2 transition-colors hover:bg-gray-100" (click)="recipe(item.recipeId)">
+                  <div class="flex h-[100px] overflow-hidden rounded">
+                      <img *ngIf="item.image != null" src = "{{BaseUrl}}{{item.image}}" alt="" class="h-100 object-contain p-1">
+                      <img *ngIf="item.image == null" src = "../../../assets/images/recipeStepPlaceholderTransparent.png" alt="" class="h-100 object-contain p-1">
+                  </div> 
+                  <div class="flex flex-col w-[90%]">
+                      <div class="flex gap-5 items-baseline w-full">
+                        <div class="font-bold mb-0 text-lg w-max">{{item.name}}</div>
+                        <div class="flex flex-row gap-1 w-max">
+                          <fa-icon [icon]="clockIcon" class="text-gray-700"></fa-icon>
+                          <div *ngIf="item.requiredTime<=60">
+                              {{item.requiredTime}} хвилин
+                          </div>
+                          <div *ngIf="item.requiredTime>60">
+                              {{item.requiredTime/60}} годин
+                          </div>
+                        </div>
+                        <div class="flex flex-row w-max gap-1">
+                          <fa-icon [icon]="difficultyIcon" class="text-gray-700"></fa-icon>
+                          <div class="flex flex-row gap-2 h-min">
+                              <span>Складність:</span> 
+                              <app-bar [value]="item.difficulty"></app-bar>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="font-semibold">
+                          Автор: <span class="font-normal">{{item.author}}</span>
+                      </div>
+                      <div class="line-clamp-2">
+                        {{item.description}}
+                    </div>
+                  </div>  
+                </section>
+                <hr>
+              </div>
+              <div>
+                
+              </div>
             </div>
             <div class="flex flex-col gap-2 w-[30%]">
+                <div class="flex justify-center">
+                  <div class="text-xl">Фільтри</div>
+                </div>
                 <!--FORM-->
-                <form [formGroup]="forma">
-                    <div class="">
+                <form [formGroup]="forma" class="flex flex-col gap-1">
+                    <div class="flex items-center gap-3">
+                        <div>Назва: </div>
                         <input type="text" id="name" formControlName="name" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           placeholder="Назва рецепту" />
                     </div>
-                    <div class="custom-slider">
-                      <ngx-slider [(value)]="difficultyMin" [(highValue)]="difficultyMax" [options]="sliderDifficultyOptions"></ngx-slider>
+                    <div class="custom-slider flex items-center gap-3 h-12">
+                      <div>Складність:</div>
+                        <ngx-slider [(value)]="difficultyMin" [(highValue)]="difficultyMax" [options]="sliderDifficultyOptions"></ngx-slider>
                     </div>
-                    <div class="flex">
-                      <div class="custom-slider">
-                        <input type="number" id="requiredTimeMin" formControlName="requiredTimeMin" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          placeholder="Мін" />
+                    <div class="flex items-center gap-3 w-full">
+                      <div class="w-[55%]">
+                        <span>Час приготування: <span class="hidden lg:inline text-gray-500">(у хвилинах)</span></span> 
                       </div>
-                      <div class="custom-slider">
-                        <input type="number" id="requiredTimeMin" formControlName="requiredTimeMin" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          placeholder="Макс" />
+                      <div class="flex gap-1 w-[45%]">
+                        <div class="w-1/2">
+                          <input type="number" id="requiredTimeMin" formControlName="requiredTimeMin" class="w-full appearance-none border border-gray-400 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            placeholder="Мін" />
+                        </div>
+                        <div class="w-1/2">
+                          <input type="number" id="requiredTimeMin" formControlName="requiredTimeMax" class="w-full appearance-none border border-gray-400 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            placeholder="Макс" />
+                        </div>
                       </div>
                     </div>
 
-                    <ng-multiselect-dropdown
-                    [placeholder]="'Виберіть тип кухні'"
-                    [settings]="multipleDropdownSettings"
-                    [data]="foodList"
-                    [(ngModel)]="selectedFoodItems"
-                    [ngModelOptions]="{standalone: true}"
-                    >
-                    </ng-multiselect-dropdown>
-
-                    <ng-multiselect-dropdown
-                    [placeholder]="'Виберіть тип блюда'"
-                    [settings]="multipleDropdownSettings"
-                    [data]="dishList"
-                    [(ngModel)]="selectedDishItems"
-                    [ngModelOptions]="{standalone: true}"
-                    >
-                    </ng-multiselect-dropdown>
-
-                    <ng-multiselect-dropdown
-                    [placeholder]="'Виберіть тип меню'"
-                    [settings]="multipleDropdownSettings"
-                    [data]="menuList"
-                    [(ngModel)]="selectedMenuItems"
-                    [ngModelOptions]="{standalone: true}"
-                    >
-                    </ng-multiselect-dropdown>
-
-                    <ng-multiselect-dropdown
-                    [placeholder]="'Виберіть інгредієнти'"
-                    [settings]="multipleDropdownSettings"
-                    [data]="ingredientList"
-                    [(ngModel)]="selectedIngredientItems"
-                    (onFilterChange)="onFilterChange($event)"
-                    [ngModelOptions]="{standalone: true}"
-                    >
-                    </ng-multiselect-dropdown>
-
-                    <div class="flex sortDropdown gap-2">
-                        <ng-multiselect-dropdown class="w-full"
-                        [placeholder]="'Метод сортування'"
-                        [settings]="dropdownSettings"
-                        [data]="sortList"
-                        [(ngModel)]="selectedSortItem"
-                        [ngModelOptions]="{standalone: true}"
-                        >
-                        </ng-multiselect-dropdown>
-
-                        <div (click)="isDescending=!isDescending" *ngIf="!isDescending" class="h-full aspect-square border border-gray-400 rounded text-center hover:cursor-pointer hover:bg-gray-200 hover:transition-colors group hover:border-gray-700">
-                            <fa-icon [icon]="ascIcon" class="text-2xl text-gray-800 group-hover:text-gray-950 transition-colors"></fa-icon>
-                        </div>
-                        <div (click)="isDescending=!isDescending" *ngIf="isDescending" class="h-full aspect-square border border-gray-400 rounded text-center hover:cursor-pointer hover:bg-gray-200 hover:transition-colors group hover:border-gray-700">
-                            <fa-icon [icon]="descIcon" class="text-2xl text-gray-800 group-hover:text-gray-950 transition-colors"></fa-icon>
-                        </div>
+                    <div class="flex items-center gap-3 justify-between">
+                      <div>Тип кухні:</div>
+                      <ng-multiselect-dropdown
+                      class="w-[75%]"
+                      [placeholder]="'Виберіть тип кухні'"
+                      [settings]="multipleDropdownSettings"
+                      [data]="foodList"
+                      [(ngModel)]="selectedFoodItems"
+                      [ngModelOptions]="{standalone: true}"
+                      >
+                      </ng-multiselect-dropdown>
                     </div>
 
-                    <div>
-                      <input type="radio" value=false formControlName="asIngredientPool" checked="checked">Required
-                      <input type="radio" value=true formControlName="asIngredientPool">In Hands
+                    <div class="flex items-center gap-3 justify-between">
+                      <div>Тип блюда:</div>
+                      <ng-multiselect-dropdown
+                      class="w-[75%]"
+                      [placeholder]="'Виберіть тип блюда'"
+                      [settings]="multipleDropdownSettings"
+                      [data]="dishList"
+                      [(ngModel)]="selectedDishItems"
+                      [ngModelOptions]="{standalone: true}"
+                      >
+                      </ng-multiselect-dropdown>
                     </div>
 
-                    <div class="text-center pt-1 mb-5 pb-1 mt-4">
-                      <button (click)="Filtered()" class="" type="button">Search</button>
+                    <div class="flex items-center gap-3 justify-between">
+                      <div>Тип меню:</div>
+                      <ng-multiselect-dropdown
+                      class="w-[75%]"
+                      [placeholder]="'Виберіть тип меню'"
+                      [settings]="multipleDropdownSettings"
+                      [data]="menuList"
+                      [(ngModel)]="selectedMenuItems"
+                      [ngModelOptions]="{standalone: true}"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 justify-between">
+                      <div>Інгредієнти:</div>
+                      <ng-multiselect-dropdown
+                      class="w-[75%]"
+                      [placeholder]="'Виберіть інгредієнти'"
+                      [settings]="multipleDropdownSettings"
+                      [data]="ingredientList"
+                      [(ngModel)]="selectedIngredientItems"
+                      (onFilterChange)="onFilterChange($event)"
+                      [ngModelOptions]="{standalone: true}"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                      <div class="flex text-xs">
+                        <label class="flex items-center gap-1"> <input type="radio" value=false formControlName="asIngredientPool"> Шукати рецепти, що містять усі наведені інгредієнти</label>
+                      </div>
+                      <div class="text-xs">
+                        <label class="flex items-center gap-1"><input type="radio" value=true formControlName="asIngredientPool">Шукати рецепти, які можна приготувати з наведених інгредієнтів</label>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center customDropdown gap-3 justify-between">
+                        <div>Сортувати за:</div>
+                        <div class="flex w-[75%] h-full gap-2">
+                          <ng-multiselect-dropdown class="w-full"
+                          [placeholder]="'Метод сортування'"
+                          [settings]="dropdownSettings"
+                          [data]="sortList"
+                          [(ngModel)]="selectedSortItem"
+                          [ngModelOptions]="{standalone: true}"
+                          >
+                          </ng-multiselect-dropdown>
+
+                          <div (click)="isDescending=!isDescending" *ngIf="!isDescending" class="h-full aspect-square border border-gray-400 rounded text-center hover:cursor-pointer">
+                              <fa-icon [icon]="ascIcon" class="text-2xl text-gray-800 group-hover:text-gray-950 transition-colors"></fa-icon>
+                          </div>
+                          <div (click)="isDescending=!isDescending" *ngIf="isDescending" class="h-full aspect-square border border-gray-400 rounded text-center hover:cursor-pointer">
+                              <fa-icon [icon]="descIcon" class="text-2xl text-gray-800 group-hover:text-gray-950 transition-colors"></fa-icon>
+                          </div>
+                          </div>
+                    </div>
+                    <!--PatternSaving-->
+                    <div *ngIf="isAuth" class="flex gap-1 w-full">
+                      <div *ngIf="!isPatternCreating" class="customDropdown w-full">
+                        <ng-multiselect-dropdown class="w-max"
+                              [placeholder]="'Оберіть збережений шаблон'"
+                              [settings]="dropdownSettings"
+                              [data]="patternList"
+                              [(ngModel)]="selectedPatternList"
+                              [ngModelOptions]="{standalone: true}"
+                              (onSelect)="patternSelect($event)"
+                              (onDeSelect)="patternDeselect($event)"
+                              >
+                              </ng-multiselect-dropdown>
+                      </div>
+
+                      <div *ngIf="isPatternChosen">
+                        <button (click)="patternDelete()" class="rounded w-nim text-textPrimary bg-googleRed p-1.5" type="button">Видалити</button>
+                      </div>
+                      <div *ngIf="isPatternChosen">
+                        <button (click)="patternUpdate()" class="rounded w-nim text-textPrimary bg-yellow-500 p-1.5 transition-colors " [ngClass]="{'bg-yellow-500' : !isPatternSaved, 'bg-lime-500' : isPatternSaved}" type="button">{{!isPatternSaved ? "Зберегти" : "Збережено"}}</button>
+                      </div>
+
+                      <div *ngIf="isPatternCreating" class="w-full">
+                        <input required type="text" id="patternName" formControlName="patternName" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          placeholder="Назва шаблону (обов'язково)" />
+                      </div>
+                      <div *ngIf="isPatternCreating">
+                        <button (click)="patternCancel()" class="rounded w-nim text-textPrimary bg-googleRed p-1.5" type="button">Відмінити</button>
+                      </div>
+                      <div *ngIf="isPatternCreating">
+                        <button (click)="patternUpdate()" class="rounded w-nim text-textPrimary bg-yellow-500 p-1.5 transition-colors " [ngClass]="{'bg-yellow-500' : !isPatternSaved, 'bg-lime-500' : isPatternSaved}" type="button">{{!isPatternSaved ? "Зберегти" : "Збережено"}}</button>
+                      </div>
+                    </div>
+                    <div class="flex text-center w-full justify-center">
+                      <button (click)="Filtered()" class="rounded text-textPrimary bg-googleRed w-1/2 h-10 text-xl hover:bg-red-600 transition-colors" type="button">Пошук</button>
                     </div>
                   </form>
             </div>

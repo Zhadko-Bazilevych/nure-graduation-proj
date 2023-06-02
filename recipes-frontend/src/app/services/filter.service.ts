@@ -14,8 +14,6 @@ export class FilterService {
   constructor(private httpClient: HttpClient, private router: Router) { }
 
   getIngredients(filter: string): Observable<IngredientsResponse>{
-    let params = new HttpParams();
-
     const request = {
       name: filter
     };
@@ -30,5 +28,9 @@ export class FilterService {
   filter(filterRequest: any)
   {
     return this.httpClient.post<filterResponse>(this.BaseURL + 'Filter', filterRequest)
+  }
+
+  getPatterns(){
+    return this.httpClient.post<filterResponse>(this.BaseURL + 'Pattern', null)
   }
 }

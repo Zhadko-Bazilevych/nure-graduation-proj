@@ -45,6 +45,8 @@ export class RecipeInfoComponent implements OnInit {
       this.Recipe = response.recipe
       this.choosingStar = this.Recipe.userRate
       this.sanitizedVideo = this.sanitizer.bypassSecurityTrustResourceUrl(this.Recipe.video)
+      console.log(this.Recipe.rating)
+      console.log(this.Recipe.userRate)
     });
   }
 
