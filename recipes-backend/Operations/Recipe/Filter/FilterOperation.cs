@@ -105,7 +105,7 @@ namespace recipes_backend.Operations.Recipe.Filter
                     if (!request.isDescending) filterResult = filterResult.OrderBy(o => o.CreationDate); else filterResult = filterResult.OrderByDescending(o => o.CreationDate);
                     break;
             }
-            return new FilterResponse { Recipes = _mapper.Map<List<RecipeShort>>(await filterResult.Take(30).ToListAsync()) };
+            return new FilterResponse { Recipes = _mapper.Map<List<RecipeShort>>(await filterResult.Skip(request.rows??0).Take(15).ToListAsync()) };
         }
 
         public async Task<ValidateResult> Validate(FilterRequest request)

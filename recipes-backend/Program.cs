@@ -17,6 +17,9 @@ using recipes_backend.Operations.Recipe.FilterIngredient;
 using recipes_backend.Operations.Recipe.PatternList;
 using recipes_backend.Operations.Recipe.PatternUpdate;
 using recipes_backend.Operations.Recipe.PatternDelete;
+using recipes_backend.Operations.UserRecipes.GetUserList;
+using recipes_backend.Operations.UserRecipes.ChangeSubscribe;
+using recipes_backend.Operations.UserRecipes.AuthorSubscriptionList;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +57,10 @@ builder.Services.AddScoped<RefreshOperation>();
 builder.Services.AddScoped<PatternListOperation>();
 builder.Services.AddScoped<PatternUpdateOperation>();
 builder.Services.AddScoped<PatternDeleteOperation>();
+
+builder.Services.AddScoped<GetUserListOperation>();
+builder.Services.AddScoped<ChangeSubscribeOperation>();
+builder.Services.AddScoped<AuthorSubscriptionListOperation>();
 
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"]));
 builder.Services

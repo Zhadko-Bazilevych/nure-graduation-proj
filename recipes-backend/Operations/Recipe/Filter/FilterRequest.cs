@@ -14,5 +14,6 @@
         public bool asIngredientPool { get; set; }
         public string? SortType { get; set; }
         public bool isDescending { get; set; }
+        public int? rows { get; set; }
     }
 }

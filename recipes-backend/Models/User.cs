@@ -26,6 +26,8 @@ namespace recipes_backend.Models
         public IFormFile? ImageFile { get; set; }
         public string Mail { get; set; } = null!;
         public string? Description { get; set; }
+        public int? AmountOfSubscribers { get; set; }
+        public int? AmountOfRecipes { get; set; }
         public string? Role { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }

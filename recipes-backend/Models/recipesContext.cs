@@ -56,6 +56,12 @@ namespace recipes_backend.Models
                     Image = "Images/Users/Default.png",
                     Mail = "lysergidi@gmail.com"
                 });
+                db.Users.Add(new User
+                {
+                    Name = "Іван Іванович",
+                    Image = "Images/Users/Default.png",
+                    Mail = "ivan.ivanovich@gmail.com"
+                });
                 db.FoodTypes.AddRange(new List<FoodType>
                 {
                     new FoodType { Name = "Французька" },
@@ -105,7 +111,7 @@ namespace recipes_backend.Models
                 db.SaveChanges();
                 db.Recipes.Add(new Recipe
                 {
-                    UserId = 1,
+                    UserId = 2,
                     Name = "Вареники з картоплею",
                     Description = "Готуємо дуже смачні домашні вареники з картоплею, ніжне тісто для вареників. Просте та недороге блюдо. Готуємо дуже смачні домашні вареники з картоплею, ніжне тісто для вареників. Просте та недороге блюдо. Готуємо дуже смачні домашні вареники з картоплею, ніжне тісто для вареників. Просте та недороге блюдо. Готуємо дуже смачні домашні вареники з картоплею, ніжне тісто для вареників. Просте та недороге блюдо.",
                     Difficulty = 2,
@@ -120,10 +126,11 @@ namespace recipes_backend.Models
                     CreationDate = DateTime.Now,
                     IsPublished = true,
                     AmountOfServings = 6,
+                    Video = "https://www.youtube.com/embed/0xdm_Iw3uS4",
                 });
                 db.Recipes.Add(new Recipe
                 {
-                    UserId = 1,
+                    UserId = 2,
                     Name = "Боржч смачний",
                     Description = "Звичайний борщ. Нічого зайвого.",
                     Difficulty = 3,
@@ -140,6 +147,9 @@ namespace recipes_backend.Models
                     AmountOfServings = 6,
                 });
                 db.SaveChanges();
+
+                db.Subscriptions.Add(new Subscription { AuthorId = 2, UserId = 1 });
+
                 db.MenuTypeLists.AddRange(new List<MenuTypeList>
                 {
                     new MenuTypeList { RecipeId = 1, MenuTypeId = 2 },
