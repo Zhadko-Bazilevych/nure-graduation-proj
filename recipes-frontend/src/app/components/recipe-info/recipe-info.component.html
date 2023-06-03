@@ -56,7 +56,7 @@
                     <div>
                         <fa-icon *ngIf="Recipe.isFavorite" (click)="changeFav()" [icon]="favIcon" class="transition-colors text-gray-700 hover:cursor-pointer"></fa-icon>
                         <fa-icon *ngIf="!Recipe.isFavorite" (click)="changeFav()"  [icon]="favIconOut" class="transition-colors text-gray-700 hover:cursor-pointer"></fa-icon>
-                        {{Recipe.amountOfFavorites??0}} доданих до обраного
+                        {{Recipe.amountOfFavorites??0}} людей зберегли рецепт
                     </div>
                 </div>
                 <div class="flex flex-row gap-5">
