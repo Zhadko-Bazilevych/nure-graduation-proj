@@ -41,6 +41,7 @@ namespace recipes_backend.Operations.Recipe.RecipeInfo
                                 .Include(y => y.RecipeSteps)
                                 .Include(y => y.RecipeImages)
                                 .Include(y => y.MenuTypeLists).ThenInclude(y => y.MenuType)
+                                .Where(x => x.Id == id)
                                 .FirstOrDefaultAsync();
 
             var result = _mapper.Map<RecipeView>(recipe);

@@ -7,8 +7,10 @@ namespace recipes_backend.Models
     {
         public SearchPattern()
         {
-            PatternIngridientLists = new HashSet<PatternIngridientList>();
+            PatternIngredientLists = new HashSet<PatternIngredientList>();
             PatternMenuTypes = new HashSet<PatternMenuType>();
+            PatternDishTypes = new HashSet<PatternDishType>();
+            PatternFoodTypes = new HashSet<PatternFoodType>();
         }
 
         public int Id { get; set; }
@@ -19,13 +21,14 @@ namespace recipes_backend.Models
         public int? DifficultyMax { get; set; }
         public int? MinReqTime { get; set; }
         public int? MaxReqTime { get; set; }
-        public int? DishTypeId { get; set; }
-        public int? FoodTypeId { get; set; }
         public string? SortType { get; set; }
         public bool isDescending { get; set; }
         public bool asIngredientPool { get; set; }
 
-        public virtual ICollection<PatternIngridientList> PatternIngridientLists { get; set; }
+        public virtual User User { get; set; } = null!;
+        public virtual ICollection<PatternIngredientList> PatternIngredientLists { get; set; }
         public virtual ICollection<PatternMenuType> PatternMenuTypes { get; set; }
+        public virtual ICollection<PatternDishType> PatternDishTypes { get; set; }
+        public virtual ICollection<PatternFoodType> PatternFoodTypes { get; set; }
     }
 }

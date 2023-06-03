@@ -34,7 +34,7 @@ namespace recipes_backend.Operations.Recipe.FilterIngredient
 
             return new FilterIngredientResponse
             {
-                Ingredients = _mapper.Map<List<IdIngredient>>(await db.Ingredients.Where(x => x.Name.Contains(request.Name)).Take(10).ToListAsync())
+                Ingredients = _mapper.Map<List<IdIngredient>>(await db.Ingredients.Where(x => x.Name.Contains(request.Name)).OrderBy(o => o.Name).Take(10).ToListAsync())
             };
         }
 

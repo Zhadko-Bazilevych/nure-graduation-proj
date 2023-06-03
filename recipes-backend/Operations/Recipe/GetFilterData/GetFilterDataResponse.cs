@@ -11,10 +11,4 @@ namespace recipes_backend.Operations.Recipe.GetFilterData
         public List<IdItem>? FoodTypes { get; set; }
         public List<IdItem>? DishTypes { get; set; }
     }
-
-    public class IdItem
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
 }

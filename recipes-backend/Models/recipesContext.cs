@@ -31,8 +31,10 @@ namespace recipes_backend.Models
         public virtual DbSet<Measurement> Measurements { get; set; } = null!;
         public virtual DbSet<MenuType> MenuTypes { get; set; } = null!;
         public virtual DbSet<MenuTypeList> MenuTypeLists { get; set; } = null!;
-        public virtual DbSet<PatternIngridientList> PatternIngridientLists { get; set; } = null!;
+        public virtual DbSet<PatternIngredientList> PatternIngredientLists { get; set; } = null!;
         public virtual DbSet<PatternMenuType> PatternMenuTypes { get; set; } = null!;
+        public virtual DbSet<PatternDishType> PatternDishTypes { get; set; } = null!;
+        public virtual DbSet<PatternFoodType> PatternFoodTypes { get; set; } = null!;
         public virtual DbSet<PreparationTip> PreparationTips { get; set; } = null!;
         public virtual DbSet<Recipe> Recipes { get; set; } = null!;
         public virtual DbSet<RecipeImage> RecipeImages { get; set; } = null!;
@@ -105,7 +107,7 @@ namespace recipes_backend.Models
                 {
                     UserId = 1,
                     Name = "Вареники з картоплею",
-                    Description = "Готуємо дуже смачні домашні вареники з картоплею, ніжне тісто для вареників. Просте та недороге блюдо.",
+                    Description = "Готуємо дуже смачні домашні вареники з картоплею, ніжне тісто для вареників. Просте та недороге блюдо. Готуємо дуже смачні домашні вареники з картоплею, ніжне тісто для вареників. Просте та недороге блюдо. Готуємо дуже смачні домашні вареники з картоплею, ніжне тісто для вареників. Просте та недороге блюдо. Готуємо дуже смачні домашні вареники з картоплею, ніжне тісто для вареників. Просте та недороге блюдо.",
                     Difficulty = 2,
                     RequiredTime = 30,
                     Servings = 6,
@@ -157,12 +159,12 @@ namespace recipes_backend.Models
                 });
                 db.PreparationTips.AddRange(new List<PreparationTip>
                 {
-                    new PreparationTip {RecipeId = 1, Description = "Чорний перець необов'язковий."},
-                    new PreparationTip {RecipeId = 1, Description = "Додавайте власні приправи на свій смак"}
+                    new PreparationTip {RecipeId = 1, Description = "Вареники - це традиційна українська страва, яка складається з тонкого тіста, що обгортає різноманітну начинку. Вони мають круглу форму і готуються шляхом скручування тіста. Тісто для вареників робиться з муки, води та солі. За начинку можна використовувати різноманітні інгредієнти - від картоплі та сиру до фруктів і ягід. Наприклад, вареники з картоплею - це класичний варіант, де картопля тушкується, а потім заповнюється у вареник."},
+                    new PreparationTip {RecipeId = 1, Description = "Вареники можна подавати з вершковим маслом або песто. Вареники з сиром - ще один популярний варіант, де сир змішується з цукром та ваніллю, а потім кладеться в тісто. Їх можна полити сметаною або солодким соусом. На десерт можна приготувати вареники з полуницею або вишнею, де свіжі ягоди кладуться в середину тіста і запікаються."}
                 });
                 db.AdditionalTips.AddRange(new List<AdditionalTip>
                 {
-                    new AdditionalTip {RecipeId = 1, Description = "В залежності від кількості пельменів, кількість доданої сметани може відрізнятися. Додавайте стільки, скільки вважатимете доцільним."},
+                    new AdditionalTip {RecipeId = 1, Description = "Вареники можна варити у киплячій воді або смажити на сковороді з олією. Вони чудово поєднуються з різними соусами, такими як грибний соус, томатний соус або сметана. Вареники - це улюблена страва на святковому столі та популярний варіант для сімейного обіду."},
                 });
                 db.RecipeSteps.AddRange(new List<RecipeStep>
                 {
@@ -181,6 +183,41 @@ namespace recipes_backend.Models
                     new RecipeImage { RecipeId = 1, Image = "Images/Recipes/PotatoDumplingsI2.png"},
                     new RecipeImage { RecipeId = 1, Image = "Images/Recipes/PotatoDumplingsI3.png"},
                 });
+                db.SaveChanges();
+
+                db.SearchPatterns.AddRange(new List<SearchPattern>
+                {
+                    new SearchPattern { isDescending = true, FilterString="Вар", DifficultyMin=1, DifficultyMax=4, MinReqTime=15, MaxReqTime=90, Name="Фільтр для вареників", asIngredientPool=false, SortType="Назва", UserId=1},
+                    new SearchPattern { isDescending = true, FilterString="еники", DifficultyMin=1, DifficultyMax=4, MinReqTime=15, MaxReqTime=90, Name="Інший фільтр", asIngredientPool=false, SortType="Назва", UserId=1},
+                    new SearchPattern { isDescending = true, asIngredientPool=false, DifficultyMin=1, DifficultyMax=5, Name="Порожній", SortType="Нещодавні", UserId=1},
+                });
+                db.SaveChanges();
+
+                db.PatternDishTypes.AddRange(new List<PatternDishType>
+                {
+                    new PatternDishType { DishTypeId = 6, SearchPatternId = 1},
+                    new PatternDishType { DishTypeId = 7, SearchPatternId = 1},
+                });
+
+                db.PatternMenuTypes.AddRange(new List<PatternMenuType>
+                {
+                    new PatternMenuType { MenuTypeId = 2, SearchPatternId = 1},
+                    new PatternMenuType { MenuTypeId = 7, SearchPatternId = 1},
+                });
+
+                db.PatternFoodTypes.AddRange(new List<PatternFoodType>
+                {
+                    new PatternFoodType { FoodTypeId = 2, SearchPatternId = 1},
+                    new PatternFoodType { FoodTypeId = 4, SearchPatternId = 1},
+                });
+
+                db.PatternIngredientLists.AddRange(new List<PatternIngredientList>
+                {
+                    new PatternIngredientList { IngredientId = 2, SearchPatternId = 1},
+                    new PatternIngredientList { IngredientId = 4, SearchPatternId = 1},
+                    new PatternIngredientList { IngredientId = 5, SearchPatternId = 1},
+                });
+
                 db.SaveChanges();
             }
         }
@@ -440,30 +477,30 @@ namespace recipes_backend.Models
         //            .HasConstraintName("R_18");
         //    });
 
-        //    modelBuilder.Entity<PatternIngridientList>(entity =>
+        //    modelBuilder.Entity<PatternIngredientList>(entity =>
         //    {
-        //        entity.ToTable("PatternIngridientList");
+        //        entity.ToTable("PatternIngredientList");
 
-        //        entity.HasIndex(e => e.IngridientId, "IX_PatternIngridientList_ingridient_id");
+        //        entity.HasIndex(e => e.IngredientId, "IX_PatternIngredientList_ingredient_id");
 
-        //        entity.HasIndex(e => e.SearchPatternId, "IX_PatternIngridientList_searchPattern_id");
+        //        entity.HasIndex(e => e.SearchPatternId, "IX_PatternIngredientList_searchPattern_id");
 
         //        entity.Property(e => e.Id)
         //            .ValueGeneratedNever()
         //            .HasColumnName("id");
 
-        //        entity.Property(e => e.IngridientId).HasColumnName("ingridient_id");
+        //        entity.Property(e => e.IngredientId).HasColumnName("ingredient_id");
 
         //        entity.Property(e => e.SearchPatternId).HasColumnName("searchPattern_id");
 
-        //        entity.HasOne(d => d.Ingridient)
-        //            .WithMany(p => p.PatternIngridientLists)
-        //            .HasForeignKey(d => d.IngridientId)
+        //        entity.HasOne(d => d.Ingredient)
+        //            .WithMany(p => p.PatternIngredientLists)
+        //            .HasForeignKey(d => d.IngredientId)
         //            .OnDelete(DeleteBehavior.ClientSetNull)
         //            .HasConstraintName("R_13");
 
         //        entity.HasOne(d => d.SearchPattern)
-        //            .WithMany(p => p.PatternIngridientLists)
+        //            .WithMany(p => p.PatternIngredientLists)
         //            .HasForeignKey(d => d.SearchPatternId)
         //            .OnDelete(DeleteBehavior.ClientSetNull)
         //            .HasConstraintName("R_12");

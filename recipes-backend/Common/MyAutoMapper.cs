@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using recipes_backend.Common;
 using recipes_backend.Models;
 using recipes_backend.Operations.Recipe.Filter;
 using recipes_backend.Operations.Recipe.FilterIngredient;
 using recipes_backend.Operations.Recipe.GetFilterData;
+using recipes_backend.Operations.Recipe.PatternList;
 using recipes_backend.Operations.Recipe.RecipeInfo;
 using recipes_backend.Services.GoogleOAuthServiceModels;
 using System.Runtime;
@@ -41,7 +43,7 @@ namespace SOAPZ.Common
 
             CreateMap<Recipe, RecipeShort>()
                 .ForMember(dest => dest.RecipeId, act => act.MapFrom(src => src.Id))
-                .ForMember(dest => dest.Image, act => act.MapFrom(src => src.RecipeImages.FirstOrDefault()))
+                .ForMember(dest => dest.Image, act => act.MapFrom(src => src.RecipeImages.FirstOrDefault().Image))
                 .ForMember(dest => dest.Author, act => act.MapFrom(src => src.User.Name))
                 .ForMember(dest => dest.AuthorId, act => act.MapFrom(src => src.UserId));
 
@@ -52,6 +54,33 @@ namespace SOAPZ.Common
             CreateMap<FoodType, IdItem>();
 
             CreateMap<Ingredient, IdIngredient>();
+
+            CreateMap<SearchPattern, IdItem>();
+
+            CreateMap<PatternDishType, IdItem>()
+                .ForMember(dest => dest.Id, act => act.MapFrom(src => src.DishTypeId))
+                .ForMember(dest => dest.Name, act => act.MapFrom(src => src.DishType.Name));
+
+            CreateMap<PatternFoodType, IdItem>()
+                .ForMember(dest => dest.Id, act => act.MapFrom(src => src.FoodTypeId))
+                .ForMember(dest => dest.Name, act => act.MapFrom(src => src.FoodType.Name));
+
+            CreateMap<PatternMenuType, IdItem>()
+                .ForMember(dest => dest.Id, act => act.MapFrom(src => src.MenuTypeId))
+                .ForMember(dest => dest.Name, act => act.MapFrom(src => src.MenuType.Name));
+
+            CreateMap<PatternIngredientList, IdItem>()
+                .ForMember(dest => dest.Id, act => act.MapFrom(src => src.IngredientId))
+                .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Ingredient.Name));
+
+            CreateMap<SearchPattern, Pattern>()
+                .ForMember(dest => dest.Name, act => act.MapFrom(src => src.FilterString))
+                .ForMember(dest => dest.RequiredTimeMin, act => act.MapFrom(src => src.MinReqTime))
+                .ForMember(dest => dest.RequiredTimeMax, act => act.MapFrom(src => src.MaxReqTime))
+                .ForMember(dest => dest.IngredientId, act => act.MapFrom(src => src.PatternIngredientLists))
+                .ForMember(dest => dest.DishTypeId, act => act.MapFrom(src => src.PatternDishTypes))
+                .ForMember(dest => dest.FoodTypeId, act => act.MapFrom(src => src.PatternFoodTypes))
+                .ForMember(dest => dest.MenuTypeId, act => act.MapFrom(src => src.PatternMenuTypes));
         }
     }
 }

@@ -9,6 +9,9 @@ using recipes_backend.Operations.Recipe.changeFavorite;
 using recipes_backend.Operations.Recipe.Filter;
 using recipes_backend.Operations.Recipe.FilterIngredient;
 using recipes_backend.Operations.Recipe.GetFilterData;
+using recipes_backend.Operations.Recipe.PatternDelete;
+using recipes_backend.Operations.Recipe.PatternList;
+using recipes_backend.Operations.Recipe.PatternUpdate;
 using recipes_backend.Operations.Recipe.Rate;
 using recipes_backend.Operations.Recipe.RecipeInfo;
 using recipes_backend.Services;
@@ -94,6 +97,45 @@ namespace recipes_backend.Controllers
         public async Task<IActionResult> FilterIngredient(FilterIngredientRequest request)
         {
             var operation = _serviceProvider.GetRequiredService<FilterIngredientOperation>();
+            var result = await operation.Execute(request);
+            if (result.Code != 200)
+            {
+                return StatusCode(result.Code, result.Message);
+            }
+            return new JsonResult(result);
+        }
+
+        [Authorize]
+        [HttpGet("PatternList")]
+        public async Task<IActionResult> PatternList()
+        {
+            var operation = _serviceProvider.GetRequiredService<PatternListOperation>();
+            var result = await operation.Execute();
+            if (result.Code != 200)
+            {
+                return StatusCode(result.Code, result.Message);
+            }
+            return new JsonResult(result);
+        }
+
+        [Authorize]
+        [HttpPost("PatternUpdate")]
+        public async Task<IActionResult> PatternUpdate(PatternUpdateRequest request)
+        {
+            var operation = _serviceProvider.GetRequiredService<PatternUpdateOperation>();
+            var result = await operation.Execute(request);
+            if (result.Code != 200)
+            {
+                return StatusCode(result.Code, result.Message);
+            }
+            return new JsonResult(result);
+        }
+
+        [Authorize]
+        [HttpPost("PatternDelete")]
+        public async Task<IActionResult> PatternDelete(PatternDeleteRequest request)
+        {
+            var operation = _serviceProvider.GetRequiredService<PatternDeleteOperation>();
             var result = await operation.Execute(request);
             if (result.Code != 200)
             {
