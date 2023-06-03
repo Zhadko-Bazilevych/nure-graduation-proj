@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 //import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { RandomService } from 'src/app/services/random.service';
+import { UserRecipeService } from 'src/app/services/userRecipe.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -16,7 +17,7 @@ export class HeaderComponent implements OnInit {
   isAuth: boolean | undefined;
   codeUpdating: boolean = false;
 
-  constructor(private authenticationService: AuthenticationService, private randomServ: RandomService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private authenticationService: AuthenticationService, private route: ActivatedRoute, private router: Router, private randomServ: RandomService) { }
 
   device: string | undefined | null;
 
@@ -44,7 +45,7 @@ export class HeaderComponent implements OnInit {
   }
 
   random() {
-    this.randomServ.random(1234455)
+
   }
 
 

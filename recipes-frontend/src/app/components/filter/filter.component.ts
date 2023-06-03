@@ -81,9 +81,6 @@ export class FilterComponent implements OnInit {
 
   Recipes: recipe[];
 
-  difficultyIcon = faTriangleExclamation;
-  clockIcon = faClock;
-
   ngOnInit() {
     this.onSearchChange("");
     this.filterService.getData().toPromise().then(
@@ -144,6 +141,7 @@ export class FilterComponent implements OnInit {
   timeout: ReturnType<typeof setTimeout> | undefined | null = null;
 
   onFilterChange(item: any) {
+    console.log(this.patternData)
     clearTimeout(this.timeout!);
     this.timeout = setTimeout(() => {
       this.onSearchChange(item);
@@ -160,6 +158,8 @@ export class FilterComponent implements OnInit {
     )
   }
 
+  lastFilter: any;
+  endOfFilter: boolean = false;
   async Filtered() {
     if (this.forma.valid) {
       const filterRequest = {
@@ -180,6 +180,25 @@ export class FilterComponent implements OnInit {
         response => { 
           if(response.code == 200)
           this.Recipes = response.recipes 
+          this.endOfFilter = this.Recipes.length == 15 ? false : true;
+          this.lastFilter = {...filterRequest, rows: this.Recipes.length}
+
+         }
+      )
+      
+    }
+  }
+  async PushNew() {
+    if (this.forma.valid) {
+      this.filterService.filter(this.lastFilter).toPromise().then(
+        response => { 
+          if(response.code == 200)
+          this.Recipes.push(...response.recipes)
+          if(response.recipes.length < 15)
+          {
+            this.endOfFilter = true;
+          }
+          this.lastFilter.rows = this.Recipes.length;
          }
       )
       
@@ -190,7 +209,7 @@ export class FilterComponent implements OnInit {
     this.router.navigate([`/recipe`, id]);
   }
 
-  patternSelect(ev: any){
+  patternSelect(ev: any){ 
     if(ev.id == -1){
       this.isPatternCreating = true;
       this.isPatternChosen = false;
@@ -284,7 +303,7 @@ export class FilterComponent implements OnInit {
             }
             if(selectedId != null)
             {
-              let selectedListIndex = this.selectedPatternList.findIndex(x=>x.id == selectedId)
+              let selectedListIndex = this.patternList.findIndex(x=>x.id == selectedId)
               this.patternData[selectedListIndex] = updated
               this.patternList[selectedListIndex].name = selectedName
             }

@@ -16,6 +16,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { DifficultyComponent } from './components/common/bar/bar.component';
+import { UserActionsComponent } from './components/user-actions/user-actions.component';
+import { RecipeRowComponent } from './components/common/recipe-row/recipe-row.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { DifficultyComponent } from './components/common/bar/bar.component';
     GalleryComponent,
     FilterComponent,
     DifficultyComponent,
+    UserActionsComponent,
+    RecipeRowComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,10 @@
 <nav class="flex justify-between items-center bg-headerPrimary h-16">
   <div class="flex items-center space-x-3">
-    <img class="ml-2 h-10" src="..\..\..\assets\images\icon.png">
-    <a href="#" class="text-textPrimary hover:text-textHovered"> Link </a>
+    <a href="" class="hover: cursor-pointer">
+      <img class="ml-2 h-10" src="..\..\..\assets\images\icon.png">
+    </a>
+    <a href="#" class="text-textPrimary hover:text-textHovered"> Пошук рецептів </a>
+    <a *ngIf="isAuth" href="useractions" class="text-textPrimary hover:text-textHovered"> Списки </a>
     <a href="#" class="text-textPrimary hover:text-textHovered"> LongLink </a>
     <a href="#" class="text-textPrimary hover:text-textHovered"> ShL </a>
     <a href="#" class="text-textPrimary hover:text-textHovered"> NotALink </a>

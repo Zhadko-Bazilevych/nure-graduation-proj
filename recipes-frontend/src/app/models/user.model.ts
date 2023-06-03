@@ -6,3 +6,11 @@ export interface User extends BaseResponse{
     accessToken: string,
     refreshToken: string
 }
+
+export interface Author extends BaseResponse{
+    id : number
+    name : string
+    image : string
+    amountOfSubscribers : number
+    amountOfRecipes : number
+}

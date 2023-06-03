@@ -223,6 +223,10 @@
       box-shadow: 0 0 0 2px $base-color;
     }
   }
+
+  .customDropdown .item2 :last-child div{
+    font-weight: 600 !important;
+  }
 }
 
 ::ng-deep {

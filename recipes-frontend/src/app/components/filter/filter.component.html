@@ -3,54 +3,27 @@
         <div class="flex gap-5 w-full">
             <div class="w-[70%]">
               <div class="flex justify-center">
-                <div class="text-xl">Рецепти</div>
+                <div class="text-2xl">Рецепти</div>
               </div>
               <div *ngIf="Recipes.length == 0" class="flex justify-center">
                 <div >За заданим фільтром пошуку нічого не знайдено</div>
               </div>
               <div *ngFor="let item of Recipes">
-                <section class="flex m-1 hover:cursor-pointer gap-2 transition-colors hover:bg-gray-100" (click)="recipe(item.recipeId)">
-                  <div class="flex h-[100px] overflow-hidden rounded">
-                      <img *ngIf="item.image != null" src = "{{BaseUrl}}{{item.image}}" alt="" class="h-100 object-contain p-1">
-                      <img *ngIf="item.image == null" src = "../../../assets/images/recipeStepPlaceholderTransparent.png" alt="" class="h-100 object-contain p-1">
-                  </div> 
-                  <div class="flex flex-col w-[90%]">
-                      <div class="flex gap-5 items-baseline w-full">
-                        <div class="font-bold mb-0 text-lg w-max">{{item.name}}</div>
-                        <div class="flex flex-row gap-1 w-max">
-                          <fa-icon [icon]="clockIcon" class="text-gray-700"></fa-icon>
-                          <div *ngIf="item.requiredTime<=60">
-                              {{item.requiredTime}} хвилин
-                          </div>
-                          <div *ngIf="item.requiredTime>60">
-                              {{item.requiredTime/60}} годин
-                          </div>
-                        </div>
-                        <div class="flex flex-row w-max gap-1">
-                          <fa-icon [icon]="difficultyIcon" class="text-gray-700"></fa-icon>
-                          <div class="flex flex-row gap-2 h-min">
-                              <span>Складність:</span> 
-                              <app-bar [value]="item.difficulty"></app-bar>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="font-semibold">
-                          Автор: <span class="font-normal">{{item.author}}</span>
-                      </div>
-                      <div class="line-clamp-2">
-                        {{item.description}}
-                    </div>
-                  </div>  
-                </section>
+                <app-recipe-row (onClick)="recipe(item.recipeId)" [item]="item"></app-recipe-row>
                 <hr>
               </div>
-              <div>
+              <div class="flex justify-center pt-2 pb-20 items-center">
+                <div class="flex h-[40px] w-[200px] bg-googleRed items-center justify-center text-white font-semibold hover:cursor-pointer hover:bg-red-600 active:brightness-90 transition-colors" *ngIf="Recipes.length != 0 && !endOfFilter" (click)="PushNew()">
+                  Завантажити більше
+                </div>
+              </div>
+            <div>
                 
               </div>
             </div>
             <div class="flex flex-col gap-2 w-[30%]">
                 <div class="flex justify-center">
-                  <div class="text-xl">Фільтри</div>
+                  <div class="text-2xl">Фільтри</div>
                 </div>
                 <!--FORM-->
                 <form [formGroup]="forma" class="flex flex-col gap-1">
@@ -195,7 +168,7 @@
                       </div>
                     </div>
                     <div class="flex text-center w-full justify-center">
-                      <button (click)="Filtered()" class="rounded text-textPrimary bg-googleRed w-1/2 h-10 text-xl hover:bg-red-600 transition-colors" type="button">Пошук</button>
+                      <button (click)="Filtered()" class="rounded text-textPrimary bg-googleRed w-full h-10 text-xl hover:bg-red-600 transition-colors active:brightness-90" type="button">Пошук</button>
                     </div>
                   </form>
             </div>
