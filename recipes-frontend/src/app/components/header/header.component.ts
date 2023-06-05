@@ -3,7 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 //import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { RandomService } from 'src/app/services/random.service';
+import { RecipeService } from 'src/app/services/recipe.service';
 import { UserRecipeService } from 'src/app/services/userRecipe.service';
+import { GlobalDataService } from 'src/app/services/globalData.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -13,11 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class HeaderComponent implements OnInit {
 
-  UserName: string | undefined;
-  isAuth: boolean | undefined;
-  codeUpdating: boolean = false;
-
-  constructor(private authenticationService: AuthenticationService, private route: ActivatedRoute, private router: Router, private randomServ: RandomService) { }
+  constructor(private authenticationService: AuthenticationService, private route: ActivatedRoute, private router: Router, private randomServ: RandomService, public global: GlobalDataService, private recipeService: RecipeService) { }
 
   device: string | undefined | null;
 
@@ -28,9 +26,6 @@ export class HeaderComponent implements OnInit {
       localStorage.setItem('device', this.device);
     }
     this.codeToTokens()
-
-    this.UserName = localStorage.getItem('name') ?? '';
-    this.isAuth = this.UserName == '' ? false : true;
   }
 
   loginRedir() {
@@ -39,13 +34,16 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authenticationService.logout()
-    this.codeUpdating = false;
-    this.isAuth = false;
-    window.location.reload();
   }
 
   random() {
-
+    this.recipeService.random().then(
+      response => {
+        if(response.code == 200){
+          this.router.navigate(['/recipe/' + response.id]);
+        }
+      }
+    )
   }
 
 
@@ -56,11 +54,13 @@ export class HeaderComponent implements OnInit {
           this.route.queryParams
             .subscribe(async params => {
               if (params['code'] != null) {
-                this.codeUpdating = true;
+                this.global.isLoading = true;
                 await this.authenticationService.GetTokens(params['code'])
-                this.UserName = localStorage.getItem('name') ?? '';
-                this.isAuth = this.UserName == '' ? false : true;
-                window.location.replace("http://localhost:4200");
+                this.global.getUserData();
+                this.router.navigate([], {
+                  queryParams: { 'code': null, 'scope' : null, 'authuser' : null, 'prompt' : null },
+                  queryParamsHandling: 'merge'
+                });
               }
             })
         }

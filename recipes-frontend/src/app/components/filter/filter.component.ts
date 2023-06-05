@@ -9,6 +9,7 @@ import { Options } from '@angular-slider/ngx-slider';
 import { faArrowDownWideShort, faArrowDownShortWide, faTriangleExclamation, faClock} from '@fortawesome/free-solid-svg-icons';
 import { filter, recipe, patternUpdate } from 'src/app/models/filter.model';
 import { PatternService } from 'src/app/services/pattern.service';
+import { GlobalDataService } from 'src/app/services/globalData.service';
 
 
 @Component({
@@ -18,7 +19,7 @@ import { PatternService } from 'src/app/services/pattern.service';
 })
 export class FilterComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private router: Router, private recipeService: RecipeService, private filterService: FilterService, private patternService: PatternService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private recipeService: RecipeService, private filterService: FilterService, private patternService: PatternService, public global: GlobalDataService) { }
 
   BaseUrl: string = "https://localhost:7137/"
 
@@ -59,7 +60,6 @@ export class FilterComponent implements OnInit {
   isPatternChosen: boolean = false;
   isPatternCreating: boolean = false;
   isPatternSaved: boolean = false;
-  isAuth: boolean = false;
 
 
   isDescending: boolean = false;
@@ -121,20 +121,27 @@ export class FilterComponent implements OnInit {
 
     this.forma.controls.asIngredientPool.setValue('false');
 
-    this.patternService.getPatternList().toPromise().then(
-      response => {
-        if(response.code == 200)
-        {
-          this.patternList = response.items
-          const createNew: IdItem = { id: -1, name: "<Новий шаблон>"}
-          this.patternList.push(createNew)
-          this.patternData = response.patterns
-          this.isAuth = true;
-        }
-      }
-    );
+    if(!this.getPatterns()) {
+      setTimeout(()=> {this.getPatterns()}, 1000)
+    }
 
     this.Filtered()
+  }
+
+  getPatterns() : boolean{
+      this.patternService.getPatternList().toPromise().then(
+        response => {
+          if(response.code == 200)
+          {
+            this.patternList = response.items
+            const createNew: IdItem = { id: -1, name: "<Новий шаблон>"}
+            this.patternList.push(createNew)
+            this.patternData = response.patterns
+          }
+          return true;
+        }
+      );
+      return false;
   }
 
   searchTxt:string = '';

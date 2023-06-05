@@ -3,17 +3,17 @@
     <a href="" class="hover: cursor-pointer">
       <img class="ml-2 h-10" src="..\..\..\assets\images\icon.png">
     </a>
-    <a href="#" class="text-textPrimary hover:text-textHovered"> Пошук рецептів </a>
-    <a *ngIf="isAuth" href="useractions" class="text-textPrimary hover:text-textHovered"> Списки </a>
-    <a href="#" class="text-textPrimary hover:text-textHovered"> LongLink </a>
+    <a routerLink="/" class="text-textPrimary hover:text-textHovered"> Пошук рецептів </a>
+    <a *ngIf="global.isAuth" routerLink="/useractions" class="text-textPrimary hover:text-textHovered"> Списки </a>
+    <a (click)="random()" class="text-textPrimary hover:text-textHovered hover:cursor-pointer"> Випадковий рецепт </a>
     <a href="#" class="text-textPrimary hover:text-textHovered"> ShL </a>
     <a href="#" class="text-textPrimary hover:text-textHovered"> NotALink </a>
     <a href="#" class="text-textPrimary hover:text-textHovered"> Bob</a>
   </div>
-  <div class="flex items-center space-x-3 mr-2">
-    <div *ngIf="isAuth" class="text-textPrimary">Hello, {{UserName}}</div>
-    <button (click)="random()" class="rounded text-textPrimary bg-googleRed p-1.5">Random</button>
-    <button *ngIf="!isAuth && !codeUpdating" (click)="loginRedir()" class="rounded text-textPrimary bg-googleRed p-1.5 ">Sign In with Google</button>
-    <button *ngIf="isAuth" (click)="logout()" class="rounded text-textPrimary bg-googleRed p-1.5 ">LogOut</button>
+  <div *ngIf="!global.isLoading" class="flex items-center space-x-3 mr-2">
+    <div *ngIf="global.isAuth" class="text-textPrimary">Вітаю, <a routerLink="/user/{{global.id}}" class="underline hover:cursor-pointer hover:brightness-95">{{global.name}}</a></div>
+    <!-- <button (click)="random()" class="rounded text-textPrimary bg-googleRed p-1.5">Random</button> -->
+    <button *ngIf="!global.isAuth" (click)="loginRedir()" class="rounded text-textPrimary bg-googleRed p-1.5 ">Sign In with Google</button>
+    <button *ngIf="global.isAuth" (click)="logout()" class="rounded text-textPrimary bg-googleRed p-1.5 ">Вийти</button>
   </div>
 </nav>

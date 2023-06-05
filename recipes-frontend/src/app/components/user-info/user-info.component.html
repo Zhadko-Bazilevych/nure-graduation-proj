@@ -1,0 +1,127 @@
+<div class="flex justify-center">
+    <div class="flex w-4/5 mt-3 flex-col">
+        <div class="flex gap-5">
+            <div class="flex w-[29%] flex-col gap-2">
+                <div class="">
+                    <img *ngIf="Author.image != null" src="{{BaseUrl + 'Users/' + Author.image}}" class="object-contain">
+                    <img *ngIf="Author.image == null" src="../../../assets/images/userLogo.png" class="object-contain">
+                </div>
+                <div *ngIf="!Author.isMe" class="flex justify-center w-full">
+                    <button *ngIf="!Author.isSubscribed" (click)="changeSub()" class="bg-yellow-500 text-white items-center w-1/2 rounded aspect-[6/1] text-xl hover:brightness-95 active:bg-yellow-600 transition-all"> Підписатися </button>
+                    <button *ngIf="Author.isSubscribed" (click)="changeSub()" class="bg-red-500 text-white items-center w-1/2 rounded aspect-[6/1] text-xl hover:brightness-95 active:bg-red-600 transition-all"> Відписатися </button>
+                </div>
+                <div *ngIf="Author.isMe" class="flex flex-col w-full gap-2">
+                    <div class="flex justify-center">
+                        <button *ngIf="!isConfiguring" (click)="isConfiguring = !isConfiguring" class="bg-gray-600 text-white items-center w-1/2 rounded aspect-[6/1] text-xl hover:brightness-95 active:bg-gray-700 transition-all"> Редагувати профіль </button>
+                    </div>
+                    <div class="flex justify-center">
+                        <button *ngIf="isConfiguring" (click)="update()" class="bg-green-500 text-white items-center w-1/2 rounded aspect-[6/1] text-xl hover:brightness-95 active:bg-green-600 transition-all"> Зберегти зміни </button>
+                    </div>
+                    <div class="flex justify-center">
+                        <button *ngIf="isConfiguring" (click)="cancel()" class="bg-red-500 text-white items-center w-1/2 rounded aspect-[6/1] text-xl hover:brightness-95 active:bg-red-600 transition-all"> Відмінити зміни </button>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!isConfiguring" class="w-[71%]">
+                <div class="flex flex-col gap-2 w-full">
+                    <div>
+                        <h1 class="flex items-end gap-1 text-3xl">
+                            {{Author.name}}
+                        </h1>
+                    </div>
+                    <div class="flex gap-5">
+                        <div class="flex flex-row gap-1 w-max">
+                            <fa-icon [icon]="recipesIcon" class="text-gray-700"></fa-icon>
+                            <div class="flex flex-row gap-2 h-min">
+                                {{Author.amountOfRecipes}} рецептів
+                            </div>
+                        </div>
+                        <div class="flex flex-row w-max gap-1">
+                            <fa-icon [icon]="subsIcon" class="text-gray-700"></fa-icon>
+                            <div class="flex flex-row gap-2 h-min">
+                                {{Author.amountOfSubscribers}} підписників
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="Author.isPublicMail" class="flex flex-row gap-1 w-max">
+                        <div class="flex h-min gap-2">
+                            <span class="font-semibold">Пошта:</span> 
+                            <span>{{Author.mail}}</span>
+                        </div>
+                    </div>
+                    <p *ngIf="Author.description != null && Author.description != ''" class="indent-8 text-justify">
+                        {{Author.description}}
+                    </p>
+                    <p *ngIf="Author.description == null || Author.description == ''" class="indent-8 text-justify text-gray-600">
+                        Опис відсутній
+                    </p>
+                    <div>
+                        <div class="text-2xl">
+                            Рецепти:
+                        </div>
+                        <div *ngFor="let item of Recipes" class="group">
+                            <app-recipe-row (onClick)="recipe(item.recipeId)" [item]="item"></app-recipe-row>
+                            <hr class="group-last:hidden">
+                        </div>
+                        <div *ngIf="Recipes.length == 0" class="indent-8 text-justify text-gray-600 mt-3">
+                            Рецепти відсутні
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div [formGroup]="profileForm" *ngIf="isConfiguring" class="w-[71%]">
+                <div class="flex flex-col gap-2 w-full">
+                    <div class="flex items-end gap-1 text-3xl w-[50%]">
+                        <input type="text" id="name" formControlName="name" class="appearance-none border border-gray-400 pl-1 py-0.5 rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          placeholder="Ваше ім'я" />
+                    </div>
+                    <div class="flex gap-5">
+                        <div class="flex flex-row gap-1 w-max">
+                            <fa-icon [icon]="recipesIcon" class="text-gray-700"></fa-icon>
+                            <div class="flex flex-row gap-2 h-min">
+                                {{Author.amountOfRecipes}} рецептів
+                            </div>
+                        </div>
+                        <div class="flex flex-row w-max gap-1">
+                            <fa-icon [icon]="subsIcon" class="text-gray-700"></fa-icon>
+                            <div class="flex flex-row gap-2 h-min">
+                                {{Author.amountOfSubscribers}} підписників
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-max">
+                        <div class="flex h-min gap-2">
+                            <span class="font-semibold">Пошта:</span> 
+                            <span>{{Author.mail}}</span>
+                        </div>
+                        <div>
+                            <input type="checkbox" formControlName="isPublicMail" id="isPublicMail" class="ml-16 active:bg-blue-200"> зробити пошту публічною
+                        </div>
+                    </div>
+                    
+
+                    <p class="text-justify text-gray-600">
+                        <textarea type="textarea" formControlName="description" id="description" placeholder="Опишіть себе (необов'язково)" class="indent-8 min-h-[100px] appearance-none border border-gray-400 pl-1 py-0.5 rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                    </p>
+                    <div>
+                        <div class="text-2xl">
+                            Рецепти:
+                        </div>
+                        <div *ngFor="let item of Recipes" class="group">
+                            <app-recipe-row (onClick)="recipe(item.recipeId)" [item]="item"></app-recipe-row>
+                            <hr class="group-last:hidden">
+                        </div>
+                        <div *ngIf="Recipes.length == 0" class="indent-8 text-justify text-gray-600 mt-3">
+                            Рецепти відсутні
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+</div>

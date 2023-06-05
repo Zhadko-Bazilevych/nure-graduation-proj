@@ -1,30 +1,30 @@
 <div class="flex justify-center"><!--bg-slate-100-->
     <div class="relative flex w-4/5 mt-5 min-h-[850px]">
         <div class="flex w-1/6 sticky top-0 h-min">
-            <div class="flex flex-col w-full h-full pt-16 gap-2 border-red-600">
+            <div class="flex flex-col w-full h-full pt-16 gap-2 border-red-500">
                 <div (click)="getData(1)" class="relative h-16 w-full transition-all" [ngClass]="{'hover:brightness-100' : active != 1, 'hover:cursor-pointer' : active != 1, 'brightness-95': active !=1, 'brightness-100' : active == 1}">
-                    <div class="absolute right-[-2px] h-full w-full bg-white border-t-2 border-l-2 border-b-2 border-2 border-red-600 rounded-s items-center" [ngClass]="{'border-r-white' : active==1}">
+                    <div class="absolute right-[-2px] h-full w-full bg-white border-t-2 border-l-2 border-b-2 border-2 border-red-500 rounded-s items-center" [ngClass]="{'border-r-white' : active==1}">
                         <div class="flex w-full h-full items-center justify-center">
                             <button class="text-xl font-semibold text-center">Збережені рецепти</button>
                         </div>
                     </div>
                 </div>
                 <div (click)="getData(2)" class="relative h-16 w-full transition-all" [ngClass]="{'hover:brightness-100' : active != 2, 'hover:cursor-pointer' : active != 2, 'brightness-95': active !=2, 'brightness-100' : active == 2}">
-                    <div class="absolute right-[-2px] h-full w-full bg-white border-t-2 border-l-2 border-b-2 border-2 border-red-600 rounded-s" [ngClass]="{'border-r-white' : active==2}">
+                    <div class="absolute right-[-2px] h-full w-full bg-white border-t-2 border-l-2 border-b-2 border-2 border-red-500 rounded-s" [ngClass]="{'border-r-white' : active==2}">
                         <div class="flex w-full h-full items-center justify-center">
                             <button class="text-xl font-semibold text-center">Підписки</button>
                         </div>
                     </div>
                 </div>
                 <div (click)="getData(3)" class="relative h-16 w-full transition-all" [ngClass]="{'hover:brightness-100' : active != 3, 'hover:cursor-pointer' : active != 3, 'brightness-95': active !=3, 'brightness-100' : active == 3}">
-                    <div class="absolute right-[-2px] h-full w-full bg-white border-t-2 border-l-2 border-b-2 border-2 border-red-600 rounded-s" [ngClass]="{'border-r-white' : active==3}">
+                    <div class="absolute right-[-2px] h-full w-full bg-white border-t-2 border-l-2 border-b-2 border-2 border-red-500 rounded-s" [ngClass]="{'border-r-white' : active==3}">
                         <div class="flex w-full h-full items-center justify-center">
                             <button class="text-xl font-semibold text-center">Власні рецепти</button>
                         </div>
                     </div>
                 </div>
                 <div (click)="getData(4)" class="relative h-16 w-full transition-all" [ngClass]="{'hover:brightness-100' : active != 4, 'hover:cursor-pointer' : active != 4, 'brightness-95': active !=4, 'brightness-100' : active == 4}">
-                    <div class="absolute right-[-2px] h-full w-full bg-white border-t-2 border-l-2 border-b-2 border-2 border-red-600 rounded-s " [ngClass]="{'border-r-white' : active==4}">
+                    <div class="absolute right-[-2px] h-full w-full bg-white border-t-2 border-l-2 border-b-2 border-2 border-red-500 rounded-s " [ngClass]="{'border-r-white' : active==4}">
                         <div class="flex w-full h-full items-center justify-center">
                             <button class="text-xl font-semibold text-center">Мої автори</button>
                         </div>
@@ -33,7 +33,7 @@
             </div>
         </div>
         
-        <div class="flex flex-col w-4/6 h-full bg-white gap-2 border-l-2 border-r-2 border-l-red-600 border-r-red-600">
+        <div class="flex flex-col w-4/6 h-full bg-white gap-2 border-l-2 border-r-2 border-l-red-500 border-r-red-500">
             <div *ngIf="active == 1" class="flex flex-col gap-3"> 
                 <!-- <div class="flex justify-center">
                     <div class="font-semibold text-3xl text-center">Збережені вами рецепти</div>
@@ -76,7 +76,22 @@
                     </div>
                 </div>
             </div>
+            <div *ngIf="active == 4" class="flex flex-col gap-3"> 
+                <!-- <div class="flex justify-center">
+                    <div class="font-semibold text-3xl text-center">Ваші рецепти</div>
+                </div> -->
+                <div *ngIf="Authors.length == 0" class="flex justify-center">
+                    <div class="text-xl ml-2 mr-2">Підписок на авторів не знайдено</div>
+                </div>
+                <div>
+                    <div *ngFor="let item of Authors" class="group">
+                        <app-author-row (onClick)="author(item.id)" (onDeleteClick)="deleteAuthor(item.id)" [item]="item" [editable]="true"></app-author-row>
+                        <hr class="group-last:hidden">
+                    </div>
+                </div>
+            </div>
         </div>
+        
         
         <div class="w-1/6 h-full">
             
