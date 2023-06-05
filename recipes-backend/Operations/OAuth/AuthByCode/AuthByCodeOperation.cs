@@ -57,6 +57,7 @@ namespace recipes_backend.Operations.OAuth.AuthByCode
                 db.SaveChanges();
                 AuthByCodeResponse result = new AuthByCodeResponse()
                 {
+                    Id = newUser.Id,
                     Mail = newUser.Mail,
                     Name = newUser.Name,
                     AccessToken = tokenService.CreateToken(newUser),
@@ -87,6 +88,7 @@ namespace recipes_backend.Operations.OAuth.AuthByCode
 
                 return new AuthByCodeResponse()
                 {
+                    Id = user.Id,
                     Mail = user.Mail,
                     Name = user.Name,
                     AccessToken = newAccess,

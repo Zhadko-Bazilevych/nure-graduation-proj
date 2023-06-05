@@ -31,7 +31,7 @@ namespace recipes_backend.Operations.Recipe.RecipeInfo
         public string FoodType { get; set; }
         public int DishTypeId { get; set; }
         public string DishType { get; set; }
-        public decimal? Rating { get; set; }
+        public double? Rating { get; set; }
         public DateTime? CreationDate { get; set; }
         public bool IsPublished { get; set; }
 

@@ -49,7 +49,7 @@ namespace recipes_backend.Operations.UserRecipes.GetUserList
                         RecipeList = await RecipesDb.Where(x => x.User.SubscriptionAuthors.Any(x => x.UserId == user.Id)).OrderByDescending(o => o.Id).ToListAsync();
                         break;
                     default:
-                        RecipeList = await RecipesDb.Where(x => x.UserId == user.Id).OrderByDescending(o => o.Id).ToListAsync();
+                        RecipeList = await RecipesDb.Where(x => x.UserId == (request.authorId == null ? user.Id : request.authorId)).OrderByDescending(o => o.Id).ToListAsync();
                         break;
                 }
                 response.Recipes = _mapper.Map<List<RecipeShort>>(RecipeList);

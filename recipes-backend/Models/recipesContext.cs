@@ -53,14 +53,15 @@ namespace recipes_backend.Models
                 db.Users.Add(new User
                 {
                     Name = "Сергій Жадько-Базілевич",
-                    Image = "Images/Users/Default.png",
                     Mail = "lysergidi@gmail.com"
                 });
                 db.Users.Add(new User
                 {
                     Name = "Іван Іванович",
-                    Image = "Images/Users/Default.png",
-                    Mail = "ivan.ivanovich@gmail.com"
+                    Mail = "ivan.ivanovich@gmail.com",
+                    AmountOfRecipes = 2,
+                    AmountOfSubscribers = 1,
+                    Description = "Ласкаво просимо на сторінку повара зі страстю до творчості та смаку! Тут ви знайдете відбиток уяви, який знаходить вираз у найсмачніших стравах. Я - професійний кулінар з великим досвідом і любов'ю до готування. Моя мета - надихнути вас на нові кулінарні пригоди та подарувати вам радість смаку."
                 });
                 db.FoodTypes.AddRange(new List<FoodType>
                 {

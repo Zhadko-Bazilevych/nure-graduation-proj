@@ -40,7 +40,7 @@ namespace recipes_backend.Operations.UserRecipes.AuthorSubscriptionList
                 AuthorSubscriptionListResponse response = new AuthorSubscriptionListResponse();
 
                 var AuthorList = await db.Users.Include(y => y.SubscriptionAuthors).Where(x => x.SubscriptionAuthors.Any(y => y.UserId == user.Id)).OrderByDescending(o=>o.Id).ToListAsync();
-                response.AuthorList = _mapper.Map<List<AuthorShort>>(AuthorList);
+                response.Authors = _mapper.Map<List<AuthorShort>>(AuthorList);
 
                 return response;
             }

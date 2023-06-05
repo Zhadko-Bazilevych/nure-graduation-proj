@@ -48,7 +48,7 @@ namespace recipes_backend.Operations.UserRecipes.ChangeSubscribe
                 else
                 {
                     db.Subscriptions.Add(new Subscription { UserId = user.Id, AuthorId = author.Id });
-                    author.AmountOfSubscribers = (author.AmountOfSubscribers ?? 0) + 1;
+                    author.AmountOfSubscribers = author.AmountOfSubscribers + 1;
                 }
             }
             else
