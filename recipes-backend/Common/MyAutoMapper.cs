@@ -6,6 +6,7 @@ using recipes_backend.Operations.Recipe.FilterIngredient;
 using recipes_backend.Operations.Recipe.GetFilterData;
 using recipes_backend.Operations.Recipe.PatternList;
 using recipes_backend.Operations.Recipe.RecipeInfo;
+using recipes_backend.Operations.UserRecipes.AuthorSubscriptionList;
 using recipes_backend.Services.GoogleOAuthServiceModels;
 using System.Runtime;
 
@@ -81,6 +82,8 @@ namespace SOAPZ.Common
                 .ForMember(dest => dest.DishTypeId, act => act.MapFrom(src => src.PatternDishTypes))
                 .ForMember(dest => dest.FoodTypeId, act => act.MapFrom(src => src.PatternFoodTypes))
                 .ForMember(dest => dest.MenuTypeId, act => act.MapFrom(src => src.PatternMenuTypes));
+
+            CreateMap<User, AuthorShort>();
         }
     }
 }
