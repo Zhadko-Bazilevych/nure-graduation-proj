@@ -1,4 +1,4 @@
-import { ElementRef, NgModule, Renderer2 } from '@angular/core';
+import { APP_INITIALIZER, ElementRef, NgModule, Renderer2 } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,6 +18,9 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { DifficultyComponent } from './components/common/bar/bar.component';
 import { UserActionsComponent } from './components/user-actions/user-actions.component';
 import { RecipeRowComponent } from './components/common/recipe-row/recipe-row.component';
+import { AuthorRowComponent } from './components/common/author-row/author-row.component';
+import { UserInfoComponent } from './components/user-info/user-info.component';
+import { GlobalDataService } from './services/globalData.service';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,8 @@ import { RecipeRowComponent } from './components/common/recipe-row/recipe-row.co
     DifficultyComponent,
     UserActionsComponent,
     RecipeRowComponent,
+    AuthorRowComponent,
+    UserInfoComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +48,7 @@ import { RecipeRowComponent } from './components/common/recipe-row/recipe-row.co
     NgxSliderModule,
   ],
   providers: [
+    GlobalDataService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

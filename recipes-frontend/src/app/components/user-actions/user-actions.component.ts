@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { recipe } from 'src/app/models/filter.model';
+import { Author } from 'src/app/models/user.model';
 import { UserRecipeService } from 'src/app/services/userRecipe.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class UserActionsComponent implements OnInit {
   active: number = 1;
 
   Recipes: recipe[] = [];
+  Authors: Author[] = [];
 
 
   ngOnInit(): void {
@@ -27,8 +29,7 @@ export class UserActionsComponent implements OnInit {
     {
       this.userRecipeService.getUserList(id).toPromise().then(
         response => {
-          if(response.code == 200)
-          {
+          if(response.code == 200) {
             this.Recipes = response.recipes
           }
         }
@@ -36,7 +37,15 @@ export class UserActionsComponent implements OnInit {
     }
     else
     {
-      
+      this.userRecipeService.getAuthorSubscriptionList().toPromise().then(
+        response => {
+          if(response.code == 200)
+          {
+            this.Authors = response.authors
+            console.log(response.authors, this.Authors)
+          }
+        }
+      )
     }
   }
 
@@ -50,6 +59,20 @@ export class UserActionsComponent implements OnInit {
 
   deleteRecipe(id: number){
     console.log("I'll delete ", id )
+  }
+
+  author(id: number){
+    this.router.navigate([`/user`, id]);
+  }
+
+  deleteAuthor(id: number){
+    this.userRecipeService.changeSubscribe(id).toPromise().then(
+      response => {
+        if(response.code == 200){
+          this.Authors = this.Authors.filter(a=>a.id != id);
+        }
+      }
+    );
   }
 
 }

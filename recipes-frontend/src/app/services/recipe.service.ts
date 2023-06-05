@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { RecipeInfo, RecipeResponse } from '../models/recipe.model';
 import { BaseResponse } from '../models/baseResponse';
+import { idResponse } from '../models/filter.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,10 @@ export class RecipeService {
   async recipeInfo(id: number){
     const route = `${this.baseUrl}${id}`
     return this.httpClient.get<RecipeResponse>(route).toPromise()
+  }
+
+  async random(){
+    return this.httpClient.get<idResponse>(this.baseUrl + "Random").toPromise()
   }
 
   async changeRate(id: number, rate: number){

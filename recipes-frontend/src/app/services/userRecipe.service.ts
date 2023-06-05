@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { IngredientsResponse, filterResponse, filterSelecDataResponse } from '../models/filter.model';
 import { BaseResponse } from '../models/baseResponse';
-import { Author } from '../models/user.model';
+import { Author, AuthorListResponse, AuthorPageResponse, EditUserRequest } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +23,9 @@ export class UserRecipeService {
   //   return this.httpClient.post<IngredientsResponse>(this.BaseURL + 'FilterIngredient', request)
   // }
 
-  getAuthorSubscriptionList(): Observable<Author>{
+  getAuthorSubscriptionList(): Observable<AuthorListResponse>{
 
-    return this.httpClient.get<Author>(this.BaseURL + 'AuthorSubscriptionList')
+    return this.httpClient.get<AuthorListResponse>(this.BaseURL + 'AuthorSubscriptionList')
   }
 
   changeSubscribe(id: number): Observable<BaseResponse>{
@@ -33,8 +33,18 @@ export class UserRecipeService {
     return this.httpClient.post<BaseResponse>(this.BaseURL + 'ChangeSubscribe', {authorId : id})
   }
 
-  getUserList(type: number): Observable<filterResponse>{
+  getUserList(type: number, authorId: number | null = null): Observable<filterResponse>{
 
-    return this.httpClient.post<filterResponse>(this.BaseURL + 'GetUserList', {listType : type})
+    return this.httpClient.post<filterResponse>(this.BaseURL + 'GetUserList', {listType : type, authorId: authorId})
+  }
+
+  getAuthorData(id: number): Observable<AuthorPageResponse>{
+
+    return this.httpClient.post<AuthorPageResponse>(this.BaseURL + 'AuthorInfo', {authorId : id})
+  }
+
+  editUser(request: EditUserRequest): Observable<BaseResponse>{
+
+    return this.httpClient.post<BaseResponse>(this.BaseURL + 'EditUser', request)
   }
 }

@@ -61,3 +61,7 @@ export interface CollectedComment{
     dateCreated: Date,
     isAuthor: boolean
 }
+
+export interface idResponse extends BaseResponse{
+    id: number,
+}

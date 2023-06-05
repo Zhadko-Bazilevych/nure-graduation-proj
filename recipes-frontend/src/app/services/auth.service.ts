@@ -6,6 +6,7 @@ import { Observable, ReplaySubject, Subscription, throwError } from 'rxjs';
 import { User } from '../models/user.model';
 import { BaseResponse } from '../models/baseResponse';
 import { Refresh } from '../models/refresh.model';
+import { GlobalDataService } from './globalData.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -23,14 +24,16 @@ export class AuthenticationService {
 
   response: any;
 
-  constructor(private httpClient: HttpClient, private router: Router) {
+  constructor(private httpClient: HttpClient, private router: Router, public global: GlobalDataService) {
   }
 
   logout() {
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('mail');
-    localStorage.removeItem('name');
     localStorage.removeItem('refreshToken');
+    this.global.id = null;
+    this.global.name = null;
+    this.global.mail = null;
+    this.global.isAuth = false;
   }
 
   RedirectLogin(){
@@ -56,10 +59,11 @@ export class AuthenticationService {
 
     await this.httpClient.post<User>(this.BaseURL + 'AuthByCode', request).toPromise().then(
       response => {
-        localStorage.setItem('name', response['name']);
-        localStorage.setItem('mail', response['mail']);
         localStorage.setItem('accessToken', response['accessToken']);
         localStorage.setItem('refreshToken', response['refreshToken']);
+        this.global.id = response['id']
+        this.global.name = response['name'];
+        this.global.mail = response['mail'];
       }
     );
   }

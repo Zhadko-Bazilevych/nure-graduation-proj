@@ -1,0 +1,36 @@
+<section class="flex m-1 hover:cursor-pointer gap-2 transition-colors hover:bg-gray-100" (click)="itemClicked()">
+    <div class="flex h-[50px] overflow-hidden rounded">
+        <img *ngIf="item.image != null" src = "{{BaseUrl}}{{item.image}}" alt="" class="h-100 object-contain p-1">
+        <img *ngIf="item.image == null" src = "../../../assets/images/userLogo.png" alt="" class="h-100 object-contain p-1">
+    </div>
+    <div class="flex w-full justify-between items-center">
+        <div class="flex">
+            <div class="flex gap-5 items-baseline w-full">
+            <div class="font-bold mb-0 text-lg w-max">{{item.name}}</div>
+            <div class="flex flex-row gap-1 w-max">
+                <fa-icon [icon]="recipesIcon" class="text-gray-700"></fa-icon>
+                <div class="flex flex-row gap-2 h-min">
+                    {{item.amountOfRecipes}} рецептів
+                </div>
+            </div>
+            <div class="flex flex-row w-max gap-1">
+                <fa-icon [icon]="subsIcon" class="text-gray-700"></fa-icon>
+                <div class="flex flex-row gap-2 h-min">
+                    {{item.amountOfSubscribers}} підписників
+                </div>
+            </div>
+            </div>
+            <div class="font-semibold">
+                <!-- Автор: <span class="font-normal">{{item}}</span> -->
+            </div>
+            <div class="line-clamp-2">
+            <!-- {{item.description}} -->
+            </div>
+        </div>
+        <div *ngIf="editable"  class="flex sgap-3 items-center justify-center">
+            <div (click)="itemDeleteClicked($event)" class="flex bg-red-500 h-7 w-24 rounded text-white items-center justify-center z-10 hover:bg-red-600 mr-2">
+                <span >Відписатися</span>
+            </div>
+        </div>
+    </div>  
+</section>
