@@ -17,8 +17,8 @@ export class GlobalDataService implements OnInit{
         this.getUserData();
     }
   
-    getUserData() {
-        this.httpClient.get<User>('https://localhost:7137/api/OAuth/GetUserData').toPromise().then(
+    async getUserData() {
+        await this.httpClient.get<User>('https://localhost:7137/api/OAuth/GetUserData').toPromise().then(
             response => {
                 if(response.code == 200){
                     this.id = response.id!;
@@ -30,7 +30,7 @@ export class GlobalDataService implements OnInit{
             }
         )
         .finally(
-            () => { this.isLoading = false; }
+            () => { this.isLoading = false; console.log(this.isLoading)}
         )
     };
 }

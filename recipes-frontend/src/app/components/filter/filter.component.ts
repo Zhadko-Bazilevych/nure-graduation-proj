@@ -79,7 +79,7 @@ export class FilterComponent implements OnInit {
   get asIngredientPool() { return this.forma.get('asIngredientPool') }
   get patternName() { return this.forma.get('patternName') }
 
-  Recipes: recipe[];
+  Recipes: recipe[] = [];
 
   ngOnInit() {
     this.onSearchChange("");

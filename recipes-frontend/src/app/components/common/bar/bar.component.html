@@ -1,7 +1,16 @@
-        <div class="flex w-[4rem] h-[55%] border-2 border-gray-600 rounded-full p-[1px] mt-[8px] gap-[1px]">
-            <div *ngIf="value >= 1" class="w-1/5 h-full bg-green-500 rounded-l"></div>
-            <div *ngIf="value >= 2" class="w-1/5 h-full bg-lime-500"></div>
-            <div *ngIf="value >= 3" class="w-1/5 h-full bg-yellow-500"></div>
-            <div *ngIf="value >= 4" class="w-1/5 h-full bg-orange-500"></div>
-            <div *ngIf="value >= 5" class="w-1/5 h-full bg-red-500 rounded-r"></div>
+        <div class="relative flex w-[4rem] h-[55%] border-2 border-gray-600 rounded-full p-[1px] mt-[8px]">
+            <div class="flex w-full h-full gap-[1px]">
+                <div [ngClass]="{'opacity-0': currentValue < 1}" class="w-1/5 h-full bg-green-500 rounded-l"></div>
+                <div [ngClass]="{'opacity-0': currentValue < 2}" class="w-1/5 h-full bg-lime-500"></div>
+                <div [ngClass]="{'opacity-0': currentValue < 3}" class="w-1/5 h-full bg-yellow-500"></div>
+                <div [ngClass]="{'opacity-0': currentValue < 4}" class="w-1/5 h-full bg-orange-500"></div>
+                <div [ngClass]="{'opacity-0': currentValue < 5}" class="w-1/5 h-full bg-red-500 rounded-r"></div>
+            </div>
+            <div *ngIf="editable" class="absolute flex w-full h-full left-0 top-0 p-[1px] hover:cursor-pointer">
+                <div (click)="changedValue(1)" (mouseenter)="hoverBar(1)" (mouseleave)="unhoverBar()" class="w-1/5 h-full rounded-l"></div>
+                <div (click)="changedValue(2)" (mouseenter)="hoverBar(2)" (mouseleave)="unhoverBar()" class="w-1/5 h-full"></div>
+                <div (click)="changedValue(3)" (mouseenter)="hoverBar(3)" (mouseleave)="unhoverBar()" class="w-1/5 h-full"></div>
+                <div (click)="changedValue(4)" (mouseenter)="hoverBar(4)" (mouseleave)="unhoverBar()" class="w-1/5 h-full"></div>
+                <div (click)="changedValue(5)" (mouseenter)="hoverBar(5)" (mouseleave)="unhoverBar()" class="w-1/5 h-full rounded-r"></div>
+            </div>
         </div>

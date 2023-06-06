@@ -1,0 +1,196 @@
+<form *ngIf="!isLoadingForm" [formGroup]="formGr" class="flex justify-center">
+    <div class="flex w-4/5 mt-3 flex-col">
+        <div class="flex gap-5">
+            <div class="w-[29%]">
+                <app-gallery [Images]="Recipe.images" class="flex" [ngClass]="{'h-[400px]': Recipe.images.length != 0, 'h-[300px]': Recipe.images.length == 0}"></app-gallery>
+                
+            </div>
+            <div class="flex flex-col gap-4 w-[71%]">
+                <div>
+                    <input required type="text" id="name" formControlName="name" class="appearance-none border border-gray-400 rounded w-2/3 py-2 px-3 text-3xl text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          placeholder="Назва рецепту" />
+                </div>
+                <div class="flex flex-col gap-1">
+                    <div class="flex flex-row gap-1 items-center">
+                        <div>
+                            <fa-icon [icon]="clockIcon" class="text-gray-700"></fa-icon>
+                        </div>
+                        <div>
+                            Час приготування: <input type="number" id="requiredTime" formControlName="requiredTime" class="w-20 appearance-none border border-gray-400 rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="" /> хвилин
+                        </div>
+                    </div>
+                    <div class="flex flex-row gap-1 items-center">
+                        <div>
+                            <fa-icon [icon]="portionIcon" class="text-gray-700"></fa-icon>
+                        </div>
+                        <div>
+                            Порцій: <input type="number" id="servings" formControlName="servings" class="w-20 appearance-none border border-gray-400 rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="" />
+                        </div>
+                    </div>
+                    <div class="flex h-[30px] items-center">
+                        <div class="flex flex-row gap-2 h-min">
+                            <fa-icon [icon]="difficultyIcon" class="text-gray-700"></fa-icon>
+                            <div class="flex flex-row gap-2">
+                                <span>Складність:</span> 
+                                <app-bar [value]="difficulty.value" [editable]="true" (changed)="changeDifficulty($event)"></app-bar>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <div class="flex flex-row gap-1">
+                        <fa-icon [icon]="caloricIcon" class="text-gray-700 w-5"></fa-icon>
+                        <div class="flex w-full gap-1"> 
+                            <div class="w-[10%]">
+                                Калорійність:
+                            </div> 
+                            <input type="number" id="caloricValue" formControlName="caloricValue" class="w-20 appearance-none border border-gray-400 rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm" placeholder="" />
+                            <div>
+                                ккал. 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-row gap-1">
+                        <fa-icon [icon]="proteinsIcon" class="text-gray-700 w-5"></fa-icon>
+                        <div class="flex w-full gap-1"> 
+                            <div class="w-[10%]">
+                                Білків:
+                            </div> 
+                            <input type="number" id="proteins" formControlName="proteins" class="w-20 appearance-none border border-gray-400 rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm" placeholder="" /> 
+                            <div>
+                                гр. 
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="flex flex-row gap-1">
+                        <fa-icon [icon]="fatsIcon" class="text-gray-700 w-5"></fa-icon>
+                        <div class="flex w-full gap-1"> 
+                            <div class="w-[10%]">
+                                Жирів:
+                            </div> 
+                            <input type="number" id="fats" formControlName="fats" class="w-20 appearance-none border border-gray-400 rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm" placeholder="" />
+                            <div>
+                                гр. 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-row gap-1">
+                        <fa-icon [icon]="carboIcon" class="text-gray-700 w-5"></fa-icon>
+                        <div class="flex w-full gap-1"> 
+                            <div class="w-[10%]">
+                                Вуглеводів:
+                            </div> 
+                            <input type="number" id="carbohydrates" formControlName="carbohydrates" class="w-20 appearance-none border border-gray-400 rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm" placeholder="" /> 
+                            <div>
+                                гр. 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="customDropdown flex items-center gap-2">
+                    <div class="w-[10%]">Тип кухні:</div>
+                    <ng-multiselect-dropdown
+                    class="w-[35%]"
+                    [placeholder]="'Виберіть тип кухні'"
+                    [settings]="dropdownSettings"
+                    [data]="foodList"
+                    [(ngModel)]="selectedFoodItems"
+                    formControlName="foodType"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+
+                <div class="customDropdown flex items-center gap-2">
+                    <div class="w-[10%]">Тип страви:</div>
+                    <ng-multiselect-dropdown
+                    class="w-[35%]"
+                    [placeholder]="'Виберіть тип страви'"
+                    [settings]="dropdownSettings"
+                    [data]="dishList"
+                    [(ngModel)]="selectedDishItems"
+                    formControlName="dishType"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+
+                  <div class="flex items-center gap-2">
+                    <div class="w-[10%]">Тип меню:</div>
+                    <ng-multiselect-dropdown
+                    class="w-[35%]"
+                    [placeholder]="'Виберіть тип меню (або декілька)'"
+                    [settings]="multipleDropdownSettings"
+                    [data]="menuList"
+                    [(ngModel)]="selectedMenuItems"
+                    formControlName="menuType"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                <p class="indent-8 text-justify">
+                    {{Recipe.description}}
+                </p>
+            </div>
+        </div>
+
+        <div class="flex gap-5">
+            <div class="flex flex-col w-[29%] gap-3 relative">
+                <div class="flex flex-col sticky top-0 gap-4">
+                    <div class="flex flex-col h-full overflow-y-auto max-h-screen scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-track-gray-100">
+                        <div class="relative">
+                            <div *ngIf="Recipe.video !== null">
+                                <h2 class="text-2xl pb-2">Відео рецетпу</h2>
+                                <div class="relative h-full w-full">
+                                    <div class="absolute w-full aspect-video bg-gray-100 z-[-1] animate-pulse rounded"></div>
+                                    <iframe class="w-full aspect-video rounded" [src]="sanitizedVideo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="Recipe.ingredients.length != 0">
+                            <div>
+                                <span class="text-2xl">Інгредієнти</span>
+                            </div>
+                            <div class="grid grid-cols-[max-content_auto] gap-x-3">
+                                <ng-container *ngFor="let ingr of Recipe.ingredients">
+                                    <div>
+                                            - {{ingr.name}}:
+                                    </div>
+                                    <div>
+                                            {{ingr.amount}} {{ingr.measurement}}   
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="Recipe.preparationTips.length != 0 || Recipe.additionalTips.length != 0 || Recipe.steps.length != 0" class="flex flex-col w-[71%] gap-2">
+                <h2 class="text-2xl">Рецепт</h2>
+                <div class="flex flex-col gap-1">
+                    <p *ngFor="let prep of Recipe.preparationTips" class="indent-8 text-justify">
+                        {{prep}}
+                    </p>
+                </div>
+                <div class="flex flex-col gap-5">
+                    <div *ngFor="let step of Recipe.steps" class="flex w-full gap-3">
+                        <div class="grid place-items-center w-[20%] aspect-square">
+                            <img *ngIf="step.image !== null" src="{{BaseUrl+step.image}}" class="w-auto h-auto max-w-[100%] max-h-[100%] object-contain rounded">
+                            <img *ngIf="step.image === null" src="../../../assets/images/recipeStepPlaceholderTransparent.png" class="w-auto h-auto max-w-[100%] max-h-[100%] object-contain rounded">
+                        </div>
+                        <div class="h-full bg-gray-300 w-[2px] rounded"></div>
+                        <div class="flex flex-col w-[80%]">
+                            <h3 class="text-xl">{{step.title}}</h3>
+                            <p>{{step.description}}</p>
+                        </div>
+                    </div>
+                </div> 
+                <div class="flex flex-col gap-1">
+                    <p *ngFor="let addition of Recipe.additionalTips" class="indent-8 text-justify">
+                        {{addition}}
+                    </p>
+                </div>
+                <div class="h-[30px]"></div>
+            </div>
+        </div>
+        <div></div><!--TODO: Comments-->
+    </div>
+    <button type="submit" (click)="Submit()" class="">Submit</button>
+</form>

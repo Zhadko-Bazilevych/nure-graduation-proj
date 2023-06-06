@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { recipe } from 'src/app/models/filter.model';
 import { Author } from 'src/app/models/user.model';
+import { RecipeService } from 'src/app/services/recipe.service';
 import { UserRecipeService } from 'src/app/services/userRecipe.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { UserRecipeService } from 'src/app/services/userRecipe.service';
 })
 export class UserActionsComponent implements OnInit {
   
-  constructor(private route: ActivatedRoute, private router: Router, private userRecipeService: UserRecipeService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private userRecipeService: UserRecipeService, private recipeService: RecipeService) { }
   
   active: number = 1;
 
@@ -30,6 +31,7 @@ export class UserActionsComponent implements OnInit {
       this.userRecipeService.getUserList(id).toPromise().then(
         response => {
           if(response.code == 200) {
+            console.log(response.recipes)
             this.Recipes = response.recipes
           }
         }
@@ -49,16 +51,22 @@ export class UserActionsComponent implements OnInit {
     }
   }
 
-  recipe(id: number){
+  recipeInfo(id: number){
     this.router.navigate([`/recipe`, id]);
   }
 
   editRecipe(id: number){
-    console.log("I'll edit ", id )
+    this.router.navigate(['edit/' + id])
   }
 
   deleteRecipe(id: number){
-    console.log("I'll delete ", id )
+    this.recipeService.deleteRecipe(id).then(
+      response => {
+        if(response.code == 200){
+          this.Recipes.splice(this.Recipes.findIndex(x => x.recipeId == id), 1);
+        }
+      }
+    )
   }
 
   author(id: number){
@@ -75,4 +83,13 @@ export class UserActionsComponent implements OnInit {
     );
   }
 
+  createRecipe() {
+    this.recipeService.createEmpty().then(
+      response => {
+        if(response.code == 200){
+          this.router.navigate(['edit/' + response.id])
+        }
+      }
+    )
+  }
 }

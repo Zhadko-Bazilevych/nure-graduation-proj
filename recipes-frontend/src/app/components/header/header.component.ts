@@ -37,13 +37,14 @@ export class HeaderComponent implements OnInit {
   }
 
   random() {
-    this.recipeService.random().then(
-      response => {
-        if(response.code == 200){
-          this.router.navigate(['/recipe/' + response.id]);
-        }
-      }
-    )
+    // this.recipeService.random().then(
+    //   response => {
+    //     if(response.code == 200){
+    //       this.router.navigate(['/recipe/' + response.id]);
+    //     }
+    //   }
+    // )
+    console.log(this.global.isLoading)
   }
 
 
@@ -56,7 +57,7 @@ export class HeaderComponent implements OnInit {
               if (params['code'] != null) {
                 this.global.isLoading = true;
                 await this.authenticationService.GetTokens(params['code'])
-                this.global.getUserData();
+                await this.global.getUserData();
                 this.router.navigate([], {
                   queryParams: { 'code': null, 'scope' : null, 'authuser' : null, 'prompt' : null },
                   queryParamsHandling: 'merge'

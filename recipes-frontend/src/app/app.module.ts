@@ -21,6 +21,7 @@ import { RecipeRowComponent } from './components/common/recipe-row/recipe-row.co
 import { AuthorRowComponent } from './components/common/author-row/author-row.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { GlobalDataService } from './services/globalData.service';
+import { RecipeUpdateComponent } from './components/recipe-update/recipe-update.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { GlobalDataService } from './services/globalData.service';
     RecipeRowComponent,
     AuthorRowComponent,
     UserInfoComponent,
+    RecipeUpdateComponent,
   ],
   imports: [
     BrowserModule,
