@@ -6,7 +6,7 @@ namespace recipes_backend.Operations.UserRecipes.AuthorSubscriptionList
 {
     public class AuthorSubscriptionListResponse : BaseResponse
     {
-        public List<AuthorShort> AuthorList { get; set; }
+        public List<AuthorShort> Authors { get; set; }
     }
 
     public class AuthorShort

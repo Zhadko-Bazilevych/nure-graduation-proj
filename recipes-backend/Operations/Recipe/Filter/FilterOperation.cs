@@ -55,11 +55,11 @@ namespace recipes_backend.Operations.Recipe.Filter
             }
             if(request.DishTypeId != null && request.DishTypeId.Count!=0)
             {
-                filterResult = filterResult.Where(x => request.DishTypeId.Contains(x.DishTypeId));
+                filterResult = filterResult.Where(x => request.DishTypeId.Contains(x.DishTypeId??0));
             }
             if(request.FoodTypeId != null && request.FoodTypeId.Count != 0)
             {
-                filterResult = filterResult.Where(x => request.FoodTypeId.Contains(x.FoodTypeId));
+                filterResult = filterResult.Where(x => request.FoodTypeId.Contains(x.FoodTypeId??0));
             }
             if(request.MenuTypeId != null)
             {

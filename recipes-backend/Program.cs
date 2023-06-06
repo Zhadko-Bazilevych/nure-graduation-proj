@@ -20,6 +20,9 @@ using recipes_backend.Operations.Recipe.PatternDelete;
 using recipes_backend.Operations.UserRecipes.GetUserList;
 using recipes_backend.Operations.UserRecipes.ChangeSubscribe;
 using recipes_backend.Operations.UserRecipes.AuthorSubscriptionList;
+using recipes_backend.Operations.UserRecipes.AuthorInfo;
+using recipes_backend.Operations.OAuth.GetUserData;
+using recipes_backend.Operations.UserRecipes.EditUser;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,16 +46,17 @@ builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<GoogleOAuthService>();
 builder.Services.AddScoped<ImageService>();
 
-
 builder.Services.AddScoped<FilterOperation>();
 builder.Services.AddScoped<GetFilterDataOperation>();
 builder.Services.AddScoped<FilterIngredientOperation>();
+builder.Services.AddScoped<RandomOperation>();
 
 builder.Services.AddScoped<RecipeInfoOperation>();
 builder.Services.AddScoped<RateOperation>();
 builder.Services.AddScoped<changeFavoriteOperation>();
 builder.Services.AddScoped<AuthByCodeOperation>();
 builder.Services.AddScoped<RefreshOperation>();
+builder.Services.AddScoped<GetUserDataOperation>();
 
 builder.Services.AddScoped<PatternListOperation>();
 builder.Services.AddScoped<PatternUpdateOperation>();
@@ -61,6 +65,8 @@ builder.Services.AddScoped<PatternDeleteOperation>();
 builder.Services.AddScoped<GetUserListOperation>();
 builder.Services.AddScoped<ChangeSubscribeOperation>();
 builder.Services.AddScoped<AuthorSubscriptionListOperation>();
+builder.Services.AddScoped<AuthorInfoOperation>();
+builder.Services.AddScoped<EditUserOperation>();
 
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"]));
 builder.Services

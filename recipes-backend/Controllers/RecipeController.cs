@@ -12,6 +12,7 @@ using recipes_backend.Operations.Recipe.GetFilterData;
 using recipes_backend.Operations.Recipe.PatternDelete;
 using recipes_backend.Operations.Recipe.PatternList;
 using recipes_backend.Operations.Recipe.PatternUpdate;
+using recipes_backend.Operations.Recipe.Random;
 using recipes_backend.Operations.Recipe.Rate;
 using recipes_backend.Operations.Recipe.RecipeInfo;
 using recipes_backend.Services;
@@ -137,6 +138,18 @@ namespace recipes_backend.Controllers
         {
             var operation = _serviceProvider.GetRequiredService<PatternDeleteOperation>();
             var result = await operation.Execute(request);
+            if (result.Code != 200)
+            {
+                return StatusCode(result.Code, result.Message);
+            }
+            return new JsonResult(result);
+        }
+
+        [HttpGet("Random")]
+        public async Task<IActionResult> Random()
+        {
+            var operation = _serviceProvider.GetRequiredService<RandomOperation>();
+            var result = await operation.Execute();
             if (result.Code != 200)
             {
                 return StatusCode(result.Code, result.Message);

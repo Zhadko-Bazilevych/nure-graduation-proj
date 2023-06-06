@@ -14,8 +14,10 @@ using recipes_backend.Operations.Recipe.PatternList;
 using recipes_backend.Operations.Recipe.PatternUpdate;
 using recipes_backend.Operations.Recipe.Rate;
 using recipes_backend.Operations.Recipe.RecipeInfo;
+using recipes_backend.Operations.UserRecipes.AuthorInfo;
 using recipes_backend.Operations.UserRecipes.AuthorSubscriptionList;
 using recipes_backend.Operations.UserRecipes.ChangeSubscribe;
+using recipes_backend.Operations.UserRecipes.EditUser;
 using recipes_backend.Operations.UserRecipes.GetUserList;
 using recipes_backend.Services;
 using recipes_backend.Services.GoogleOAuthServiceModels;
@@ -61,11 +63,35 @@ namespace recipes_backend.Controllers
             return new JsonResult(result);
         }
 
-        [Authorize]
+        [HttpPost("AuthorInfo")]
+        public async Task<IActionResult> AuthorInfo(AuthorInfoRequest request)
+        {
+            var operation = _serviceProvider.GetRequiredService<AuthorInfoOperation>();
+            var result = await operation.Execute(request);
+            if (result.Code != 200)
+            {
+                return StatusCode(result.Code, result.Message);
+            }
+            return new JsonResult(result);
+        }
+
         [HttpPost("GetUserList")]
         public async Task<IActionResult> GetUserList(GetUserListRequest request)
         {
             var operation = _serviceProvider.GetRequiredService<GetUserListOperation>();
+            var result = await operation.Execute(request);
+            if (result.Code != 200)
+            {
+                return StatusCode(result.Code, result.Message);
+            }
+            return new JsonResult(result);
+        }
+
+        [Authorize]
+        [HttpPost("EditUser")]
+        public async Task<IActionResult> EditUser(EditUserRequest request)
+        {
+            var operation = _serviceProvider.GetRequiredService<EditUserOperation>();
             var result = await operation.Execute(request);
             if (result.Code != 200)
             {

@@ -10,55 +10,52 @@ using recipes_backend.Services;
 using System.Security.Claims;
 using System.Security.Cryptography;
 
-namespace recipes_backend.Operations.Recipe.changeFavorite
+namespace recipes_backend.Operations.UserRecipes.EditUser
 {
-    public class changeFavoriteOperation
+    public class EditUserOperation
     {
         recipesContext db;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public changeFavoriteOperation(recipesContext db, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public EditUserOperation(recipesContext db, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             this.db = db;
             this._mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<changeFavoriteResponse> Execute(changeFavoriteRequest request)
+        public async Task<EditUserResponse> Execute(EditUserRequest request)
         {
             var validate = await Validate(request);
             if (validate.Code != 200)
             {
-                return new changeFavoriteResponse { Code = validate.Code, Message = validate.Message };
+                return new EditUserResponse { Code = validate.Code, Message = validate.Message };
             }
 
             string Email = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Email);
             if (Email != null)
             {
                 var user = await db.Users.Where(x => x.Mail == Email).FirstOrDefaultAsync();
-                var fav = await db.FavoriteRecipes.Where(x=>x.UserId==user.Id && x.RecipeId==request.recipeId).FirstOrDefaultAsync();
-                var recipe = await db.Recipes.Where(x=>x.Id == request.recipeId).FirstOrDefaultAsync();
-                if(fav != null)
+                if (request.AuthorId != user.Id) 
+                    return new EditUserResponse { Code = 401, Message = "You have no access to this settings" };
+
+                user.isPublicMail = request.IsPublicMail;
+                user.Description = request.Description;
+                if(request.Name != null && request.Name != "")
                 {
-                    db.FavoriteRecipes.Remove(fav);
-                    recipe.AmountOfFavorites--;
-                }
-                else
-                {
-                    db.FavoriteRecipes.Add(new FavoriteRecipe { RecipeId = request.recipeId, UserId = user.Id });
-                    recipe.AmountOfFavorites = recipe.AmountOfFavorites + 1;
+                    user.Name = request.Name;
                 }
             }
             else
             {
-                return new changeFavoriteResponse() { Code = 401, Message = "User not found" };
+                return new EditUserResponse() { Code = 401, Message = "User not found" };
             }
             await db.SaveChangesAsync();
-            return new changeFavoriteResponse();
+            return new EditUserResponse();
         }
 
-        public async Task<ValidateResult> Validate(changeFavoriteRequest request)
+        public async Task<ValidateResult> Validate(EditUserRequest request)
         {
             return new ValidateResult();
         }

@@ -3,5 +3,6 @@
     public class GetUserListRequest
     {
         public int listType { get; set; }
+        public int? authorId { get; set; }
     }
 }

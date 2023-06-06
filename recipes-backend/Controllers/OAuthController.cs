@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using recipes_backend.Helpers;
 using recipes_backend.Models;
 using recipes_backend.Operations.OAuth.AuthByCode;
+using recipes_backend.Operations.OAuth.GetUserData;
 using recipes_backend.Operations.OAuth.Refresh;
 using recipes_backend.Services;
 using recipes_backend.Services.GoogleOAuthServiceModels;
@@ -46,6 +48,19 @@ namespace recipes_backend.Controllers
         {
             var operation = _serviceProvider.GetRequiredService<RefreshOperation>();
             var result = await operation.Execute(request);
+            if (result.Code != 200)
+            {
+                return StatusCode(result.Code, result.Message);
+            }
+            return new JsonResult(result);
+        }
+
+        [Authorize]
+        [HttpGet("GetUserData")]
+        public async Task<IActionResult> GetUserData()
+        {
+            var operation = _serviceProvider.GetRequiredService<GetUserDataOperation>();
+            var result = await operation.Execute();
             if (result.Code != 200)
             {
                 return StatusCode(result.Code, result.Message);

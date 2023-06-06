@@ -6,6 +6,7 @@ using recipes_backend.Operations.Recipe.FilterIngredient;
 using recipes_backend.Operations.Recipe.GetFilterData;
 using recipes_backend.Operations.Recipe.PatternList;
 using recipes_backend.Operations.Recipe.RecipeInfo;
+using recipes_backend.Operations.UserRecipes.AuthorInfo;
 using recipes_backend.Operations.UserRecipes.AuthorSubscriptionList;
 using recipes_backend.Services.GoogleOAuthServiceModels;
 using System.Runtime;
@@ -16,6 +17,7 @@ namespace SOAPZ.Common
     {
         public MyAutoMapper()
         {
+
             CreateMap<UserProfile, User>()
                 .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Mail, act => act.MapFrom(src => src.Mail));
@@ -84,6 +86,8 @@ namespace SOAPZ.Common
                 .ForMember(dest => dest.MenuTypeId, act => act.MapFrom(src => src.PatternMenuTypes));
 
             CreateMap<User, AuthorShort>();
+
+            CreateMap<User, AuthorInfo>();
         }
     }
 }
