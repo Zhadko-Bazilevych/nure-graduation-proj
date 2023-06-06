@@ -19,8 +19,8 @@ export interface recipe{
     recipeId: number
     name: string
     image: string
-    requiredTime: number
-    difficulty: number
+    requiredTime: number | null
+    difficulty: number | null
     author: string
     authorId: number
     description: string

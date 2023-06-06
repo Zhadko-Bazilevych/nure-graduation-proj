@@ -5,6 +5,7 @@ import { RecipeInfoComponent } from './components/recipe-info/recipe-info.compon
 import { FilterComponent } from './components/filter/filter.component';
 import { UserActionsComponent } from './components/user-actions/user-actions.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
+import { RecipeUpdateComponent } from './components/recipe-update/recipe-update.component';
 
 const routes: Routes = [
   { path: 'home', component: HeaderComponent},
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: '', component: FilterComponent},
   { path: 'useractions', component: UserActionsComponent},
   { path: 'user/:id', component: UserInfoComponent},
+  { path: 'edit/:id', component: RecipeUpdateComponent},
 ];
 
 @NgModule({

@@ -43,4 +43,17 @@ export class RecipeService {
     return this.httpClient.post<BaseResponse>(route, request).toPromise()
   }
 
+  async createEmpty(){
+    return this.httpClient.post<idResponse>(this.baseUrl + "CreateEmpty", null ).toPromise()
+  }
+
+  async deleteRecipe(id: number){
+    return this.httpClient.post<BaseResponse>(this.baseUrl + "DeleteRecipe", {recipeId: id}).toPromise()
+  }
+
+  async updateRecipeInfo(id: number){
+
+    return this.httpClient.post<RecipeResponse>(this.baseUrl + "UpdateRecipeInfo", {recipeId: id}).toPromise()
+  }
+
 }
