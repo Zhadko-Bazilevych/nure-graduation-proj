@@ -6,6 +6,8 @@ using recipes_backend.Models;
 using recipes_backend.Operations.OAuth.AuthByCode;
 using recipes_backend.Operations.OAuth.Refresh;
 using recipes_backend.Operations.Recipe.changeFavorite;
+using recipes_backend.Operations.Recipe.CreateEmpty;
+using recipes_backend.Operations.Recipe.DeleteRecipe;
 using recipes_backend.Operations.Recipe.Filter;
 using recipes_backend.Operations.Recipe.FilterIngredient;
 using recipes_backend.Operations.Recipe.GetFilterData;
@@ -15,6 +17,7 @@ using recipes_backend.Operations.Recipe.PatternUpdate;
 using recipes_backend.Operations.Recipe.Random;
 using recipes_backend.Operations.Recipe.Rate;
 using recipes_backend.Operations.Recipe.RecipeInfo;
+using recipes_backend.Operations.Recipe.UpdateRecipeInfo;
 using recipes_backend.Services;
 using recipes_backend.Services.GoogleOAuthServiceModels;
 
@@ -150,6 +153,44 @@ namespace recipes_backend.Controllers
         {
             var operation = _serviceProvider.GetRequiredService<RandomOperation>();
             var result = await operation.Execute();
+            if (result.Code != 200)
+            {
+                return StatusCode(result.Code, result.Message);
+            }
+            return new JsonResult(result);
+        }
+
+        [HttpPost("CreateEmpty")]
+        public async Task<IActionResult> CreateEmpty()
+        {
+            var operation = _serviceProvider.GetRequiredService<CreateEmptyOperation>();
+            var result = await operation.Execute();
+            if (result.Code != 200)
+            {
+                return StatusCode(result.Code, result.Message);
+            }
+            return new JsonResult(result);
+        }
+
+        [Authorize]
+        [HttpPost("UpdateRecipeInfo")]
+        public async Task<IActionResult> UpdateRecipeInfo(UpdateRecipeInfoRequest request)
+        {
+            var operation = _serviceProvider.GetRequiredService<UpdateRecipeInfoOperation>();
+            var result = await operation.Execute(request);
+            if (result.Code != 200)
+            {
+                return StatusCode(result.Code, result.Message);
+            }
+            return new JsonResult(result);
+        }
+
+        [Authorize]
+        [HttpPost("DeleteRecipe")]
+        public async Task<IActionResult> DeleteRecipe(DeleteRecipeRequest request)
+        {
+            var operation = _serviceProvider.GetRequiredService<DeleteRecipeOperation>();
+            var result = await operation.Execute(request);
             if (result.Code != 200)
             {
                 return StatusCode(result.Code, result.Message);
