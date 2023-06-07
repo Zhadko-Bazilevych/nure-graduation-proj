@@ -31,7 +31,6 @@ export class UserActionsComponent implements OnInit {
       this.userRecipeService.getUserList(id).toPromise().then(
         response => {
           if(response.code == 200) {
-            console.log(response.recipes)
             this.Recipes = response.recipes
           }
         }

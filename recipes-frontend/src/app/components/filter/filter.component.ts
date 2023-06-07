@@ -148,7 +148,6 @@ export class FilterComponent implements OnInit {
   timeout: ReturnType<typeof setTimeout> | undefined | null = null;
 
   onFilterChange(item: any) {
-    console.log(this.patternData)
     clearTimeout(this.timeout!);
     this.timeout = setTimeout(() => {
       this.onSearchChange(item);
@@ -285,7 +284,6 @@ export class FilterComponent implements OnInit {
       ingredientId: this.selectedIngredientItems.map(m => m.id),
       isDescending: this.isDescending
     }
-    console.log(selectedName);
     if(this.isPatternChosen || selectedName != null)
     {
       this.patternService.updatePattern(pattern).toPromise().then(

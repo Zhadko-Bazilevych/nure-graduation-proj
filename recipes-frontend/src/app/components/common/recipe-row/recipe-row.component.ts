@@ -19,7 +19,6 @@ export class RecipeRowComponent {
   BaseUrl: string = "https://localhost:7137/"
 
   itemClicked(){
-    console.log(this.item.requiredTime)
     this.onClick.emit();
   }
 

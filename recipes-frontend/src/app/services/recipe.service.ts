@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { RecipeInfo, RecipeResponse } from '../models/recipe.model';
+import { RecipeInfo, RecipeResponse, RecipeUpdateInfo, RecipeUpdateResponse } from '../models/recipe.model';
 import { BaseResponse } from '../models/baseResponse';
 import { idResponse } from '../models/filter.model';
 
@@ -53,7 +53,7 @@ export class RecipeService {
 
   async updateRecipeInfo(id: number){
 
-    return this.httpClient.post<RecipeResponse>(this.baseUrl + "UpdateRecipeInfo", {recipeId: id}).toPromise()
+    return this.httpClient.post<RecipeUpdateResponse>(this.baseUrl + "UpdateRecipeInfo", {recipeId: id}).toPromise()
   }
 
 }
