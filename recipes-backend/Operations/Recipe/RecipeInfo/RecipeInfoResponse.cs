@@ -25,7 +25,6 @@ namespace recipes_backend.Operations.Recipe.RecipeInfo
         public double? Carbohydrates { get; set; }
         public string? Video { get; set; }
         public int? AmountOfRates { get; set; }
-        public int? AmountOfServings { get; set; }
         public int? AmountOfFavorites { get; set; }
         public int? FoodTypeId { get; set; }
         public string? FoodType { get; set; }

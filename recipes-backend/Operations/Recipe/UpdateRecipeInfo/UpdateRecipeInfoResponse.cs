@@ -27,21 +27,28 @@ namespace recipes_backend.Operations.Recipe.UpdateRecipeInfo
         public int? AmountOfRates { get; set; }
         public int? AmountOfServings { get; set; }
         public int? AmountOfFavorites { get; set; }
-        public int? FoodTypeId { get; set; }
-        public string? FoodType { get; set; }
-        public int? DishTypeId { get; set; }
-        public string DishType { get; set; }
+        public IdItem? FoodType { get; set; }
+        public IdItem? DishType { get; set; }
         public double? Rating { get; set; }
         public DateTime? CreationDate { get; set; }
         public bool IsPublished { get; set; }
 
-        public List<string> PreparationTips { get; set; }
-        public List<string> AdditionalTips { get; set; }
-        public List<int> MenuTypeIds { get; set; }
-        public List<string> MenuTypes { get; set; }
-        public List<CollectedIngredient> Ingredients { get; set; }
-        public List<CollectedRecipeStep> Steps { get; set; }
+        public List<IdItem>? PreparationTips { get; set; }
+        public List<IdItem>? AdditionalTips { get; set; }
+        public List<IdItem>? MenuTypes { get; set; }
+        public List<CollectedUpdateIngredient>? Ingredients { get; set; }
+        public List<CollectedRecipeStep>? Steps { get; set; }
 
-        public List<string> Images { get; set; }
+        public List<IdItem>? Images { get; set; }
+    }
+
+    public class CollectedUpdateIngredient
+    {
+        public int? Id { get; set; }
+        public int? IngredientId { get; set; }
+        public string Name { get; set; }
+        public double Amount { get; set; }
+        public int MeasurementId { get; set; }
+        public string Measurement { get; set; }
     }
 }

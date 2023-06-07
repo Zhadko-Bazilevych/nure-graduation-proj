@@ -126,7 +126,6 @@ namespace recipes_backend.Models
                     DishTypeId = 6,
                     CreationDate = DateTime.Now,
                     IsPublished = true,
-                    AmountOfServings = 6,
                     Video = "https://www.youtube.com/embed/0xdm_Iw3uS4",
                 });
                 db.Recipes.Add(new Recipe
@@ -145,7 +144,6 @@ namespace recipes_backend.Models
                     DishTypeId = 7,
                     CreationDate = DateTime.Now,
                     IsPublished = true,
-                    AmountOfServings = 6,
                 });
                 db.SaveChanges();
 

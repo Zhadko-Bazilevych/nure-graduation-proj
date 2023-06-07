@@ -90,15 +90,30 @@ namespace SOAPZ.Common
 
             CreateMap<User, AuthorInfo>();
 
+
+            CreateMap<PreparationTip, IdItem>()
+                .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Description));
+
+            CreateMap<AdditionalTip, IdItem>()
+                .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Description));
+
+            CreateMap<MenuType, IdItem>();
+
+            CreateMap<RecipeImage, IdItem>()
+                .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Image));
+
+            CreateMap<RecipeIngredient, CollectedUpdateIngredient>()
+                .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Ingredient.Name))
+                .ForMember(dest => dest.Measurement, act => act.MapFrom(src => src.Measurement.Name));
+
             CreateMap<Recipe, RecipeData>()
                 .ForMember(dest => dest.UserName, act => act.MapFrom(src => src.User.Name))
-                .ForMember(dest => dest.FoodType, act => act.MapFrom(src => src.FoodType.Name))
-                .ForMember(dest => dest.DishType, act => act.MapFrom(src => src.DishType.Name))
-                .ForMember(dest => dest.PreparationTips, act => act.MapFrom(src => src.PreparationTips.Select(y => y.Description)))
-                .ForMember(dest => dest.AdditionalTips, act => act.MapFrom(src => src.AdditionalTips.Select(y => y.Description)))
-                .ForMember(dest => dest.MenuTypes, act => act.MapFrom(src => src.MenuTypeLists.Select(y => y.MenuType.Name)))
-                .ForMember(dest => dest.MenuTypeIds, act => act.MapFrom(src => src.MenuTypeLists.Select(y => y.MenuType.Id)))
-                .ForMember(dest => dest.Images, act => act.MapFrom(src => src.RecipeImages.Select(y => y.Image)))
+                .ForMember(dest => dest.FoodType, act => act.MapFrom(src => src.FoodType))
+                .ForMember(dest => dest.DishType, act => act.MapFrom(src => src.DishType))
+                .ForMember(dest => dest.PreparationTips, act => act.MapFrom(src => src.PreparationTips))
+                .ForMember(dest => dest.AdditionalTips, act => act.MapFrom(src => src.AdditionalTips))
+                .ForMember(dest => dest.MenuTypes, act => act.MapFrom(src => src.MenuTypeLists.Select(s=>s.MenuType)))
+                .ForMember(dest => dest.Images, act => act.MapFrom(src => src.RecipeImages))
                 .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(src => src.RecipeIngredients))
                 .ForMember(dest => dest.Steps, opt => opt.MapFrom(src => src.RecipeSteps));
         }
