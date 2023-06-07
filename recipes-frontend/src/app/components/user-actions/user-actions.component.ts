@@ -43,7 +43,6 @@ export class UserActionsComponent implements OnInit {
           if(response.code == 200)
           {
             this.Authors = response.authors
-            console.log(response.authors, this.Authors)
           }
         }
       )

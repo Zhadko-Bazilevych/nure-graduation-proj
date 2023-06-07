@@ -133,7 +133,7 @@
                 <div class="flex flex-col gap-2">
                     <h2 class="text-2xl">Рецепт</h2>
                     <div>
-                        <h3 class="text-lg">Вступна інформація/Початкові поради</h3>
+                        <h3 class="text-lg">Вступна інформація / Початкові поради</h3>
                         <div *ngIf="this.preparationTips.controls.length != 0" class="flex flex-col gap-2">
                             <div class="flex flex-col gap-1" formArrayName="preparationTips">
                                 <div *ngFor="let prep of this.preparationTips.controls; let i = index" class="flex gap-2">
@@ -163,14 +163,12 @@
                                                         <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, JPEG </p>
                                                     </div>
                                                     <input (change)="uploadDocument(i, $event)" id="dropzone-file" type="file" class="hidden" accept=".png, .jpg, .jpeg" />
-                                                    {{i}}
                                                 </label>
                                             </div> 
                                             <div *ngIf="isImageSaved[i]" class="w-full">
                                                 <div class="flex relative">
                                                     <img src="{{images[i].get('source')}}" class="w-auto h-auto max-w-[100%] max-h-[100%] object-contain rounded">
                                                     <button (click)="remPhoto(i)" class="absolute flex items-center justify-center right-1 top-1 bg-red-500 h-5 w-5 aspect-square rounded-full hover:brightness-90 hover:cursor-pointer">
-                                                        {{i}}
                                                         <fa-icon [icon]="xIcon" class="flex text-center text-white text-sm"></fa-icon>
                                                     </button>
                                                 </div>
@@ -194,6 +192,22 @@
                             </div>
                         </div>
                         <button (click)="addinstr()" class="w-max p-2 bg-yellow-500 hover:brightness-95 rounded text-white">Додати крок</button>
+                    </div>
+                    <div>
+                        <h3 class="text-lg">Додаткові поради / Висновки</h3>
+                        <div *ngIf="this.additionalTips.controls.length != 0" class="flex flex-col gap-2">
+                            <div class="flex flex-col gap-1" formArrayName="additionalTips">
+                                <div *ngFor="let prep of this.additionalTips.controls; let i = index" class="flex gap-2">
+                                    <div class="w-full">
+                                        <textarea id="additionalTips-{{i}}" type="textarea" [formControlName]="i"  class = "indent-8 min-h-[70px] h-min appearance-none border border-gray-400 pl-1 py-1 rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                                    </div>
+                                    <div (click)="remaddit(i)" class="flex bg-red-500 h-7 w-20 rounded text-white items-center justify-center z-10 hover:bg-red-600 hover:cursor-pointer">
+                                        <span >Видалити</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button (click)="addaddit()" class="w-max p-2 bg-yellow-500 hover:brightness-95 rounded text-white">Додати пораду</button>
                     </div>
                 </div>
             </div>

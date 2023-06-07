@@ -61,7 +61,6 @@ export class RecipeUpdateComponent implements OnInit {
         if(response.code == 200){
           this.RecipeImages = this.Recipe?.images.map(s=>s.name);
           this.Recipe = response.recipe;
-          console.log(this.Recipe, "RECIPE INFO")
           this.formGr = new FormGroup({
             name: new FormControl(this.Recipe.name),
             requiredTime: new FormControl(this.Recipe.requiredTime),
@@ -85,8 +84,9 @@ export class RecipeUpdateComponent implements OnInit {
                   //image: new FormControl(m.image),
                 })
               ) : [])),
+            additionalTips: new FormArray(
+              (this.Recipe.additionalTips != null && this.Recipe.additionalTips.length != 0 ? this.Recipe.additionalTips.map(m => new FormControl(m.name)) : [])),
           })
-
           for(let i = 0; i < this.Recipe.steps.length; i++) {
             if(this.Recipe.steps[i].image != null)
             {
@@ -156,6 +156,7 @@ export class RecipeUpdateComponent implements OnInit {
   get carbohydrates() { return this.formGr.get('carbohydrates')! }
   get preparationTips() { return this.formGr.get('preparationTips') as FormArray; }
   get steps() { return this.formGr.get('steps') as FormArray; }
+  get additionalTips() { return this.formGr.get('additionalTips') as FormArray; }
   images: FormData[] = [];
   isImageSaved: boolean[] = [];
 
@@ -174,6 +175,14 @@ export class RecipeUpdateComponent implements OnInit {
     this.preparationTips.removeAt(id);
   }
 
+  addaddit() {
+    this.additionalTips.push(new FormControl(''));
+  }
+
+  remaddit(id: number) {
+    this.additionalTips.removeAt(id);
+  }
+
   addinstr() {
     this.steps.push(new FormGroup({
       title: new FormControl(''),
@@ -190,14 +199,11 @@ export class RecipeUpdateComponent implements OnInit {
   }
 
   remPhoto(id: number){
-    console.log(id)
     this.images[id] = new FormData();
     this.isImageSaved[id] = false;
   }
 
   uploadDocument(id: number, event: any) {
-    debugger
-    console.log(id, event)
     if (event.target.files && event.target.files[0]) {
       this.images[id].append('file', event.target.files[0])
       let source = URL.createObjectURL(event.target.files[0])
