@@ -35,7 +35,6 @@ namespace recipes_backend.Models
         public string? Video { get; set; }
         public int AmountOfRates { get; set; } = 0;
         public int TotalRates { get; set; } = 0;
-        public int? AmountOfServings { get; set; }
         public int AmountOfFavorites { get; set; } = 0;
         public int? FoodTypeId { get; set; }
         public int? DishTypeId { get; set; }

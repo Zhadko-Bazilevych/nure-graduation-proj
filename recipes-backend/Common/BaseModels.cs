@@ -20,13 +20,15 @@
 
     public class CollectedIngredient
     {
+        public int? Id { get; set; }
         public string Name { get; set; }
-        public string Amount { get; set; }
+        public double Amount { get; set; }
         public string Measurement { get; set; }
     }
 
     public class CollectedRecipeStep
     {
+        public int? Id { get; set; }
         public int StepNumber { get; set; }
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
