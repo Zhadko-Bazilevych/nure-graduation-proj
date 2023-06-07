@@ -8,7 +8,7 @@ import { faCircleChevronLeft, faCircleChevronRight } from '@fortawesome/free-sol
 })
 
 export class GalleryComponent implements OnInit {
-  @Input() Images: string[];
+  @Input() Images: string[] | null;
   index: number = 0;
   BaseUrl: string = "https://localhost:7137/"
 

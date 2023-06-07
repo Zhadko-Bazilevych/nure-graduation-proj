@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faBacon, faBowlFood, faClock, faDroplet, faStar, faTriangleExclamation, faUtensils, faWheatAwn } from '@fortawesome/free-solid-svg-icons';
+import { faBacon, faBowlFood, faClock, faDroplet, faStar, faTriangleExclamation, faUtensils, faWheatAwn, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as faBookmarkOut } from '@fortawesome/free-solid-svg-icons';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { IdItem } from 'src/app/models/idItem';
-import { RecipeInfo } from 'src/app/models/recipe.model';
+import { RecipeInfo, RecipeUpdateInfo } from 'src/app/models/recipe.model';
 import { FilterService } from 'src/app/services/filter.service';
 import { RecipeService } from 'src/app/services/recipe.service';
 
@@ -32,14 +32,15 @@ export class RecipeUpdateComponent implements OnInit {
   fatsIcon = faDroplet;
   proteinsIcon = faBacon;
   caloricIcon = faUtensils;
+  xIcon = faXmark;
 
   sanitizedVideo: SafeResourceUrl;
   
-  Recipe: RecipeInfo;
+  Recipe: RecipeUpdateInfo;
+  RecipeImages: string[] | null
 
   formGr: FormGroup;
   isLoadingForm: boolean = true;
-
 
   dropdownSettings: IDropdownSettings = {};
   multipleDropdownSettings: IDropdownSettings = {};
@@ -58,7 +59,9 @@ export class RecipeUpdateComponent implements OnInit {
     this.recipeService.updateRecipeInfo(id).then(
       response => {
         if(response.code == 200){
+          this.RecipeImages = this.Recipe?.images.map(s=>s.name);
           this.Recipe = response.recipe;
+          console.log(this.Recipe, "RECIPE INFO")
           this.formGr = new FormGroup({
             name: new FormControl(this.Recipe.name),
             requiredTime: new FormControl(this.Recipe.requiredTime),
@@ -68,11 +71,38 @@ export class RecipeUpdateComponent implements OnInit {
             proteins: new FormControl(this.Recipe.proteins),
             fats: new FormControl(this.Recipe.fats),
             carbohydrates: new FormControl(this.Recipe.carbohydrates),
-            foodType: new FormControl({id: this.Recipe.foodTypeId, name: this.Recipe.foodType }),
-            dishType: new FormControl({id: this.Recipe.dishTypeId, name: this.Recipe.dishType }),
-            menuType: new FormControl(this.Recipe.menuTypeIds?.map((item, index) => ({id: item, name: this.Recipe.menuTypes![index]}))),
+            foodType: new FormControl([this.Recipe.foodType]),
+            dishType: new FormControl([this.Recipe.dishType]),
+            menuType: new FormControl(this.Recipe.menuTypes),
+            description: new FormControl(this.Recipe.description),
+            preparationTips: new FormArray(
+              (this.Recipe.preparationTips != null && this.Recipe.preparationTips.length != 0 ? this.Recipe.preparationTips.map(m => new FormControl(m.name)) : [])),
+            steps: new FormArray(
+              (this.Recipe.steps != null && this.Recipe.steps.length != 0 ? this.Recipe.steps.map(
+                m => new FormGroup({
+                  title: new FormControl(m.title),
+                  description: new FormControl(m.description),
+                  //image: new FormControl(m.image),
+                })
+              ) : [])),
           })
+
+          for(let i = 0; i < this.Recipe.steps.length; i++) {
+            if(this.Recipe.steps[i].image != null)
+            {
+              this.images.push(new FormData())
+              this.images[i].append('source', this.BaseUrl+this.Recipe.steps[i].image)
+              this.isImageSaved.push(true);
+            }
+            else{
+              this.images.push(new FormData())
+              this.isImageSaved.push(false);
+            }
+          }
+
+
           this.isLoadingForm = false;
+          
         }
       }
     )
@@ -87,6 +117,7 @@ export class RecipeUpdateComponent implements OnInit {
         }
       }
     )
+    
 
     this.dropdownSettings = {
       singleSelection: true,
@@ -123,11 +154,57 @@ export class RecipeUpdateComponent implements OnInit {
   get proteins() { return this.formGr.get('proteins')! }
   get fats() { return this.formGr.get('fats')! }
   get carbohydrates() { return this.formGr.get('carbohydrates')! }
+  get preparationTips() { return this.formGr.get('preparationTips') as FormArray; }
+  get steps() { return this.formGr.get('steps') as FormArray; }
+  images: FormData[] = [];
+  isImageSaved: boolean[] = [];
+
+  stepsGr(id: number) { return this.steps.controls[id] }
+
 
   changeDifficulty(ev: number){
     this.difficulty.setValue(ev)
   }
 
+  addprep() {
+    this.preparationTips.push(new FormControl(''));
+  }
+
+  remprep(id: number) {
+    this.preparationTips.removeAt(id);
+  }
+
+  addinstr() {
+    this.steps.push(new FormGroup({
+      title: new FormControl(''),
+      description: new FormControl('')
+    }));
+    this.images.push(new FormData())
+    this.isImageSaved.push(false);
+  }
+
+  reminstr(id: number) {
+    this.steps.removeAt(id)
+    this.images.splice(id, 1)
+    this.isImageSaved.splice(id, 1);
+  }
+
+  remPhoto(id: number){
+    console.log(id)
+    this.images[id] = new FormData();
+    this.isImageSaved[id] = false;
+  }
+
+  uploadDocument(id: number, event: any) {
+    debugger
+    console.log(id, event)
+    if (event.target.files && event.target.files[0]) {
+      this.images[id].append('file', event.target.files[0])
+      let source = URL.createObjectURL(event.target.files[0])
+      this.images[id].append('source', source)
+      this.isImageSaved[id] = true;
+    }
+  }
 
   getEmbedUrl(){
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.Recipe.video)
@@ -138,5 +215,7 @@ export class RecipeUpdateComponent implements OnInit {
     for (const field in this.formGr.controls) { // 'field' is a string
       console.log(this.formGr.controls[field].value);
     }
+    console.log(this.images)
+    console.log(this.isImageSaved)
   }
 }

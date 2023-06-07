@@ -72,7 +72,7 @@
                     <div class="flex flex-row gap-2">
                         <fa-icon [icon]="portionIcon" class="text-gray-700"></fa-icon>
                         <div>
-                            {{Recipe.amountOfServings}} порцій
+                            {{Recipe.servings}} порцій
                         </div>
                     </div>
                     <div class="flex flex-row gap-2">
@@ -147,7 +147,7 @@
                 </div>
                 <div class="flex flex-col gap-5">
                     <div *ngFor="let step of Recipe.steps" class="flex w-full gap-3">
-                        <div class="grid place-items-center w-[20%] aspect-square">
+                        <div class="grid place-items-center w-[20%]">
                             <img *ngIf="step.image !== null" src="{{BaseUrl+step.image}}" class="w-auto h-auto max-w-[100%] max-h-[100%] object-contain rounded">
                             <img *ngIf="step.image === null" src="../../../assets/images/recipeStepPlaceholderTransparent.png" class="w-auto h-auto max-w-[100%] max-h-[100%] object-contain rounded">
                         </div>

@@ -26,7 +26,7 @@ export class RandomService {
     
     this.httpClient.post<number>(`${this.BaseURL}?${params.toString()}`, { }).subscribe(
       response => {
-        console.log(response)
+        //console.log(response)
       }
 
     )

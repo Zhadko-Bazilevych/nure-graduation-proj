@@ -30,7 +30,7 @@ export class GlobalDataService implements OnInit{
             }
         )
         .finally(
-            () => { this.isLoading = false; console.log(this.isLoading)}
+            () => { this.isLoading = false;}
         )
     };
 }
