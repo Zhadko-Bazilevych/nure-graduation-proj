@@ -23,6 +23,8 @@ using recipes_backend.Operations.UserRecipes.AuthorSubscriptionList;
 using recipes_backend.Operations.UserRecipes.AuthorInfo;
 using recipes_backend.Operations.OAuth.GetUserData;
 using recipes_backend.Operations.UserRecipes.EditUser;
+using recipes_backend.Operations.Recipe.CreateEmpty;
+using recipes_backend.Operations.Recipe.UpdateRecipeInfo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +59,9 @@ builder.Services.AddScoped<changeFavoriteOperation>();
 builder.Services.AddScoped<AuthByCodeOperation>();
 builder.Services.AddScoped<RefreshOperation>();
 builder.Services.AddScoped<GetUserDataOperation>();
+builder.Services.AddScoped<CreateEmptyOperation>();
+builder.Services.AddScoped<UpdateRecipeInfoOperation>();
+builder.Services.AddScoped<DeleteRecipeOperation>();
 
 builder.Services.AddScoped<PatternListOperation>();
 builder.Services.AddScoped<PatternUpdateOperation>();

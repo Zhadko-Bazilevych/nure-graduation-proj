@@ -2,14 +2,14 @@
 using recipes_backend.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace recipes_backend.Operations.Recipe.RecipeInfo
+namespace recipes_backend.Operations.Recipe.UpdateRecipeInfo
 {
-    public class RecipeInfoResponse : BaseResponse
+    public class UpdateRecipeInfoResponse : BaseResponse
     {
-        public RecipeView Recipe { get; set; }
+        public RecipeData Recipe { get; set; }
     }
 
-    public class RecipeView
+    public class RecipeData
     {
         public int Id { get; set; }
         public int UserId { get; set; }
@@ -37,25 +37,11 @@ namespace recipes_backend.Operations.Recipe.RecipeInfo
 
         public List<string> PreparationTips { get; set; }
         public List<string> AdditionalTips { get; set; }
+        public List<int> MenuTypeIds { get; set; }
         public List<string> MenuTypes { get; set; }
-        public List<CollectedComment> Comments { get; set; }
         public List<CollectedIngredient> Ingredients { get; set; }
         public List<CollectedRecipeStep> Steps { get; set; }
 
         public List<string> Images { get; set; }
-        public bool isFavorite { get; set; } = false;
-        public int UserRate { get; set; }
     }
-
-    public class CollectedComment
-    {
-        public int Id { get; set; }
-        public string Content { get; set; }
-        public string? Image { get; set; }
-        public int UserId { get; set; }
-        public string UserName { get; set; }
-        public DateTime DateCreated { get; set; }
-        public bool isAuthor { get; set; } = false;
-    }
-
 }
