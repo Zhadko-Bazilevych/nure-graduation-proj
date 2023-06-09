@@ -116,6 +116,8 @@ namespace SOAPZ.Common
                 .ForMember(dest => dest.Images, act => act.MapFrom(src => src.RecipeImages))
                 .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(src => src.RecipeIngredients))
                 .ForMember(dest => dest.Steps, opt => opt.MapFrom(src => src.RecipeSteps));
+
+            CreateMap<Measurement, IdItem>();
         }
     }
 }

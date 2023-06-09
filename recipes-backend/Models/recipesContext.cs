@@ -99,15 +99,20 @@ namespace recipes_backend.Models
                     new Ingredient { Name = "Цибуля ріпчаста" },
                     new Ingredient { Name = "Перець чорний" },
                     new Ingredient { Name = "Олія" },
-                    new Ingredient { Name = "Сметана" }
+                    new Ingredient { Name = "Сметана" },
+                    new Ingredient { Name = "Огірок" },
+                    new Ingredient { Name = "Помідор" }
                 });
                 db.Measurements.AddRange(new List<Measurement>
                 {
                     new Measurement{ Name = "гр." },
+                    new Measurement{ Name = "кг." },
                     new Measurement{ Name = "мл." },
+                    new Measurement{ Name = "л." },
                     new Measurement{ Name = "шт." },
                     new Measurement{ Name = "ст.л." },
                     new Measurement{ Name = "щіпка(и)" },
+                    
                 });
                 db.SaveChanges();
                 db.Recipes.Add(new Recipe
