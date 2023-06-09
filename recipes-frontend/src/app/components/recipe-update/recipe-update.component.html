@@ -1,12 +1,78 @@
 <form *ngIf="!isLoadingForm" [formGroup]="formGr" class="flex justify-center">
     <div class="flex w-4/5 mt-3 flex-col">
         <div class="flex gap-5">
-            <div class="w-[29%]">
-                <app-gallery [Images]="RecipeImages" class="flex" [ngClass]="{'h-[400px]': Recipe.images.length != 0, 'h-[300px]': Recipe.images.length == 0}"></app-gallery>
+            <div class="flex flex-col w-[29%] relative">
+                <app-gallery-edit [Images]="RecipeImages??[]" (inserted)="insgal($event)" (deleted)="delgal($event)" class="flex" [ngClass]="{'h-[380px]': Recipe.images.length != 0, 'h-[300px]': Recipe.images.length == 0}"></app-gallery-edit>
+                <!-- <div class="flex flex-col "> -->
+                    <div class="flex flex-col h-full gap-3 max-h-screen scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-track-gray-100">
+                        <div class="flex flex-col relative gap-2">
+                                <h2 class="text-2xl">Відео рецетпу</h2>
+                                <div class="w-full">
+                                    <input (input)="videoUrlChange()" required type="text" id="videoUrl" formControlName="videoUrl" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-lg text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        placeholder="Посилання на відео YouTube" />
+                                </div>
+                                <div *ngIf="videoUrl.value.length != 0" class="relative h-full w-full">
+                                    <div class="absolute flex justify-center items-center w-full aspect-video bg-gray-100 z-[-1] rounded">
+                                        <div *ngIf="!isUrlValid" class="text-gray-600 text-xl">Некорректне посилання</div>
+                                    </div>
+                                    <iframe [ngClass]="{'opacity-0' : isUrlValidating || !isUrlValid}" class="w-full flex aspect-video rounded" [src]="sanitizedVideo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                </div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <div>
+                                <span class="text-2xl">Інгредієнти</span>
+                            </div>
+                            <div class="flex flex-col gap-x-3 gap-y-1" formArrayName="ingredients">
+                                <div *ngFor="let group of this.ingredients.controls; let i = index" [formGroupName]="i" class="flex flex-row h-[31px] w-full justify-between">
+                                        <div>
+                                                - {{group.get('ingredient')!.value.name}}:
+                                        </div>
+                                        <div class="flex w-max gap-1">
+                                            <div class="flex w-full gap-1">
+                                                    <div>
+                                                        <input required min="0.01" type="number" id="amount-{{i}}" formControlName="amount" [ngClass]="{'border-red-500 placeholder:text-[#f7c6c6] text-red-500' : group.get('amount')!.invalid && isSubmit }" class="w-16 appearance-none border border-gray-400 rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="" /> 
+                                                    </div>
+                                                    <div class="customDropdown flex items-center h-[31px]">
+                                                        <ng-multiselect-dropdown required
+                                                        [ngClass]="{'invalid-select' : group.get('measurement')!.invalid && isSubmit}"
+                                                        class="w-28"
+                                                        [placeholder]="'міра'"
+                                                        [settings]="dropdownSettingsWithoutSearch"
+                                                        [data]="measurementList"
+                                                        formControlName="measurement"
+                                                        >
+                                                        </ng-multiselect-dropdown>
+                                                    </div>
+                                            </div>
+                                            <button (click)="remingr(i)" class="w-min px-1 h-full flex bg-red-500 rounded text-white items-center justify-center hover:bg-red-600 cursor-pointer">
+                                                Видалити
+                                            </button>
+                                        </div>
+                                    </div>
+                                
+                            </div>
+                            
+                            <div class="customDropdown w-full h-max">
+                                <ng-multiselect-dropdown class="w-max"
+                                      [ngClass]="{'lastbold': createActive}"
+                                      [placeholder]="'Додати новий інгредієнт'"
+                                      [settings]="dropdownSettingsRemote"
+                                      [data]="ingredientList"
+                                      formControlName="newIngredient"
+                                      (onFilterChange)="onFilterChange($event)"
+                                      (onSelect)="addingr($event)"
+                                      (onDropDownClose)="onSearchChange('')"
+                                      >
+                                      </ng-multiselect-dropdown>
+                              </div>
+                              
+                        </div>
+                    </div>
+                <!-- </div> -->
             </div>
             <div class="flex flex-col gap-4 w-[71%]">
                 <div>
-                    <input required type="text" id="name" formControlName="name" class="appearance-none border border-gray-400 rounded w-2/3 py-2 px-3 text-3xl text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    <input required type="text" id="name" formControlName="name" [ngClass]="{'border-red-500 placeholder:text-[#f7c6c6]' : name.invalid && isSubmit}" class="appearance-none border border-gray-400 rounded w-2/3 py-2 px-3 text-3xl leading-tight focus:outline-none focus:shadow-outline"
                           placeholder="Назва рецепту" />
                 </div>
                 <div class="flex flex-col gap-1">
@@ -15,7 +81,7 @@
                             <fa-icon [icon]="clockIcon" class="text-gray-700"></fa-icon>
                         </div>
                         <div>
-                            Час приготування: <input type="number" id="requiredTime" formControlName="requiredTime" class="w-20 appearance-none border border-gray-400 rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="" /> хвилин
+                            Час приготування: <input type="number" id="requiredTime" formControlName="requiredTime" [ngClass]="{' border-red-500' : requiredTime.invalid && isSubmit}" class="w-20 appearance-none border border-gray-400 rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="" /> хвилин
                         </div>
                     </div>
                     <div class="flex flex-row gap-1 items-center">
@@ -23,7 +89,7 @@
                             <fa-icon [icon]="portionIcon" class="text-gray-700"></fa-icon>
                         </div>
                         <div>
-                            Порцій: <input type="number" id="servings" formControlName="servings" class="w-20 appearance-none border border-gray-400 rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="" />
+                            Порцій: <input type="number" id="servings" formControlName="servings" [ngClass]="{' border-red-500' : servings.invalid && isSubmit}" class="w-20 appearance-none border border-gray-400 rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="" />
                         </div>
                     </div>
                     <div class="flex h-[30px] items-center">
@@ -31,7 +97,7 @@
                             <fa-icon [icon]="difficultyIcon" class="text-gray-700"></fa-icon>
                             <div class="flex flex-row gap-2">
                                 <span>Складність:</span> 
-                                <app-bar [value]="difficulty.value" [editable]="true" (changed)="changeDifficulty($event)"></app-bar>
+                                <app-bar [value]="difficulty.value" [editable]="true" (changed)="changeDifficulty($event)" [validate]="isSubmit" ></app-bar>
                             </div>
                         </div>
                     </div>
@@ -89,6 +155,7 @@
                 <div class="customDropdown flex items-center gap-2">
                     <div class="w-[10%]">Тип кухні:</div>
                     <ng-multiselect-dropdown
+                    [ngClass]="{'invalid-select' : foodType.invalid && isSubmit}"
                     class="w-[35%]"
                     [placeholder]="'Виберіть тип кухні'"
                     [settings]="dropdownSettings"
@@ -102,6 +169,7 @@
                 <div class="customDropdown flex items-center gap-2">
                     <div class="w-[10%]">Тип страви:</div>
                     <ng-multiselect-dropdown
+                    [ngClass]="{'invalid-select' : dishType.invalid && isSubmit}"
                     class="w-[35%]"
                     [placeholder]="'Виберіть тип страви'"
                     [settings]="dropdownSettings"
@@ -112,7 +180,7 @@
                     </ng-multiselect-dropdown>
                   </div>
 
-                  <div class="flex items-center gap-2">
+                  <div class="customMultiple flex items-center gap-2">
                     <div class="w-[10%]">Тип меню:</div>
                     <ng-multiselect-dropdown
                     class="w-[35%]"
@@ -140,7 +208,7 @@
                                     <div class="w-full">
                                         <textarea id="preparationTips-{{i}}" type="textarea" [formControlName]="i"  class = "indent-8 min-h-[70px] h-min appearance-none border border-gray-400 pl-1 py-1 rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
                                     </div>
-                                    <div (click)="remprep(i)" class="flex bg-red-500 h-7 w-20 rounded text-white items-center justify-center z-10 hover:bg-red-600 hover:cursor-pointer">
+                                    <div (click)="remprep(i)" class="flex bg-red-500 h-7 w-20 rounded text-white items-center justify-center z-10 hover:bg-red-600 cursor-pointer">
                                         <span >Видалити</span>
                                     </div>
                                 </div>
@@ -155,7 +223,7 @@
                                 <div *ngFor="let group of this.steps.controls; let i = index"  class="flex">
                                     <div class="flex w-full gap-3" [formGroupName]="i">
                                         <div class="grid place-items-center w-[20%]">
-                                            <div *ngIf="!isImageSaved[i]" class="flex items-center justify-center w-full">
+                                            <div *ngIf="!isStepImageSaved[i]" class="flex items-center justify-center w-full">
                                                 <label class="flex flex-col items-center justify-center aspect-[3/2] w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer hover:bg-gray-100">
                                                     <div class="flex flex-col items-center justify-center text-center pt-5 pb-6">
                                                         <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
@@ -165,9 +233,9 @@
                                                     <input (change)="uploadDocument(i, $event)" id="dropzone-file" type="file" class="hidden" accept=".png, .jpg, .jpeg" />
                                                 </label>
                                             </div> 
-                                            <div *ngIf="isImageSaved[i]" class="w-full">
+                                            <div *ngIf="isStepImageSaved[i]" class="w-full">
                                                 <div class="flex relative">
-                                                    <img src="{{images[i].get('source')}}" class="w-auto h-auto max-w-[100%] max-h-[100%] object-contain rounded">
+                                                    <img src="{{stepImages[i].get('source')}}" class="w-auto h-auto max-w-[100%] max-h-[100%] object-contain rounded">
                                                     <button (click)="remPhoto(i)" class="absolute flex items-center justify-center right-1 top-1 bg-red-500 h-5 w-5 aspect-square rounded-full hover:brightness-90 hover:cursor-pointer">
                                                         <fa-icon [icon]="xIcon" class="flex text-center text-white text-sm"></fa-icon>
                                                     </button>
@@ -177,11 +245,11 @@
                                         <div class="h-full bg-gray-300 w-[2px] rounded"></div>
                                         <div class="flex flex-col gap-2 w-[80%]">
                                             <div class="w-full">
-                                                <input required type="text" id="title" formControlName="title" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-lg text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                <input required type="text" id="title" formControlName="title" [ngClass]="{' border-red-500 placeholder:text-[#ee8282]' : group.get('title')!.invalid && isSubmit}" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-lg text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                                     placeholder="Заголовок кроку" />
                                             </div>
                                             <div  class="w-full">
-                                                <textarea type="textarea" formControlName="description"  class = "min-h-[70px] h-min appearance-none border border-gray-400 pl-2 py-1 rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Опис"></textarea>
+                                                <textarea required type="textarea" formControlName="description"  [ngClass]="{' border-red-500 placeholder:text-[#ee8282]' : group.get('description')!.invalid && isSubmit}" class = "min-h-[70px] h-min appearance-none border border-gray-400 pl-2 py-1 rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Опис"></textarea>
                                             </div>
                                             <div class="flex justify-end">
                                                 <button (click)="reminstr(i)" class="w-min p-1 rounded bg-red-500 text-white">Видалити крок</button>
@@ -212,6 +280,9 @@
                 </div>
             </div>
         </div>
-        <button type="submit" (click)="Submit()" class="">Submit</button>
+        <div class="flex">
+            <button type="submit" (click)="Submit(false)" class="">Зберегти</button>
+            <button type="submit" (click)="Submit(true)" class="">Опублікувати</button>
+        </div>
     </div>
 </form>

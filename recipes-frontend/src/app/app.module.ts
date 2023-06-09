@@ -22,6 +22,7 @@ import { AuthorRowComponent } from './components/common/author-row/author-row.co
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { GlobalDataService } from './services/globalData.service';
 import { RecipeUpdateComponent } from './components/recipe-update/recipe-update.component';
+import { GalleryEditComponent } from './components/recipe-update/gallery-edit/gallery-edit.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { RecipeUpdateComponent } from './components/recipe-update/recipe-update.
     HeaderComponent,
     RecipeInfoComponent,
     GalleryComponent,
+    GalleryEditComponent,
     FilterComponent,
     DifficultyComponent,
     UserActionsComponent,

@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
-import { IngredientsResponse, filterResponse, filterSelecDataResponse } from '../models/filter.model';
+import { IngredientsResponse, MeasurementSelecDataResponse, filterResponse, filterSelecDataResponse } from '../models/filter.model';
 import { BaseResponse } from '../models/baseResponse';
 import { Author, AuthorListResponse, AuthorPageResponse, EditUserRequest } from '../models/user.model';
 
@@ -46,5 +46,9 @@ export class UserRecipeService {
   editUser(request: EditUserRequest): Observable<BaseResponse>{
 
     return this.httpClient.post<BaseResponse>(this.BaseURL + 'EditUser', request)
+  }
+
+  getMeasurementsData(): Observable<MeasurementSelecDataResponse>{
+    return this.httpClient.get<MeasurementSelecDataResponse>(this.BaseURL + 'GetMeasurementsData')
   }
 }

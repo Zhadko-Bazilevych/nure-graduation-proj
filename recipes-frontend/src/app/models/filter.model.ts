@@ -69,3 +69,7 @@ export interface patternsResponse extends BaseResponse{
 export interface idResponse extends BaseResponse{
     id: number
 }
+
+export interface MeasurementSelecDataResponse extends BaseResponse{
+    measurements: IdItem[]
+}

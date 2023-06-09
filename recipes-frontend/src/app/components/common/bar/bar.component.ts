@@ -13,7 +13,8 @@ export class DifficultyComponent implements OnInit {
   @Input() value: number | null;
   currentValue: number;
   @Input() editable: boolean = false;
-  @Output() changed: EventEmitter<any> = new EventEmitter();
+  @Output() changed: EventEmitter<number> = new EventEmitter();
+  @Input() validate: boolean = false;
 
   changedValue(val: number){
     this.changed.emit(val);
