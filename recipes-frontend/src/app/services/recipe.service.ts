@@ -56,4 +56,12 @@ export class RecipeService {
     return this.httpClient.post<RecipeUpdateResponse>(this.baseUrl + "UpdateRecipeInfo", {recipeId: id}).toPromise()
   }
 
+  async addIngredient(ingredientName: string){
+
+    return this.httpClient.post<idResponse>(this.baseUrl + "CreateIngredient", {name: ingredientName}).toPromise()
+  }
+
+  async sendSomewhere(something: FormData){
+    return this.httpClient.post<idResponse>(this.baseUrl + "UpdateRecipe", something).toPromise()
+  }
 }

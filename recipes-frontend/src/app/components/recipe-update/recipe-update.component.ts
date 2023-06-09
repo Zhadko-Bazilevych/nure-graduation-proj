@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faBacon, faBowlFood, faClock, faDroplet, faStar, faTriangleExclamation, faUtensils, faWheatAwn, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as faBookmarkOut } from '@fortawesome/free-solid-svg-icons';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { IdItem } from 'src/app/models/idItem';
-import { RecipeInfo, RecipeUpdateInfo } from 'src/app/models/recipe.model';
+import { RecipeInfo, RecipeUpdateData, RecipeUpdateInfo } from 'src/app/models/recipe.model';
 import { FilterService } from 'src/app/services/filter.service';
 import { RecipeService } from 'src/app/services/recipe.service';
+import { UserRecipeService } from 'src/app/services/userRecipe.service';
 
 @Component({
   selector: 'app-recipe-update',
@@ -17,7 +18,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
 })
 export class RecipeUpdateComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private router: Router, private recipeService: RecipeService, private filterService: FilterService, private sanitizer: DomSanitizer) { }
+  constructor(private route: ActivatedRoute, private router: Router, private recipeService: RecipeService, private filterService: FilterService, private userRecipeService: UserRecipeService, private sanitizer: DomSanitizer) { }
 
   BaseUrl: string = "https://localhost:7137/"
 
@@ -35,22 +36,26 @@ export class RecipeUpdateComponent implements OnInit {
   xIcon = faXmark;
 
   sanitizedVideo: SafeResourceUrl;
+  isUrlValidating: boolean = true;
+  isUrlValid: boolean = true;
   
   Recipe: RecipeUpdateInfo;
   RecipeImages: string[] | null
 
   formGr: FormGroup;
   isLoadingForm: boolean = true;
+  isSubmit: boolean = false;
 
   dropdownSettings: IDropdownSettings = {};
+  dropdownSettingsRemote: IDropdownSettings = {};
+  dropdownSettingsWithoutSearch: IDropdownSettings = {};
   multipleDropdownSettings: IDropdownSettings = {};
 
   foodList: IdItem[] = [];
-  selectedFoodItems: IdItem[] = [];
   dishList: IdItem[] = [];
-  selectedDishItems: IdItem[] = [];
   menuList: IdItem[] = [];
-  selectedMenuItems: IdItem[] = [];
+  measurementList: IdItem[] = [];
+  ingredientList: IdItem[] = [];
 
 
   ngOnInit(): void {
@@ -59,20 +64,20 @@ export class RecipeUpdateComponent implements OnInit {
     this.recipeService.updateRecipeInfo(id).then(
       response => {
         if(response.code == 200){
-          this.RecipeImages = this.Recipe?.images.map(s=>s.name);
           this.Recipe = response.recipe;
-          console.log(this.Recipe, "RECIPE INFO")
+          this.RecipeImages = this.Recipe?.images.map(s => this.BaseUrl + s.name);
+          this.sanitizedVideo = this.sanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/" + this.Recipe.video)
           this.formGr = new FormGroup({
-            name: new FormControl(this.Recipe.name),
-            requiredTime: new FormControl(this.Recipe.requiredTime),
-            servings: new FormControl(this.Recipe.servings),
-            difficulty: new FormControl(this.Recipe.difficulty),
+            name: new FormControl(this.Recipe.name, { validators: [Validators.required]}),
+            requiredTime: new FormControl(this.Recipe.requiredTime, { validators: [Validators.required]}),
+            servings: new FormControl(this.Recipe.servings, { validators: [Validators.required]}),
+            difficulty: new FormControl(this.Recipe.difficulty, { validators: [Validators.required]}),
             caloricValue: new FormControl(this.Recipe.caloricValue),
             proteins: new FormControl(this.Recipe.proteins),
             fats: new FormControl(this.Recipe.fats),
             carbohydrates: new FormControl(this.Recipe.carbohydrates),
-            foodType: new FormControl([this.Recipe.foodType]),
-            dishType: new FormControl([this.Recipe.dishType]),
+            foodType: new FormControl([this.Recipe.foodType], { validators: [requiredList]}),
+            dishType: new FormControl([this.Recipe.dishType], { validators: [requiredList]}),
             menuType: new FormControl(this.Recipe.menuTypes),
             description: new FormControl(this.Recipe.description),
             preparationTips: new FormArray(
@@ -80,29 +85,47 @@ export class RecipeUpdateComponent implements OnInit {
             steps: new FormArray(
               (this.Recipe.steps != null && this.Recipe.steps.length != 0 ? this.Recipe.steps.map(
                 m => new FormGroup({
-                  title: new FormControl(m.title),
-                  description: new FormControl(m.description),
-                  //image: new FormControl(m.image),
+                  id: new FormControl(m.id),
+                  title: new FormControl(m.title, [Validators.required]),
+                  description: new FormControl(m.description, [Validators.required]),
                 })
               ) : [])),
-          })
+            additionalTips: new FormArray(
+              (this.Recipe.additionalTips != null && this.Recipe.additionalTips.length != 0 ? this.Recipe.additionalTips.map(m => new FormControl(m.name)) : [])),
+            videoUrl: new FormControl(this.Recipe.video == null ? '' : "https://www.youtube.com/watch?v="+this.Recipe.video),
+            ingredients: new FormArray(
+              (this.Recipe.ingredients != null && this.Recipe.ingredients.length != 0 ? this.Recipe.ingredients.map(
+                m => new FormGroup({
+                  ingredient: new FormControl({id: m.ingredientId, name: m.name}, { validators: [Validators.required] }),
+                  measurement: new FormControl([{id: m.measurementId, name: m.measurement}], { validators: [requiredList] }),
+                  amount: new FormControl(m.amount),
+                })
+              ) : [])),
+            newIngredient: new FormControl([] as IdItem[]),
+          });
 
           for(let i = 0; i < this.Recipe.steps.length; i++) {
             if(this.Recipe.steps[i].image != null)
             {
-              this.images.push(new FormData())
-              this.images[i].append('source', this.BaseUrl+this.Recipe.steps[i].image)
-              this.isImageSaved.push(true);
+              this.stepImages.push(new FormData())
+              this.stepImages[i].append('source', this.BaseUrl+this.Recipe.steps[i].image)
+              this.isStepImageSaved.push(true);
             }
             else{
-              this.images.push(new FormData())
-              this.isImageSaved.push(false);
+              this.stepImages.push(new FormData())
+              this.isStepImageSaved.push(false);
             }
           }
 
+          for(let i = 0; i < this.Recipe.images.length; i++) {
+            this.galleryImages.push(new FormData())
+            this.galleryImages[i].append('index', this.Recipe.images[i].id.toString())
+          }
+          this.videoUrlChange()
+
 
           this.isLoadingForm = false;
-          
+
         }
       }
     )
@@ -117,7 +140,16 @@ export class RecipeUpdateComponent implements OnInit {
         }
       }
     )
-    
+
+    this.userRecipeService.getMeasurementsData().toPromise().then(
+      response => {
+        if(response.code == 200)
+        {
+          this.measurementList = response.measurements;
+        }
+      }
+    )
+
 
     this.dropdownSettings = {
       singleSelection: true,
@@ -144,6 +176,34 @@ export class RecipeUpdateComponent implements OnInit {
       limitSelection: 10,
       maxHeight: 999,
     };
+
+    this.dropdownSettingsRemote = {
+      singleSelection: true,
+      closeDropDownOnSelection: true,
+      idField: 'id',
+      textField: 'name',
+      allowSearchFilter: true,
+      enableCheckAll: false,
+      searchPlaceholderText: "Пошук...",
+      allowRemoteDataSearch: true,
+      limitSelection: 10,
+      maxHeight: 999,
+    }
+    
+    this.dropdownSettingsWithoutSearch = {
+      singleSelection: true,
+      closeDropDownOnSelection: true,
+      idField: 'id',
+      textField: 'name',
+      allowSearchFilter: false,
+      enableCheckAll: false,
+      searchPlaceholderText: "Пошук...",
+      allowRemoteDataSearch: false,
+      limitSelection: 10,
+      maxHeight: 999,
+    };
+
+    this.onFilterChange('');
   }
 
   get name() { return this.formGr.get('name')! }
@@ -154,10 +214,19 @@ export class RecipeUpdateComponent implements OnInit {
   get proteins() { return this.formGr.get('proteins')! }
   get fats() { return this.formGr.get('fats')! }
   get carbohydrates() { return this.formGr.get('carbohydrates')! }
+  get foodType() { return this.formGr.get('foodType')! }
+  get dishType() { return this.formGr.get('dishType')! }
+  get menuType() { return this.formGr.get('menuType')!}
   get preparationTips() { return this.formGr.get('preparationTips') as FormArray; }
   get steps() { return this.formGr.get('steps') as FormArray; }
-  images: FormData[] = [];
-  isImageSaved: boolean[] = [];
+  get additionalTips() { return this.formGr.get('additionalTips') as FormArray; }
+  get videoUrl() { return this.formGr.get('videoUrl')! }
+  stepImages: FormData[] = [];
+  isStepImageSaved: boolean[] = [];
+  galleryImages: FormData[] = [];
+  get ingredients() { return this.formGr.get('ingredients') as FormArray; }
+  get newIngredient() { return this.formGr.get('newIngredient')! }
+  get description() { return this.formGr.get('description')!}
 
   stepsGr(id: number) { return this.steps.controls[id] }
 
@@ -174,48 +243,241 @@ export class RecipeUpdateComponent implements OnInit {
     this.preparationTips.removeAt(id);
   }
 
+  addaddit() {
+    this.additionalTips.push(new FormControl(''));
+  }
+
+  remaddit(id: number) {
+    this.additionalTips.removeAt(id);
+  }
+
   addinstr() {
     this.steps.push(new FormGroup({
       title: new FormControl(''),
       description: new FormControl('')
     }));
-    this.images.push(new FormData())
-    this.isImageSaved.push(false);
+    this.stepImages.push(new FormData())
+    this.isStepImageSaved.push(false);
   }
 
   reminstr(id: number) {
     this.steps.removeAt(id)
-    this.images.splice(id, 1)
-    this.isImageSaved.splice(id, 1);
+    this.stepImages.splice(id, 1)
+    this.isStepImageSaved.splice(id, 1);
   }
 
   remPhoto(id: number){
-    console.log(id)
-    this.images[id] = new FormData();
-    this.isImageSaved[id] = false;
+    this.stepImages[id] = new FormData();
+    this.isStepImageSaved[id] = false;
   }
 
   uploadDocument(id: number, event: any) {
-    debugger
-    console.log(id, event)
     if (event.target.files && event.target.files[0]) {
-      this.images[id].append('file', event.target.files[0])
+      this.stepImages[id].append('file', event.target.files[0])
       let source = URL.createObjectURL(event.target.files[0])
-      this.images[id].append('source', source)
-      this.isImageSaved[id] = true;
+      this.stepImages[id].append('source', source)
+      this.isStepImageSaved[id] = true;
     }
   }
 
-  getEmbedUrl(){
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.Recipe.video)
+  insgal(ev: FormData) {
+    this.galleryImages.push(ev);
   }
 
-  Submit(){
-    console.log("And another one")
-    for (const field in this.formGr.controls) { // 'field' is a string
-      console.log(this.formGr.controls[field].value);
-    }
-    console.log(this.images)
-    console.log(this.isImageSaved)
+  delgal(ev: number) {
+    this.galleryImages.splice(ev, 1);
   }
+
+  remingr(id: number){
+    this.ingredients.removeAt(id);
+    this.onSearchChange('');
+  }
+
+  addingr(ev: any){
+    if(ev.id != -1) {
+      this.ingredients.push(new FormGroup({
+        ingredient: new FormControl(ev),
+        measurement: new FormControl(''),
+        amount: new FormControl(0),
+      }));
+    }
+    else {
+      let newName = ev.name.split("'")[1];
+      this.recipeService.addIngredient(newName).then(
+        response => {
+          if(response.code == 200) {
+            this.ingredients.push(new FormGroup({
+              ingredient: new FormControl({id:response.id, name:newName}),
+              measurement: new FormControl(''),
+              amount: new FormControl(0),
+            }));
+          }
+        }
+      )
+    }
+    this.newIngredient.reset();
+    this.onSearchChange('');
+  }
+
+  timeout: ReturnType<typeof setTimeout> | undefined | null = null;
+
+  onFilterChange(item: any) {
+    clearTimeout(this.timeout!);
+    this.timeout = setTimeout(() => {
+      this.onSearchChange(item);
+    }, 1000);
+  }
+
+  createActive: boolean = false;
+  onSearchChange(filter: string) {
+    let selectedIngredientIdList = this.ingredients.controls.map( m => {
+      return m.get('ingredient')!.value.id as number
+    });
+    this.filterService.getIngredients(filter, selectedIngredientIdList).toPromise().then(
+      response => {
+        if (response.code == 200) {
+          this.ingredientList = response.ingredients
+          if(this.ingredientList.length < 10 && this.ingredientList.filter(f=>f.name == filter).length == 0 && filter != ''){
+            let cut = filter.slice(0,17)
+            this.ingredientList.push({id: -1, name:`Створити новий ігредієнт '${cut}' `})
+            this.createActive = true;
+          }
+          else{
+            this.createActive = false;
+          }
+      }
+      }
+    )
+  }
+
+  Submit(isPublic: boolean){
+    this.isSubmit = true;
+    console.log("strange", this.name!.value)
+      let data: FormData = new FormData()
+      data.append('id', this.Recipe.id.toString());
+      if(this.name.valid){ data.append('name', this.name!.value); }
+      if(this.description.value != null){ data.append('description', this.description!.value); }
+      if(this.difficulty.value != null){ data.append('difficulty', this.difficulty!.value); }
+      if(this.requiredTime.value != null){ data.append('requiredTime', this.requiredTime!.value); }
+      if(this.servings.value != null){ data.append('servings', this.servings!.value); }
+      if(this.caloricValue.value != null){ data.append('caloricValue', this.caloricValue!.value); }
+      if(this.proteins.value != null){ data.append('proteins', this.proteins!.value); }
+      if(this.fats.value != null){ data.append('fats', this.fats!.value); }
+      if(this.carbohydrates.value != null){ data.append('carbohydrates', this.carbohydrates!.value); }
+      if(this.videoUrl.valid){ data.append('video', this.videoUrl!.value.split('=')[1].toString()); }
+      if(this.foodType.valid){ data.append('foodType', this.foodType!.value[0].id); }
+      if(this.dishType.valid){ data.append('dishType', this.dishType!.value[0].id); }
+      data.append('isPublished', isPublic.toString());
+      // data.append('preparationTips', JSON.stringify(this.preparationTips!.value));
+      // data.append('additionalTips', JSON.stringify(this.additionalTips!.value));
+      // data.append('menuTypes', JSON.stringify(this.menuType!.value.map( (m: IdItem) => m.id )));
+
+      // data.append('ingredientsId', JSON.stringify(this.ingredients!.value.map( (m: {ingredient: {id: number, name: string}, measurement: {id: number, name: string}[], amount: number}) => m.ingredient.id.toString())));
+      // data.append('ingredientsMeasurementId', JSON.stringify(this.ingredients!.value.map( (m: {ingredient: {id: number, name: string}, measurement: {id: number, name: string}[], amount: number}) => m.measurement[0].id.toString())));
+      // data.append('ingredientsAmount', JSON.stringify(this.ingredients!.value.map( (m: {ingredient: {id: number, name: string}, measurement: {id: number, name: string}[], amount: number}) => m.amount.toString())));
+      // data.append('stepsIds', JSON.stringify(this.steps!.value.map( (m: {id: number | null, title: string, description: string}) => (m.id ?? 0).toString())));
+      // data.append('stepsTitles', JSON.stringify(this.steps!.value.map( (m: {id: number,title: string, description: string}) => m.title)));
+      // data.append('stepsDescriptions', JSON.stringify(this.steps!.value.map( (m: {id: number, title: string, description: string}) => m.description)));
+      for (let i = 0; i < this.stepImages.length; i++) {
+        data.append('stepImagesData', this.stepImages[i].get('file') as Blob | null ?? new Blob(), `file${i + 1}.png`);
+      }
+      for (let i = 0; i < this.galleryImages.length; i++) {
+        data.append('imagesIndexes', this.galleryImages[i].get('index') as string);
+      }
+      
+      for (let i = 0; i < this.galleryImages.length; i++) {
+        data.append('imagesData', this.galleryImages[i].get('file') as Blob | null ?? new Blob(), `file${i + 1}.png`);
+      }
+      //ANOTHER WAY
+      for (let i = 0; i < this.preparationTips!.value.length; i++) {
+        data.append('preparationTips', this.preparationTips!.value[i]);
+      }
+      for (let i = 0; i < this.additionalTips!.value.length; i++) {
+        data.append('additionalTips', this.additionalTips!.value[i]);
+      }
+
+
+      for (let i = 0; i < this.menuType!.value.length; i++) {
+        data.append('menuTypes', this.menuType!.value[i].id.toString());
+      }
+      for (let i = 0; i < this.ingredients!.value.length; i++) {
+        data.append('ingredientsMeasurementId', this.ingredients!.value[i].measurement[0].id.toString());
+      }
+      for (let i = 0; i < this.ingredients!.value.length; i++) {
+        data.append('ingredientsId', this.ingredients!.value[i].measurement[0].id.toString());
+      }
+      for (let i = 0; i < this.ingredients!.value.length; i++) {
+        data.append('ingredientsAmount', this.ingredients!.value[i].amount.toString());
+      }
+      for (let i = 0; i < this.steps!.value.length; i++) {
+        data.append('stepsIds', (this.steps!.value[i].id??0).toString());
+      }
+
+      for (let i = 0; i < this.steps!.value.length; i++) {
+        data.append('stepsTitles', (this.steps!.value[i].title).toString());
+      }
+      for (let i = 0; i < this.steps!.value.length; i++) {
+        data.append('stepsDescriptions', (this.steps!.value[i].description).toString());
+      }
+
+      this.recipeService.sendSomewhere(data);
+
+
+    // console.log("And another one")
+    // for (const field in this.formGr.controls) { // 'field' is a string
+    //   console.log(this.formGr.controls[field].value);
+    // }
+    // console.log(this.stepImages)
+    // console.log(this.isStepImageSaved)
+    // console.log(this.galleryImages[0].get('index'))
+    // console.log(this.galleryImages.map(i => i.get('index')))
+    // console.log(this.galleryImages.map(i => i.get('file')))
+    // console.log(this.isUrlValid, 'url')
+  }
+
+  videoUrlChange(){
+    this.isUrlValid = true;
+    this.isUrlValidating = true;
+    let url = this.videoUrl.value as string;
+    var img = new Image();
+		img.src = "http://img.youtube.com/vi/" + url.split('=')[1] + "/mqdefault.jpg";
+		img.onload = () => {
+			if(img.width === 120) {
+        this.isUrlValid = false;
+      }
+      this.isUrlValidating = false;
+		}
+    this.sanitizedVideo = this.sanitizer.bypassSecurityTrustResourceUrl(url.replace('watch?v=', 'embed/'))
+  }
+
 }
+
+function ValidateUrl(control: AbstractControl) {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const url = control.value as string;
+    const img = new Image();
+    img.src = 'http://img.youtube.com/vi/' + url.split('=')[1] + '/mqdefault.jpg';
+
+    return new Promise((resolve) => {
+      img.onload = () => {
+        if (img.width === 120) {
+          resolve({ invalidUrl: true });
+        } else {
+          resolve(null);
+        }
+      };
+      img.onerror = () => {
+        resolve({ invalidUrl: true });
+      };
+    });
+  };
+}
+
+function requiredList(fromControl: AbstractControl) {
+  // console.log("Control", fromControl.value, fromControl.value.length, fromControl.value[0])
+  return fromControl.value && fromControl.value.length && fromControl.value[0] != null ? null : {
+    requiredList: {
+      valid: false
+    }
+  };
+} 

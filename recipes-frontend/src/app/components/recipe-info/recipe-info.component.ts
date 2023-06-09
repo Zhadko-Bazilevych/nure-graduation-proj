@@ -58,7 +58,8 @@ export class RecipeInfoComponent implements OnInit {
       if(response.code == 200) {
         this.Recipe = response.recipe
         this.choosingStar = this.Recipe.userRate
-        this.sanitizedVideo = this.sanitizer.bypassSecurityTrustResourceUrl(this.Recipe.video)
+        this.sanitizedVideo = this.getEmbedUrl()
+        console.log(this.sanitizedVideo)
       }
     }).catch(er => {
       this.router.navigate(['']);
@@ -113,6 +114,6 @@ export class RecipeInfoComponent implements OnInit {
   }
 
   getEmbedUrl(){
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.Recipe.video)
+    return this.sanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/" + this.Recipe.video)
   }
 }

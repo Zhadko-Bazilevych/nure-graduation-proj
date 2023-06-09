@@ -1,0 +1,41 @@
+<div class="flex w-full h-full flex-col gap-1">
+    <div class="flex relative w-full justify-center border-2 border-gray-500 bg-gray-100 rounded aspect-square overflow-hidden" [ngClass]="{'h-3/4' : Images != null && Images.length != 0}">
+        <img *ngIf="index < Images.length" src="{{Images[index]}}" class="object-contain">
+        <div *ngIf="index == Images.length" class="flex items-center justify-center w-full">
+            <label class="flex flex-col items-center justify-center h-full w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer hover:bg-gray-100">
+                <div class="flex flex-col items-center justify-center text-center pt-5 pb-6">
+                    <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Натисніть щоб завантажити</span> або перетягніть та відпустіть</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, JPEG </p>
+                </div>
+                <input (change)="insertedPhoto($event)" id="dropzone-file" type="file" class="hidden" accept=".png, .jpg, .jpeg" />
+            </label>
+        </div> 
+        <button *ngIf="index != 0" class="flex absolute z-10 top-1/2 left-2 -translate-y-1/2" (click)="clickHandler(index-1)">
+            <fa-icon [icon]="leftArrow" class="text-2xl transition-colors text-gray-700 hover:text-gray-400"></fa-icon>
+        </button>
+        <button *ngIf="Images != null && Images.length != 0 && index !== Images.length" class="flex absolute z-10 top-1/2 right-2 -translate-y-1/2" (click)="clickHandler(index+1)">
+            <fa-icon [icon]="rightArrow" class="text-2xl transition-colors text-gray-700 hover:text-gray-400"></fa-icon>
+        </button>
+    </div>
+    <div *ngIf="Images != null && Images.length != 0" class="overflow-x-auto border-2 border-gray-500 rounded p-0.5 bg-gray-100 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-track-gray-100">
+        <div class="flex gap-2 w-max">
+            <div *ngFor="let image of Images; let i = index" class="relative overflow-hidden group hover:cursor-pointer h-[70px]" (click)="clickHandler(i)">
+                <img src="{{image}}" alt="recipeImage" class="h-full">
+                <button (click)="deletedPhoto(i)" class="absolute z-10 flex items-center justify-center right-1 top-1 bg-red-500 h-5 w-5 aspect-square rounded-full hover:brightness-90 hover:cursor-pointer">
+                    <fa-icon [icon]="xIcon" class="flex text-center text-white text-sm"></fa-icon>
+                </button>
+                <div [ngClass]="{'opacity-30': index === i, 'opacity-0': index !== i}" class="w-full h-full bg-black group-hover:opacity-30 transition-opacity duration-100 z-1 absolute top-0 left-0"></div>
+            </div>
+            <!-- overflow-hidden \/ -->
+            <div class="relative  group hover:cursor-pointer h-[70px]">
+                <label class="flex flex-col items-center justify-center h-full aspect-square border-2 border-gray-300 border-dashed rounded-lg cursor-pointer hover:border-gray-300 hover:bg-gray-200">
+                    <div class="flex flex-col items-center justify-center text-center">
+                        <svg aria-hidden="true" class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                    </div>
+                    <input (change)="insertedPhoto($event)" id="dropzone-file-small" type="file" class="hidden" accept=".png, .jpg, .jpeg" />
+                </label>
+            </div> 
+        </div>
+    </div>
+</div>

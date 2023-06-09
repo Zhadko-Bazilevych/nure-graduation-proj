@@ -42,18 +42,18 @@ export interface RecipeInfo{
 export interface CollectedIngredient{
     id: number| null,
     ingredientId: number | null
-    name: string,
-    amount: number,
+    name: string | null,
+    amount: number | null,
     measurementId: number | null,
-    measurement: string
+    measurement: string | null
 }
 
 export interface CollectedRecipeStep{
-    id: number,
+    id: number | null,
     stepNumber: number | null,
-    title: string,
-    description: string,
-    image: string,
+    title: string | null,
+    description: string | null,
+    image: string | null,
 }
 
 export interface CollectedComment{
@@ -100,4 +100,28 @@ export interface RecipeUpdateInfo{
 
 export interface RecipeUpdateResponse extends BaseResponse{
     recipe: RecipeUpdateInfo
+}
+
+export interface RecipeUpdateData{
+    id : number,
+    name : string | null,
+    description : string | null,
+    difficulty : number | null,
+    requiredTime : number | null,
+    servings : number | null,
+    caloricValue : number | null,
+    proteins : number | null,
+    fats : number | null,
+    carbohydrates : number | null,
+    video : string | null,
+    foodType : number | null,
+    dishType : number | null,
+    isPublished : boolean,
+    preparationTips : string[] | null,
+    additionalTips : string[] | null,
+    menuTypes : number[] | null,
+    ingredients : CollectedIngredient[] | null,
+    steps : CollectedRecipeStep[]  | null,
+    stepsImages : number[] | null
+    imagesData : Blob[] | null
 }

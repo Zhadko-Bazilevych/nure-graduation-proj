@@ -13,9 +13,10 @@ export class FilterService {
 
   constructor(private httpClient: HttpClient, private router: Router) { }
 
-  getIngredients(filter: string): Observable<IngredientsResponse>{
+  getIngredients(filter: string, notIncluded: number[] = []): Observable<IngredientsResponse>{
     const request = {
-      name: filter
+      name: filter,
+      notIncluded: notIncluded
     };
 
     return this.httpClient.post<IngredientsResponse>(this.BaseURL + 'FilterIngredient', request)
