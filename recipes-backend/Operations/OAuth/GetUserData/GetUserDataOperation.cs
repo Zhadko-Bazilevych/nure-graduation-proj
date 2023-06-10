@@ -40,6 +40,7 @@ namespace recipes_backend.Operations.OAuth.GetUserData
                     Id = user.Id,
                     Name = user.Name,
                     Mail = user.Mail,
+                    Photo = user.Image,
                 };
             }
             else

@@ -37,7 +37,6 @@ namespace recipes_backend.Operations.Recipe.RecipeInfo
         public List<string> PreparationTips { get; set; }
         public List<string> AdditionalTips { get; set; }
         public List<string> MenuTypes { get; set; }
-        public List<CollectedComment> Comments { get; set; }
         public List<CollectedIngredient> Ingredients { get; set; }
         public List<CollectedRecipeStep> Steps { get; set; }
 
@@ -45,16 +44,4 @@ namespace recipes_backend.Operations.Recipe.RecipeInfo
         public bool isFavorite { get; set; } = false;
         public int UserRate { get; set; }
     }
-
-    public class CollectedComment
-    {
-        public int Id { get; set; }
-        public string Content { get; set; }
-        public string? Image { get; set; }
-        public int UserId { get; set; }
-        public string UserName { get; set; }
-        public DateTime DateCreated { get; set; }
-        public bool isAuthor { get; set; } = false;
-    }
-
 }
