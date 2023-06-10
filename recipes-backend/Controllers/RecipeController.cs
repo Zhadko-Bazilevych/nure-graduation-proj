@@ -7,6 +7,7 @@ using recipes_backend.Operations.OAuth.AuthByCode;
 using recipes_backend.Operations.OAuth.Refresh;
 using recipes_backend.Operations.Recipe.changeFavorite;
 using recipes_backend.Operations.Recipe.CreateEmpty;
+using recipes_backend.Operations.Recipe.CreateIngredient;
 using recipes_backend.Operations.Recipe.DeleteRecipe;
 using recipes_backend.Operations.Recipe.Filter;
 using recipes_backend.Operations.Recipe.FilterIngredient;
@@ -17,6 +18,7 @@ using recipes_backend.Operations.Recipe.PatternUpdate;
 using recipes_backend.Operations.Recipe.Random;
 using recipes_backend.Operations.Recipe.Rate;
 using recipes_backend.Operations.Recipe.RecipeInfo;
+using recipes_backend.Operations.Recipe.UpdateRecipe;
 using recipes_backend.Operations.Recipe.UpdateRecipeInfo;
 using recipes_backend.Services;
 using recipes_backend.Services.GoogleOAuthServiceModels;
@@ -190,6 +192,30 @@ namespace recipes_backend.Controllers
         public async Task<IActionResult> DeleteRecipe(DeleteRecipeRequest request)
         {
             var operation = _serviceProvider.GetRequiredService<DeleteRecipeOperation>();
+            var result = await operation.Execute(request);
+            if (result.Code != 200)
+            {
+                return StatusCode(result.Code, result.Message);
+            }
+            return new JsonResult(result);
+        }
+
+        [HttpPost("CreateIngredient")]
+        public async Task<IActionResult> CreateIngredient(CreateIngredientRequest request)
+        {
+            var operation = _serviceProvider.GetRequiredService<CreateIngredientOperation>();
+            var result = await operation.Execute(request);
+            if (result.Code != 200)
+            {
+                return StatusCode(result.Code, result.Message);
+            }
+            return new JsonResult(result);
+        }
+
+        [HttpPost("UpdateRecipe")]
+        public async Task<IActionResult> UpdateRecipe([FromForm]UpdateRecipeRequest request)
+        {
+            var operation = _serviceProvider.GetRequiredService<UpdateRecipeOperation>();
             var result = await operation.Execute(request);
             if (result.Code != 200)
             {

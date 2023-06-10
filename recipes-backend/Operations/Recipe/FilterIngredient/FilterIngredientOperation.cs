@@ -32,9 +32,15 @@ namespace recipes_backend.Operations.Recipe.FilterIngredient
                 return new FilterIngredientResponse { Code = validate.Code, Message = validate.Message };
             }
 
+            var IngredientFilter = db.Ingredients.Where(x => x.Name.Contains(request.Name));
+            if(request.notIncluded != null)
+            {
+                IngredientFilter = IngredientFilter.Where(x => !request.notIncluded.Any(y => y == x.Id));
+            }
+
             return new FilterIngredientResponse
             {
-                Ingredients = _mapper.Map<List<IdIngredient>>(await db.Ingredients.Where(x => x.Name.Contains(request.Name)).OrderBy(o => o.Name).Take(10).ToListAsync())
+                Ingredients = _mapper.Map<List<IdIngredient>>(await IngredientFilter.OrderBy(o => o.Name).Take(10).ToListAsync())
             };
         }
 

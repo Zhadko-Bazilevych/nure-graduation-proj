@@ -25,8 +25,19 @@ using recipes_backend.Operations.OAuth.GetUserData;
 using recipes_backend.Operations.UserRecipes.EditUser;
 using recipes_backend.Operations.Recipe.CreateEmpty;
 using recipes_backend.Operations.Recipe.UpdateRecipeInfo;
+using recipes_backend.Operations.UserRecipe.GetMeasurementsData;
+using recipes_backend.Operations.Recipe.CreateIngredient;
+using recipes_backend.Operations.Recipe.UpdateRecipe;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var cultureInfo = new CultureInfo("en-US");
+
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
 
 // Add services to the container.
 builder.Services.AddHttpClient();
@@ -36,6 +47,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<recipesContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -62,6 +74,9 @@ builder.Services.AddScoped<GetUserDataOperation>();
 builder.Services.AddScoped<CreateEmptyOperation>();
 builder.Services.AddScoped<UpdateRecipeInfoOperation>();
 builder.Services.AddScoped<DeleteRecipeOperation>();
+builder.Services.AddScoped<GetMeasurementsDataOperation>();
+builder.Services.AddScoped<CreateIngredientOperation>();
+builder.Services.AddScoped<UpdateRecipeOperation>();
 
 builder.Services.AddScoped<PatternListOperation>();
 builder.Services.AddScoped<PatternUpdateOperation>();

@@ -16,6 +16,7 @@
         public string Author { get; set; }
         public int AuthorId { get; set; }
         public string? Description { get; set; }
+        public bool? IsPublished { get; set; }
     }
 
     public class CollectedIngredient
