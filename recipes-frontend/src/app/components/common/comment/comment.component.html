@@ -38,9 +38,9 @@
                 Відповісти
             </div>
         </div>
-        <app-comment-edit *ngIf="isAnswering" [canCancel]="true" [parentId]="comment.id" [recipeId]="recipeId" (canceled)="cancelAnswer()"></app-comment-edit>
+        <app-comment-edit *ngIf="isAnswering" [canCancel]="true" [parentId]="comment.id" [recipeId]="recipeId" (canceled)="cancelAnswer()" (commentCreated)="newChildComment($event)"></app-comment-edit>
         <div *ngFor="let item of comment.replies">
-            <app-comment [comment]="item"></app-comment>
+            <app-comment [comment]="item" [recipeId]="recipeId"></app-comment>
         </div>
     </div>
 </div>

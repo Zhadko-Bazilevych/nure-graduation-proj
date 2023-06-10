@@ -73,7 +73,8 @@ export class CommentComponent implements OnInit {
     if(this.comment.replies == null){
       this.comment.replies = [];
     }
-    this.comment.replies.push(newComment);
+    this.comment.replies.splice(0, 0, newComment);
+    this.isAnswering = false;
   }
 }
 

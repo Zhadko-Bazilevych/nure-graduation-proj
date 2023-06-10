@@ -13,7 +13,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
 })
 export class CommentEditComponent implements OnInit {
   
-  @Input() recipeId: number
+  @Input() recipeId: number;
   @Input() parentId: number;
   @Input() canCancel: boolean = false
   @Output() commentCreated: EventEmitter<FormData> = new EventEmitter()
@@ -27,7 +27,7 @@ export class CommentEditComponent implements OnInit {
 
   get content() { return this.formGr.get('content')! }
 
-  newComment: FormData;
+  newComment: FormData = new FormData();
   tempPhotoUrl: string | null;
 
   xIcon = faXmark;

@@ -139,7 +139,7 @@ export class RecipeInfoComponent implements OnInit {
     if(this.comments == null){
       this.comments = [];
     }
-    this.comments.push(newComment);
+    this.comments.splice(0, 0, newComment);
   }
 
   //   this.newComment.append('parentCommentId', this.parentId.toString())
