@@ -1,0 +1,46 @@
+<div class="flex w-full gap-1">
+    <div class="flex flex-col">
+        <div class="flex h-12 w-12">
+            <img *ngIf="comment.userImage != null" src="{{BaseUrl}}{{comment.userImage}}" class="object-contain">
+            <img *ngIf="comment.userImage == null" src="../../../../assets/images/userLogo.png" class="object-contain">
+        </div>
+        <div class="flex flex-col items-end grow">
+            <div [ngClass]="{'border-b-2 rounded-bl-lg': !isRepliesLoaded && !isAnswering}" class="flex w-1/2 border-l-2  border-l-gray-300 border-b-gray-300 h-full  mb-2">
+
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-col w-full">
+        <div class="flex items-baseline gap-2">
+            <div class="text-xl">
+                {{comment.userName}}
+            </div>
+            <div class="text-gray-600">
+                {{dateCreated}}
+            </div>
+        </div>
+        <div class="flex gap-2">
+            <div *ngIf="comment.image != null" class="h-20">
+                <img src="{{BaseUrl}}{{comment.image}}" class="h-full rounded">
+            </div>
+            <div class="">
+                {{comment.content}}
+            </div>
+        </div>
+        <div class="flex gap-3">
+            <div *ngIf="comment.countReplies != 0 && !isRepliesLoaded" (click)="loadReplies()" class="text-blue-500 cursor-pointer hover:text-blue-700">
+                Переглянути {{AnswerWord(comment.countReplies)}}
+            </div>
+            <div *ngIf="comment.countReplies != 0 && isRepliesLoaded" (click)="unloadReplies()" class="text-blue-500 cursor-pointer hover:text-blue-700">
+                Згорнути {{AnswerWord(comment.countReplies)}}
+            </div>
+            <div (click)="isAnswering = !isAnswering" *ngIf="!isAnswering" class="text-blue-500 cursor-pointer hover:text-blue-700">
+                Відповісти
+            </div>
+        </div>
+        <app-comment-edit *ngIf="isAnswering" [canCancel]="true" [parentId]="comment.id" [recipeId]="recipeId" (canceled)="cancelAnswer()"></app-comment-edit>
+        <div *ngFor="let item of comment.replies">
+            <app-comment [comment]="item"></app-comment>
+        </div>
+    </div>
+</div>

@@ -163,9 +163,15 @@
                         {{addition}}
                     </p>
                 </div>
-                <div class="h-[30px]"></div>
+                <div class="flex flex-col gap-2">
+                    <h2 class="text-2xl">Коментарі</h2>
+                    <app-comment-edit (commentCreated)="newBaseComment($event)"></app-comment-edit>
+                    <div *ngFor="let item of comments">
+                        <app-comment [comment]="item" [recipeId]="Recipe.id"></app-comment>
+                    </div>
+                </div>
+                <div class="h-10"></div>
             </div>
         </div>
-        <div></div><!--TODO: Comments-->
     </div>
 </div>

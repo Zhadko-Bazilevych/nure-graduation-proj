@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { RecipeInfo, RecipeResponse, RecipeUpdateInfo, RecipeUpdateResponse } from '../models/recipe.model';
+import { CommentsResponse, CreateCommentResponse, RecipeInfo, RecipeResponse, RecipeUpdateInfo, RecipeUpdateResponse } from '../models/recipe.model';
 import { BaseResponse } from '../models/baseResponse';
 import { idResponse } from '../models/filter.model';
 
@@ -64,4 +64,17 @@ export class RecipeService {
   async sendSomewhere(something: FormData){
     return this.httpClient.post<idResponse>(this.baseUrl + "UpdateRecipe", something).toPromise()
   }
+
+  async getInitComments(id: number){
+    return this.httpClient.post<CommentsResponse>(this.baseUrl + "GetInitialComments", {id: id}).toPromise()
+  }
+
+  async getReplyComments(id: number){
+    return this.httpClient.post<CommentsResponse>(this.baseUrl + "GetReplyComments", {id: id}).toPromise()
+  }
+
+  async createComment(form: FormData){
+    return this.httpClient.post<CreateCommentResponse>(this.baseUrl + "CreateComment", form).toPromise()
+  }
+
 }

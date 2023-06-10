@@ -2,9 +2,10 @@ import { BaseResponse } from "./baseResponse";
 
 export interface User extends BaseResponse{
     id: number | null
-    mail: string,
-    name: string,
-    accessToken: string,
+    mail: string
+    name: string
+    photo: string | null
+    accessToken: string
     refreshToken: string
 }
 
@@ -17,16 +18,16 @@ export interface Author{
 }
 
 export interface AuthorPage{
-    id : number,
-    name : string,
-    image : string | null,
-    mail : string,
-    description : string | null,
-    amountOfSubscribers : number,
-    amountOfRecipes : number,
-    isMe : boolean,
-    isSubscribed: boolean,
-    isPublicMail: boolean,
+    id : number
+    name : string
+    image : string | null
+    mail : string
+    description : string | null
+    amountOfSubscribers : number
+    amountOfRecipes : number
+    isMe : boolean
+    isSubscribed: boolean
+    isPublicMail: boolean
 }
 
 export interface AuthorListResponse extends BaseResponse{
@@ -38,8 +39,8 @@ export interface AuthorPageResponse extends BaseResponse{
 }
 
 export interface EditUserRequest{
-    authorId: number,
-    name: string | null,
-    isPublicMail: boolean,
-    description: string | null,
+    authorId: number
+    name: string | null
+    isPublicMail: boolean
+    description: string | null
 }

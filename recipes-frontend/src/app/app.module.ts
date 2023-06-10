@@ -23,6 +23,10 @@ import { UserInfoComponent } from './components/user-info/user-info.component';
 import { GlobalDataService } from './services/globalData.service';
 import { RecipeUpdateComponent } from './components/recipe-update/recipe-update.component';
 import { GalleryEditComponent } from './components/recipe-update/gallery-edit/gallery-edit.component';
+import { CommentComponent } from './components/common/comment/comment.component';
+import { DatePipe } from '@angular/common';
+import { CommentEditComponent } from './components/common/comment-edit/comment-edit.component';
+
 
 @NgModule({
   declarations: [
@@ -38,6 +42,8 @@ import { GalleryEditComponent } from './components/recipe-update/gallery-edit/ga
     AuthorRowComponent,
     UserInfoComponent,
     RecipeUpdateComponent,
+    CommentComponent,
+    CommentEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,8 +56,10 @@ import { GalleryEditComponent } from './components/recipe-update/gallery-edit/ga
     ReactiveFormsModule,
     BrowserAnimationsModule,
     NgxSliderModule,
+
   ],
   providers: [
+    DatePipe,
     GlobalDataService,
     {
       provide: HTTP_INTERCEPTORS,
