@@ -44,5 +44,13 @@ namespace recipes_backend.Services
             if (System.IO.File.Exists(imagePath))
                 System.IO.File.Delete(imagePath);
         }
+
+        public void DeleteImageByPath(string path)
+        {
+            var imagePath = path;
+            imagePath = Path.Combine(_hostEnvironment.ContentRootPath, imagePath);
+            if (System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
+        }
     }
 }

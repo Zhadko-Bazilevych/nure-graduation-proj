@@ -28,19 +28,10 @@ namespace recipes_backend.Operations.Recipe.UpdateRecipe
         public List<int>? StepsIds { get; set; }
         public List<string>? StepsTitles { get; set; }
         public List<string>? StepsDescriptions { get; set; }
+        public List <int>? BackendStepImageToDelete { get; set; }
         public List<IFormFile>? StepImagesData { get; set; }
 
         public List<int>? ImagesIndexes { get; set; }
         public List<IFormFile>? ImagesData { get; set; }
-    }
-
-    public class CollectedUpdateIngredient
-    {
-        public int? Id { get; set; }
-        public int? IngredientId { get; set; }
-        public string Name { get; set; }
-        public double Amount { get; set; }
-        public int MeasurementId { get; set; }
-        public string Measurement { get; set; }
     }
 }

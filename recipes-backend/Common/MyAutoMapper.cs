@@ -6,6 +6,7 @@ using recipes_backend.Operations.Recipe.FilterIngredient;
 using recipes_backend.Operations.Recipe.GetFilterData;
 using recipes_backend.Operations.Recipe.PatternList;
 using recipes_backend.Operations.Recipe.RecipeInfo;
+using recipes_backend.Operations.Recipe.UpdateRecipe;
 using recipes_backend.Operations.Recipe.UpdateRecipeInfo;
 using recipes_backend.Operations.UserRecipes.AuthorInfo;
 using recipes_backend.Operations.UserRecipes.AuthorSubscriptionList;
@@ -112,7 +113,7 @@ namespace SOAPZ.Common
                 .ForMember(dest => dest.DishType, act => act.MapFrom(src => src.DishType))
                 .ForMember(dest => dest.PreparationTips, act => act.MapFrom(src => src.PreparationTips))
                 .ForMember(dest => dest.AdditionalTips, act => act.MapFrom(src => src.AdditionalTips))
-                .ForMember(dest => dest.MenuTypes, act => act.MapFrom(src => src.MenuTypeLists.Select(s=>s.MenuType)))
+                .ForMember(dest => dest.MenuTypes, act => act.MapFrom(src => src.MenuTypeLists.Select(s => s.MenuType)))
                 .ForMember(dest => dest.Images, act => act.MapFrom(src => src.RecipeImages))
                 .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(src => src.RecipeIngredients))
                 .ForMember(dest => dest.Steps, opt => opt.MapFrom(src => src.RecipeSteps));

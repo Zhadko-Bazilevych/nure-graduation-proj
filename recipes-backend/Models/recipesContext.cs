@@ -117,7 +117,7 @@ namespace recipes_backend.Models
                 db.SaveChanges();
                 db.Recipes.Add(new Recipe
                 {
-                    UserId = 2,
+                    UserId = 1,
                     Name = "Вареники з картоплею",
                     Description = "Готуємо дуже смачні домашні вареники з картоплею, ніжне тісто для вареників. Просте та недороге блюдо. Готуємо дуже смачні домашні вареники з картоплею, ніжне тісто для вареників. Просте та недороге блюдо. Готуємо дуже смачні домашні вареники з картоплею, ніжне тісто для вареників. Просте та недороге блюдо. Готуємо дуже смачні домашні вареники з картоплею, ніжне тісто для вареників. Просте та недороге блюдо.",
                     Difficulty = 2,
@@ -131,7 +131,7 @@ namespace recipes_backend.Models
                     DishTypeId = 6,
                     CreationDate = DateTime.Now,
                     IsPublished = true,
-                    Video = "https://www.youtube.com/embed/0xdm_Iw3uS4",
+                    Video = "0xdm_Iw3uS4",
                 });
                 db.Recipes.Add(new Recipe
                 {
