@@ -24,6 +24,7 @@ export interface recipe{
     author: string
     authorId: number
     description: string
+    isPublished: boolean
 }
 
 export interface filter{

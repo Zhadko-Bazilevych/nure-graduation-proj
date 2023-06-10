@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { RecipeService } from 'src/app/services/recipe.service';
-import { RecipeInfo, RecipeResponse } from 'src/app/models/recipe.model';
+import { CommentItem, RecipeInfo, RecipeResponse } from 'src/app/models/recipe.model';
 import { faStar, faBookmark, faBowlFood, faTriangleExclamation, faWheatAwn, faDroplet, faBacon, faUtensils } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as faBookmarkOut, faStar as faStarOutline, faClock} from '@fortawesome/free-regular-svg-icons';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { GlobalDataService } from 'src/app/services/globalData.service';
 
 @Component({
   selector: 'app-recipe-info',
@@ -17,9 +18,9 @@ import { switchMap } from 'rxjs/operators';
 export class RecipeInfoComponent implements OnInit {
   BaseUrl: string = "https://localhost:7137/"
 
-  constructor(private route: ActivatedRoute, private router: Router, private recipeService: RecipeService, private sanitizer: DomSanitizer) { }
+  constructor(private route: ActivatedRoute, private router: Router, private recipeService: RecipeService, private sanitizer: DomSanitizer, public global: GlobalDataService) { }
   private routeSub: Subscription;
-
+  isLoadingData: boolean = true;
 
   Recipe: RecipeInfo
   starIcon = faStar;
@@ -38,6 +39,8 @@ export class RecipeInfoComponent implements OnInit {
 
   choosingStar: number;
 
+  comments: CommentItem[] | null
+
   ngOnInit(): void {
     this.routeSub = this.route.params
     .pipe(
@@ -48,8 +51,15 @@ export class RecipeInfoComponent implements OnInit {
     )
     .subscribe((userData) => {
       let param = this.route.snapshot.paramMap.get('id')
-    let id = param == null ? -1 : +param
-    this.RecipeInfo(id)
+      let id = param == null ? -1 : +param
+      this.RecipeInfo(id)
+      this.recipeService.getInitComments(id).then(
+        response => {
+          if(response.code==200){
+            this.comments = response.comments
+          }
+        }
+      )
     });
   }
 
@@ -59,7 +69,7 @@ export class RecipeInfoComponent implements OnInit {
         this.Recipe = response.recipe
         this.choosingStar = this.Recipe.userRate
         this.sanitizedVideo = this.getEmbedUrl()
-        console.log(this.sanitizedVideo)
+        this.isLoadingData = false;
       }
     }).catch(er => {
       this.router.navigate(['']);
@@ -112,6 +122,46 @@ export class RecipeInfoComponent implements OnInit {
       }
     })    
   }
+
+  newBaseComment(event: FormData){
+    let newComment: CommentItem = {
+      id: +event.get('id')!.toString(),
+      content: event.get('content')!.toString(),
+      image: event.get('image') == null ? null : event.get('image')!.toString(),
+      userId: this.global.id!,
+      userName: this.global.name!,
+      userImage: this.global.photo,
+      dateCreated: new Date(),
+      isAuthor: true,
+      countReplies: 0,
+      replies: null
+    }
+    if(this.comments == null){
+      this.comments = [];
+    }
+    this.comments.splice(0, 0, newComment);
+  }
+
+  //   this.newComment.append('parentCommentId', this.parentId.toString())
+  // this.newComment.append('recipeId', this.recipeId.toString())
+  // this.newComment.append('userId', this.global.id!.toString())
+  // this.newComment.append('content', this.content.value.toString())
+  // this.recipeService.createComment(this.newComment).then(
+  //       this.newComment.append('id', response.id.toString());
+  //         this.newComment.append('image', response.image)
+
+
+  // id : number,
+  // content : string,
+  // image : string | null,
+  // userId : number,
+  // userName : string,
+  // userImage: string | null
+  // dateCreated: Date,
+  // isAuthor : boolean,
+  // countReplies : number,
+  // replies: CommentItem[] | null
+
 
   getEmbedUrl(){
     return this.sanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/" + this.Recipe.video)

@@ -125,3 +125,25 @@ export interface RecipeUpdateData{
     stepsImages : number[] | null
     imagesData : Blob[] | null
 }
+
+export interface CommentItem {
+    id : number,
+    content : string,
+    image : string | null,
+    userId : number,
+    userName : string,
+    userImage: string | null
+    dateCreated: Date,
+    isAuthor : boolean,
+    countReplies : number,
+    replies: CommentItem[] | null
+}
+
+export interface CommentsResponse extends BaseResponse {
+    comments: CommentItem[]
+}
+
+export interface CreateCommentResponse extends BaseResponse {
+    id: number
+    image: string | null
+}

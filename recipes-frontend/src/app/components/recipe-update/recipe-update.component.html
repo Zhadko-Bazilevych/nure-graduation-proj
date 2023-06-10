@@ -8,7 +8,7 @@
                         <div class="flex flex-col relative gap-2">
                                 <h2 class="text-2xl">Відео рецетпу</h2>
                                 <div class="w-full">
-                                    <input (input)="videoUrlChange()" required type="text" id="videoUrl" formControlName="videoUrl" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-lg text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    <input (input)="videoUrlChange()" type="text" id="videoUrl" formControlName="videoUrl" class="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-lg text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                         placeholder="Посилання на відео YouTube" />
                                 </div>
                                 <div *ngIf="videoUrl.value.length != 0" class="relative h-full w-full">
@@ -61,7 +61,7 @@
                                       formControlName="newIngredient"
                                       (onFilterChange)="onFilterChange($event)"
                                       (onSelect)="addingr($event)"
-                                      (onDropDownClose)="onSearchChange('')"
+                                      (onDropDownClose)="onSearchChange('')">
                                       >
                                       </ng-multiselect-dropdown>
                               </div>
@@ -280,9 +280,12 @@
                 </div>
             </div>
         </div>
-        <div class="flex">
-            <button type="submit" (click)="Submit(false)" class="">Зберегти</button>
-            <button type="submit" (click)="Submit(true)" class="">Опублікувати</button>
+        <div class="flex justify-end gap-1 mb-3">
+            <p *ngIf="isSubmit && formGr.invalid" class="text-red-600">
+                *Для публікації рецепту заповніть усі поля, підсвічені червоним.
+            </p>
+            <button type="submit" (click)="Submit(false)" class="bg-yellow-500 rounded hover:brightness-95 cursor-pointer text-white p-1">Зберегти</button>
+            <button type="submit" (click)="Submit(true)" class="bg-blue-700 rounded hover:brightness-95 cursor-pointer text-white p-1">Опублікувати</button>
         </div>
     </div>
 </form>

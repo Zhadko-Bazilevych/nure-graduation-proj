@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'home', component: HeaderComponent},
   { path: 'recipe/:id', component: RecipeInfoComponent},
   { path: '', component: FilterComponent},
+  { path: 'useractions/:id', component: UserActionsComponent},
   { path: 'useractions', component: UserActionsComponent},
   { path: 'user/:id', component: UserInfoComponent},
   { path: 'edit/:id', component: RecipeUpdateComponent},

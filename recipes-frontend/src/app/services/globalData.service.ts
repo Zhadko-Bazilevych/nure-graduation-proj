@@ -8,6 +8,7 @@ export class GlobalDataService implements OnInit{
     id: number | null;
     name: string | null;
     mail: string | null;
+    photo: string | null;
     isAuth: boolean = false;
     isLoading: boolean = true;
 
@@ -24,6 +25,7 @@ export class GlobalDataService implements OnInit{
                     this.id = response.id!;
                     this.mail = response.mail;
                     this.name = response.name;
+                    this.photo = response.photo;
                     this.isAuth = true;
                     
                 }

@@ -33,7 +33,14 @@
         <div *ngIf="item.description == null" class="line-clamp-2 text-gray-700">
             Опис відсутній
           </div>
-        <div *ngIf="editable"  class="absolute flex flex-row top-2 right-2 gap-3">
+        <div *ngIf="editable"  class="absolute flex flex-row top-2 right-2 gap-3 items-center">
+            <fa-icon
+              *ngIf="!item.isPublished"
+              [icon]="eyeCrossed"
+              class="cursor-pointer hover:bg-gray-200 transition-all p-1 rounded text-gray-700 transititext-primary text-primary duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600"
+              data-te-toggle="tooltip"
+              title="Непублікований"
+              ></fa-icon>
             <div (click)="itemDeleteClicked($event)" class="flex bg-red-500 h-7 w-20 rounded text-white items-center justify-center z-10 hover:bg-red-600">
                 <span >Видалити</span>
             </div>
@@ -43,3 +50,4 @@
         </div>
     </div>  
   </section>
+    
