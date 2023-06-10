@@ -19,7 +19,7 @@ export class RecipeInfoComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router, private recipeService: RecipeService, private sanitizer: DomSanitizer) { }
   private routeSub: Subscription;
-
+  isLoadingData: boolean = true;
 
   Recipe: RecipeInfo
   starIcon = faStar;
@@ -59,7 +59,7 @@ export class RecipeInfoComponent implements OnInit {
         this.Recipe = response.recipe
         this.choosingStar = this.Recipe.userRate
         this.sanitizedVideo = this.getEmbedUrl()
-        console.log(this.sanitizedVideo)
+        this.isLoadingData = false;
       }
     }).catch(er => {
       this.router.navigate(['']);

@@ -36,6 +36,7 @@ export class GalleryEditComponent implements OnInit {
     if (event.target.files && event.target.files[0]) {
       this.lastInserted = new FormData()
       this.lastInserted.append('file', event.target.files[0]);
+      this.lastInserted.append('index', '0');
       this.Images.push(URL.createObjectURL(event.target.files[0]));
       this.inserted.emit(this.lastInserted);
     }

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { faClock, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faTriangleExclamation, faEyeSlash} from '@fortawesome/free-solid-svg-icons';
 import { recipe } from 'src/app/models/filter.model';
 
 @Component({
@@ -16,6 +16,8 @@ export class RecipeRowComponent {
   
   difficultyIcon = faTriangleExclamation;
   clockIcon = faClock;
+  eyeCrossed = faEyeSlash;
+  
   BaseUrl: string = "https://localhost:7137/"
 
   itemClicked(){

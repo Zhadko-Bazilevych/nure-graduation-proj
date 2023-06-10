@@ -21,6 +21,10 @@ export class UserActionsComponent implements OnInit {
 
 
   ngOnInit(): void {
+    let param = this.route.snapshot.paramMap.get('id')
+    let id = param == null ? -1 : +param
+    if(id > 0 && id < 5) { this.active = id }
+    console.log('PARAGM', id)
     this.getData(this.active)
   }
 
@@ -50,7 +54,12 @@ export class UserActionsComponent implements OnInit {
   }
 
   recipeInfo(id: number){
-    this.router.navigate([`/recipe`, id]);
+    if(this.Recipes.find(f => f.recipeId == id)?.isPublished) {
+      this.router.navigate([`/recipe`, id]);
+    }
+    else{
+      this.router.navigate([`/edit`, id]);
+    }
   }
 
   editRecipe(id: number){

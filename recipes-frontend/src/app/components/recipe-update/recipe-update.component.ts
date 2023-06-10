@@ -223,6 +223,8 @@ export class RecipeUpdateComponent implements OnInit {
   get videoUrl() { return this.formGr.get('videoUrl')! }
   stepImages: FormData[] = [];
   isStepImageSaved: boolean[] = [];
+  backendStepImageToDelete: number[] = [];
+
   galleryImages: FormData[] = [];
   get ingredients() { return this.formGr.get('ingredients') as FormArray; }
   get newIngredient() { return this.formGr.get('newIngredient')! }
@@ -253,6 +255,7 @@ export class RecipeUpdateComponent implements OnInit {
 
   addinstr() {
     this.steps.push(new FormGroup({
+      id: new FormControl(0),
       title: new FormControl(''),
       description: new FormControl('')
     }));
@@ -261,6 +264,10 @@ export class RecipeUpdateComponent implements OnInit {
   }
 
   reminstr(id: number) {
+    if(this.steps.controls[id].get('id')!.value != 0 ) {
+      this.backendStepImageToDelete.push(this.steps.controls[id].get('id')!.value);
+    }
+
     this.steps.removeAt(id)
     this.stepImages.splice(id, 1)
     this.isStepImageSaved.splice(id, 1);
@@ -269,6 +276,10 @@ export class RecipeUpdateComponent implements OnInit {
   remPhoto(id: number){
     this.stepImages[id] = new FormData();
     this.isStepImageSaved[id] = false;
+
+    if(this.steps.controls[id].get('id')!.value != 0 ) {
+      this.backendStepImageToDelete.push(this.steps.controls[id].get('id')!.value);
+    }
   }
 
   uploadDocument(id: number, event: any) {
@@ -351,8 +362,6 @@ export class RecipeUpdateComponent implements OnInit {
   }
 
   Submit(isPublic: boolean){
-    this.isSubmit = true;
-    console.log("strange", this.name!.value)
       let data: FormData = new FormData()
       data.append('id', this.Recipe.id.toString());
       if(this.name.valid){ data.append('name', this.name!.value); }
@@ -364,7 +373,7 @@ export class RecipeUpdateComponent implements OnInit {
       if(this.proteins.value != null){ data.append('proteins', this.proteins!.value); }
       if(this.fats.value != null){ data.append('fats', this.fats!.value); }
       if(this.carbohydrates.value != null){ data.append('carbohydrates', this.carbohydrates!.value); }
-      if(this.videoUrl.valid){ data.append('video', this.videoUrl!.value.split('=')[1].toString()); }
+      if(ValidateUrl(this.videoUrl.value) == null){ data.append('video', this.videoUrl!.value.split('=')[1].toString()); }
       if(this.foodType.valid){ data.append('foodType', this.foodType!.value[0].id); }
       if(this.dishType.valid){ data.append('dishType', this.dishType!.value[0].id); }
       data.append('isPublished', isPublic.toString());
@@ -404,7 +413,7 @@ export class RecipeUpdateComponent implements OnInit {
         data.append('ingredientsMeasurementId', this.ingredients!.value[i].measurement[0].id.toString());
       }
       for (let i = 0; i < this.ingredients!.value.length; i++) {
-        data.append('ingredientsId', this.ingredients!.value[i].measurement[0].id.toString());
+        data.append('ingredientsId', this.ingredients!.value[i].ingredient.id.toString());
       }
       for (let i = 0; i < this.ingredients!.value.length; i++) {
         data.append('ingredientsAmount', this.ingredients!.value[i].amount.toString());
@@ -419,8 +428,24 @@ export class RecipeUpdateComponent implements OnInit {
       for (let i = 0; i < this.steps!.value.length; i++) {
         data.append('stepsDescriptions', (this.steps!.value[i].description).toString());
       }
+      console.log(this.backendStepImageToDelete)
+      for (let i = 0; i < this.backendStepImageToDelete.length; i++) {
+        data.append('backendStepImageToDelete', (this.backendStepImageToDelete[i]).toString());
+      }
 
-      this.recipeService.sendSomewhere(data);
+      if(!isPublic){
+        this.recipeService.sendSomewhere(data).then(
+          r => { this.router.navigate(['useractions/3']) }
+        );
+      }
+      else{
+        this.isSubmit = true;
+        if (this.formGr.valid){
+          this.recipeService.sendSomewhere(data).then(
+            r => { this.router.navigate([`recipe/${this.Recipe.id}`]) }
+          );
+        }
+      }
 
 
     // console.log("And another one")
@@ -434,6 +459,7 @@ export class RecipeUpdateComponent implements OnInit {
     // console.log(this.galleryImages.map(i => i.get('file')))
     // console.log(this.isUrlValid, 'url')
   }
+
 
   videoUrlChange(){
     this.isUrlValid = true;
@@ -474,7 +500,6 @@ function ValidateUrl(control: AbstractControl) {
 }
 
 function requiredList(fromControl: AbstractControl) {
-  // console.log("Control", fromControl.value, fromControl.value.length, fromControl.value[0])
   return fromControl.value && fromControl.value.length && fromControl.value[0] != null ? null : {
     requiredList: {
       valid: false
