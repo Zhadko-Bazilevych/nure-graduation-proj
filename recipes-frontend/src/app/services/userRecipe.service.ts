@@ -43,7 +43,7 @@ export class UserRecipeService {
     return this.httpClient.post<AuthorPageResponse>(this.BaseURL + 'AuthorInfo', {authorId : id})
   }
 
-  editUser(request: EditUserRequest): Observable<BaseResponse>{
+  editUser(request: FormData): Observable<BaseResponse>{
 
     return this.httpClient.post<BaseResponse>(this.BaseURL + 'EditUser', request)
   }

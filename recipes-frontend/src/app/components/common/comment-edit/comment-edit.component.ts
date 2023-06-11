@@ -38,7 +38,6 @@ export class CommentEditComponent implements OnInit {
   }
 
   insertedPhoto(event: any){
-    console.log(event)
     if (event.target.files && event.target.files[0]) {
       this.newComment = new FormData()
       this.newComment.append('image', event.target.files[0]);

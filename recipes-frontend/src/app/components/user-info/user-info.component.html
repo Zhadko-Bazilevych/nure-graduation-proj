@@ -2,9 +2,22 @@
     <div class="flex w-4/5 mt-3 flex-col">
         <div class="flex gap-5">
             <div class="flex w-[29%] flex-col gap-2">
-                <div class="">
-                    <img *ngIf="Author.image != null" src="{{BaseUrl + 'Users/' + Author.image}}" class="object-contain">
-                    <img *ngIf="Author.image == null" src="../../../assets/images/userLogo.png" class="object-contain">
+                <div class="flex relative">
+                    <img *ngIf="Author.image != null" src="{{Author.image}}" class="object-contain">
+                    <img *ngIf="Author.image == null && !isConfiguring" src="../../../assets/images/userLogo.png" class="object-contain">
+                    <div *ngIf="Author.image == null && isConfiguring" class="flex items-center justify-center w-full">
+                        <label class="flex flex-col items-center justify-center w-full h-[430px] border-2 border-gray-300 border-dashed rounded-lg cursor-pointer hover:bg-gray-100">
+                            <div class="flex flex-col items-center justify-center text-center pt-5 pb-6">
+                                <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Натисніть щоб завантажити</span> або перетягніть та відпустіть</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, JPEG </p>
+                            </div>
+                            <input (change)="insertedPhoto($event)" id="dropzone-file" type="file" class="hidden" accept=".png, .jpg, .jpeg" />
+                        </label>
+                    </div>
+                    <button *ngIf="Author.image != null && isConfiguring" (click)="deletedPhoto()" class="absolute z-10 flex items-center justify-center right-1 top-1 bg-red-500 h-5 w-5 aspect-square rounded-full hover:brightness-90 hover:cursor-pointer">
+                        <fa-icon [icon]="xIcon" class="flex text-center text-white text-sm"></fa-icon>
+                    </button>
                 </div>
                 <div *ngIf="!Author.isMe" class="flex justify-center w-full">
                     <button *ngIf="!Author.isSubscribed" (click)="changeSub()" class="bg-yellow-500 text-white items-center w-1/2 rounded aspect-[6/1] text-xl hover:brightness-95 active:bg-yellow-600 transition-all"> Підписатися </button>

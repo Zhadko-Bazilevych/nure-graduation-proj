@@ -43,4 +43,6 @@ export interface EditUserRequest{
     name: string | null
     isPublicMail: boolean
     description: string | null
+    isImageChanging: boolean | null
+    image: Blob | null
 }
