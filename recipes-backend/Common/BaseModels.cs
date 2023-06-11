@@ -35,4 +35,17 @@
         public string Description { get; set; } = null!;
         public string? Image { get; set; }
     }
+
+    public class CollectedComment
+    {
+        public int Id { get; set; }
+        public string Content { get; set; }
+        public string? Image { get; set; }
+        public int UserId { get; set; }
+        public string UserName { get; set; }
+        public string? UserImage { get; set; }
+        public DateTime DateCreated { get; set; }
+        public bool isAuthor { get; set; } = false;
+        public int CountReplies { get; set; }
+    }
 }

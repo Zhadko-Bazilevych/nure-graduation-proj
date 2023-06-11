@@ -4,6 +4,7 @@ using recipes_backend.Models;
 using recipes_backend.Operations.Recipe.Filter;
 using recipes_backend.Operations.Recipe.FilterIngredient;
 using recipes_backend.Operations.Recipe.GetFilterData;
+using recipes_backend.Operations.Recipe.GetInitialComments;
 using recipes_backend.Operations.Recipe.PatternList;
 using recipes_backend.Operations.Recipe.RecipeInfo;
 using recipes_backend.Operations.Recipe.UpdateRecipe;
@@ -32,7 +33,9 @@ namespace SOAPZ.Common
             CreateMap<RecipeStep, CollectedRecipeStep>();
 
             CreateMap<Comment, CollectedComment>()
-                .ForMember(dest => dest.UserName, act => act.MapFrom(src => src.User.Name));
+                .ForMember(dest => dest.UserName, act => act.MapFrom(src => src.User.Name))
+                .ForMember(dest => dest.CountReplies, act => act.MapFrom(src => src.InverseParentComment.Count))
+                .ForMember(dest => dest.UserImage, act => act.MapFrom(src => src.User.Image));
 
             CreateMap<Recipe, RecipeView>()
                 .ForMember(dest => dest.UserName, act => act.MapFrom(src => src.User.Name))
@@ -42,7 +45,6 @@ namespace SOAPZ.Common
                 .ForMember(dest => dest.AdditionalTips, act => act.MapFrom(src => src.AdditionalTips.Select(y => y.Description)))
                 .ForMember(dest => dest.MenuTypes, act => act.MapFrom(src => src.MenuTypeLists.Select(y => y.MenuType.Name)))
                 .ForMember(dest => dest.Images, act => act.MapFrom(src => src.RecipeImages.Select(y => y.Image)))
-                .ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comments))
                 .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(src => src.RecipeIngredients))
                 .ForMember(dest => dest.Steps, opt => opt.MapFrom(src => src.RecipeSteps));
 

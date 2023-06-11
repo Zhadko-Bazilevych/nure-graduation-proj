@@ -6,12 +6,15 @@ using recipes_backend.Models;
 using recipes_backend.Operations.OAuth.AuthByCode;
 using recipes_backend.Operations.OAuth.Refresh;
 using recipes_backend.Operations.Recipe.changeFavorite;
+using recipes_backend.Operations.Recipe.CreateComment;
 using recipes_backend.Operations.Recipe.CreateEmpty;
 using recipes_backend.Operations.Recipe.CreateIngredient;
 using recipes_backend.Operations.Recipe.DeleteRecipe;
 using recipes_backend.Operations.Recipe.Filter;
 using recipes_backend.Operations.Recipe.FilterIngredient;
 using recipes_backend.Operations.Recipe.GetFilterData;
+using recipes_backend.Operations.Recipe.GetInitialComments;
+using recipes_backend.Operations.Recipe.GetReplyComments;
 using recipes_backend.Operations.Recipe.PatternDelete;
 using recipes_backend.Operations.Recipe.PatternList;
 using recipes_backend.Operations.Recipe.PatternUpdate;
@@ -216,6 +219,42 @@ namespace recipes_backend.Controllers
         public async Task<IActionResult> UpdateRecipe([FromForm]UpdateRecipeRequest request)
         {
             var operation = _serviceProvider.GetRequiredService<UpdateRecipeOperation>();
+            var result = await operation.Execute(request);
+            if (result.Code != 200)
+            {
+                return StatusCode(result.Code, result.Message);
+            }
+            return new JsonResult(result);
+        }
+
+        [HttpPost("GetInitialComments")]
+        public async Task<IActionResult> GetInitialComments(GetInitialCommentsRequest request)
+        {
+            var operation = _serviceProvider.GetRequiredService<GetInitialCommentsOperation>();
+            var result = await operation.Execute(request);
+            if (result.Code != 200)
+            {
+                return StatusCode(result.Code, result.Message);
+            }
+            return new JsonResult(result);
+        }
+
+        [HttpPost("GetReplyComments")]
+        public async Task<IActionResult> GetReplyComments(GetReplyCommentsRequest request)
+        {
+            var operation = _serviceProvider.GetRequiredService<GetReplyCommentsOperation>();
+            var result = await operation.Execute(request);
+            if (result.Code != 200)
+            {
+                return StatusCode(result.Code, result.Message);
+            }
+            return new JsonResult(result);
+        }
+
+        [HttpPost("CreateComment")]
+        public async Task<IActionResult> CreateComment([FromForm]CreateCommentRequest request)
+        {
+            var operation = _serviceProvider.GetRequiredService<CreateCommentOperation>();
             var result = await operation.Execute(request);
             if (result.Code != 200)
             {

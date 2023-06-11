@@ -90,7 +90,7 @@ namespace recipes_backend.Controllers
 
         [Authorize]
         [HttpPost("EditUser")]
-        public async Task<IActionResult> EditUser(EditUserRequest request)
+        public async Task<IActionResult> EditUser([FromForm] EditUserRequest request)
         {
             var operation = _serviceProvider.GetRequiredService<EditUserOperation>();
             var result = await operation.Execute(request);

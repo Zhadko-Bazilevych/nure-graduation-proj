@@ -37,7 +37,6 @@ namespace recipes_backend.Operations.Recipe.RecipeInfo
                                 .Include(y => y.RecipeIngredients).ThenInclude(y => y.Ingredient)
                                 .Include(y => y.RecipeIngredients).ThenInclude(y => y.Measurement)
                                 .Include(y => y.User)
-                                .Include(y => y.Comments)
                                 .Include(y => y.RecipeSteps)
                                 .Include(y => y.RecipeImages)
                                 .Include(y => y.MenuTypeLists).ThenInclude(y => y.MenuType)
@@ -56,13 +55,6 @@ namespace recipes_backend.Operations.Recipe.RecipeInfo
                 if (RateInfo != null)
                 {
                     result.UserRate = RateInfo.Rate;
-                }
-                foreach (var comment in result.Comments)
-                {
-                    if (comment.UserId == user.Id)
-                    {
-                        comment.isAuthor = true;
-                    }
                 }
             }
             return new RecipeInfoResponse() { Recipe = result };

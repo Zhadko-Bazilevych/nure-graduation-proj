@@ -17,12 +17,14 @@ namespace recipes_backend.Operations.UserRecipes.EditUser
         recipesContext db;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        ImageService imageService;
 
-        public EditUserOperation(recipesContext db, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public EditUserOperation(recipesContext db, IMapper mapper, IHttpContextAccessor httpContextAccessor, ImageService imgService)
         {
             this.db = db;
             this._mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            imageService = imgService;
         }
 
         public async Task<EditUserResponse> Execute(EditUserRequest request)
@@ -46,13 +48,28 @@ namespace recipes_backend.Operations.UserRecipes.EditUser
                 {
                     user.Name = request.Name;
                 }
+                if (request.isImageChanging)
+                {
+                    if(request.Image != null)
+                    {
+                        user.Image = await imageService.SaveImage(request.Image, "Images", "Users");
+                    }
+                    else
+                    {
+                        if(user.Image != null)
+                        {
+                            imageService.DeleteImageByPath(user.Image);
+                        }
+                        user.Image = null;
+                    }
+                }
+                await db.SaveChangesAsync();
+                return new EditUserResponse();
             }
             else
             {
                 return new EditUserResponse() { Code = 401, Message = "User not found" };
             }
-            await db.SaveChangesAsync();
-            return new EditUserResponse();
         }
 
         public async Task<ValidateResult> Validate(EditUserRequest request)

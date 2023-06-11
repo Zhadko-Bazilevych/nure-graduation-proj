@@ -30,6 +30,9 @@ using recipes_backend.Operations.Recipe.CreateIngredient;
 using recipes_backend.Operations.Recipe.UpdateRecipe;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using recipes_backend.Operations.Recipe.GetInitialComments;
+using recipes_backend.Operations.Recipe.GetReplyComments;
+using recipes_backend.Operations.Recipe.CreateComment;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,6 +80,9 @@ builder.Services.AddScoped<DeleteRecipeOperation>();
 builder.Services.AddScoped<GetMeasurementsDataOperation>();
 builder.Services.AddScoped<CreateIngredientOperation>();
 builder.Services.AddScoped<UpdateRecipeOperation>();
+builder.Services.AddScoped<GetInitialCommentsOperation>();
+builder.Services.AddScoped<GetReplyCommentsOperation>();
+builder.Services.AddScoped<CreateCommentOperation>();
 
 builder.Services.AddScoped<PatternListOperation>();
 builder.Services.AddScoped<PatternUpdateOperation>();
