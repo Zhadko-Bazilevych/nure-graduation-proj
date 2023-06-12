@@ -40,6 +40,7 @@ export class RecipeInfoComponent implements OnInit {
   choosingStar: number;
 
   comments: CommentItem[] | null
+  imageToShow: string | null
 
   ngOnInit(): void {
     this.routeSub = this.route.params
@@ -140,6 +141,13 @@ export class RecipeInfoComponent implements OnInit {
       this.comments = [];
     }
     this.comments.splice(0, 0, newComment);
+  }
+
+  showModal(event: string){
+    this.imageToShow = event
+  }
+  closeModal(){
+    this.imageToShow = null;
   }
 
   //   this.newComment.append('parentCommentId', this.parentId.toString())

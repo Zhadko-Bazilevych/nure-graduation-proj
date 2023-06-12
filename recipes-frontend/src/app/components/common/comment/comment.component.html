@@ -20,9 +20,9 @@
             </div>
         </div>
         <div class="flex gap-2">
-            <div *ngIf="comment.image != null" class="h-20">
+            <button (click)="imageClick()" *ngIf="comment.image != null" class="h-20">
                 <img src="{{BaseUrl}}{{comment.image}}" class="h-full rounded">
-            </div>
+            </button>
             <div class="">
                 {{comment.content}}
             </div>

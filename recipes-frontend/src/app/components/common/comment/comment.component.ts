@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommentItem } from 'src/app/models/recipe.model';
 import * as moment from 'moment';
 import { RecipeService } from 'src/app/services/recipe.service';
@@ -14,6 +14,8 @@ export class CommentComponent implements OnInit {
 
   @Input() comment: CommentItem;
   @Input() recipeId: number;
+  @Output() imageClicked: EventEmitter<string> = new EventEmitter()
+  
   dateCreated: string | null;
   isRepliesLoaded: boolean = false;
   isAnswering: boolean = false;
@@ -75,6 +77,11 @@ export class CommentComponent implements OnInit {
     }
     this.comment.replies.splice(0, 0, newComment);
     this.isAnswering = false;
+  }
+
+  imageClick(){
+    console.log(this.BaseUrl+this.comment.image)
+    this.imageClicked.emit(this.BaseUrl+this.comment.image)
   }
 }
 

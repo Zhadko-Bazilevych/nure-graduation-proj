@@ -26,6 +26,7 @@ import { GalleryEditComponent } from './components/recipe-update/gallery-edit/ga
 import { CommentComponent } from './components/common/comment/comment.component';
 import { DatePipe } from '@angular/common';
 import { CommentEditComponent } from './components/common/comment-edit/comment-edit.component';
+import { ModalPhotoComponent } from './components/common/modal-photo/modal-photo.component';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { CommentEditComponent } from './components/common/comment-edit/comment-e
     RecipeUpdateComponent,
     CommentComponent,
     CommentEditComponent,
+    ModalPhotoComponent,
   ],
   imports: [
     BrowserModule,
