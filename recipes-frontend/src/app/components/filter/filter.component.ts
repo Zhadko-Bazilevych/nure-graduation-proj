@@ -22,6 +22,7 @@ export class FilterComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private recipeService: RecipeService, private filterService: FilterService, private patternService: PatternService, public global: GlobalDataService) { }
 
   BaseUrl: string = "https://localhost:7137/"
+  isLoading: boolean = true;
 
   @ViewChild('dropdown') dropdown: MultiSelectComponent;
 
@@ -62,7 +63,7 @@ export class FilterComponent implements OnInit {
   isPatternSaved: boolean = false;
 
 
-  isDescending: boolean = false;
+  isDescending: boolean = true;
   descIcon = faArrowDownWideShort;
   ascIcon = faArrowDownShortWide
 
@@ -188,7 +189,7 @@ export class FilterComponent implements OnInit {
           this.Recipes = response.recipes 
           this.endOfFilter = this.Recipes.length == 15 ? false : true;
           this.lastFilter = {...filterRequest, rows: this.Recipes.length}
-
+          this.isLoading = true;
          }
       )
       

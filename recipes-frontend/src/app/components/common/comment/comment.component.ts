@@ -25,7 +25,6 @@ export class CommentComponent implements OnInit {
   constructor(private datePipe : DatePipe, private recipeService: RecipeService, public global: GlobalDataService) { }
 
   ngOnInit(){
-    console.log(this.comment)
     moment.locale('uk');
     this.dateCreated = moment(this.comment.dateCreated).fromNow()
   }

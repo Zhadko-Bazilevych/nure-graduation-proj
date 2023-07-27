@@ -27,15 +27,6 @@ export class AuthenticationService {
   constructor(private httpClient: HttpClient, private router: Router, public global: GlobalDataService) {
   }
 
-  logout() {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    this.global.id = null;
-    this.global.name = null;
-    this.global.mail = null;
-    this.global.isAuth = false;
-  }
-
   RedirectLogin(){
     let params = new HttpParams();
 
@@ -79,5 +70,14 @@ export class AuthenticationService {
     if(request.refreshToken == null)
     return throwError('Cannot find user data');
     return this.httpClient.post<Refresh>(this.BaseURL + 'Refresh', request)
+  }
+
+  logout() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    this.global.id = null;
+    this.global.name = null;
+    this.global.mail = null;
+    this.global.isAuth = false;
   }
 }

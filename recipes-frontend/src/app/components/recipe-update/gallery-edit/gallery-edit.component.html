@@ -18,7 +18,7 @@
             <fa-icon [icon]="rightArrow" class="text-2xl transition-colors text-gray-700 hover:text-gray-400"></fa-icon>
         </button>
     </div>
-    <div *ngIf="Images != null && Images.length != 0" class="overflow-x-auto border-2 border-gray-500 rounded p-0.5 bg-gray-100 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-track-gray-100">
+    <div *ngIf="Images != null && Images.length != 0" class="overflow-x-auto border-2 border-gray-500 rounded p-0.5 bg-gray-100 h-[80px] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-track-gray-100">
         <div class="flex gap-2 w-max">
             <div *ngFor="let image of Images; let i = index" class="relative overflow-hidden group hover:cursor-pointer h-[70px]" (click)="clickHandler(i)">
                 <img src="{{image}}" alt="recipeImage" class="h-full">

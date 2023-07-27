@@ -4,7 +4,7 @@
             <img *ngIf="comment.userImage != null" src="{{BaseUrl}}{{comment.userImage}}" class="object-contain">
             <img *ngIf="comment.userImage == null" src="../../../../assets/images/userLogo.png" class="object-contain">
         </div>
-        <div class="flex flex-col items-end grow">
+        <div *ngIf="comment.countReplies != 0 || global.isAuth" class="flex flex-col items-end grow">
             <div [ngClass]="{'border-b-2 rounded-bl-lg': !isRepliesLoaded && !isAnswering}" class="flex w-1/2 border-l-2  border-l-gray-300 border-b-gray-300 h-full  mb-2">
 
             </div>
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="flex gap-2">
-            <button (click)="imageClick()" *ngIf="comment.image != null" class="h-20">
+            <button (click)="imageClick()" *ngIf="comment.image != null" class="h-20 mt-1">
                 <img src="{{BaseUrl}}{{comment.image}}" class="h-full rounded">
             </button>
             <div class="">
@@ -34,7 +34,7 @@
             <div *ngIf="comment.countReplies != 0 && isRepliesLoaded" (click)="unloadReplies()" class="text-blue-500 cursor-pointer hover:text-blue-700">
                 Згорнути {{AnswerWord(comment.countReplies)}}
             </div>
-            <div (click)="isAnswering = !isAnswering" *ngIf="!isAnswering" class="text-blue-500 cursor-pointer hover:text-blue-700">
+            <div (click)="isAnswering = !isAnswering" *ngIf="!isAnswering && global.isAuth" class="text-blue-500 cursor-pointer hover:text-blue-700">
                 Відповісти
             </div>
         </div>

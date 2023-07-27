@@ -34,62 +34,64 @@
         </div>
         
         <div class="flex flex-col w-4/6 h-full bg-white gap-2 border-l-2 border-r-2 border-l-red-500 border-r-red-500">
-            <div *ngIf="active == 1" class="flex flex-col gap-3"> 
-                <!-- <div class="flex justify-center">
-                    <div class="font-semibold text-3xl text-center">Збережені вами рецепти</div>
-                </div> -->
-                <div *ngIf="Recipes.length == 0" class="flex justify-center">
-                    <div class="text-xl ml-2 mr-2">Збережених рецептів не знайдено. Зберігайте рецепти, натискаючи на прапорець біля назви рецепту.</div>
-                </div>
-                <div>
-                    <div *ngFor="let item of Recipes" class="group">
-                        <app-recipe-row (onClick)="recipeInfo(item.recipeId)" [item]="item"></app-recipe-row>
-                        <hr class="group-last:hidden">
+            <div *ngIf="!isLoading" class="flex flex-col">
+                <div *ngIf="active == 1" class="flex flex-col gap-3"> 
+                    <!-- <div class="flex justify-center">
+                        <div class="font-semibold text-3xl text-center">Збережені вами рецепти</div>
+                    </div> -->
+                    <div *ngIf="Recipes.length == 0" class="flex justify-center">
+                        <div class="text-xl ml-2 mr-2">Збережених рецептів не знайдено. Зберігайте рецепти, натискаючи на прапорець біля назви рецепту.</div>
+                    </div>
+                    <div>
+                        <div *ngFor="let item of Recipes" class="group">
+                            <app-recipe-row (onClick)="recipeInfo(item.recipeId)" [item]="item"></app-recipe-row>
+                            <hr class="group-last:hidden">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div *ngIf="active == 2" class="flex flex-col gap-3"> 
-                <!-- <div class="flex justify-center">
-                    <div class="font-semibold text-3xl text-center">Останні рецепти авторів, на які ви підписалися</div>
-                </div> -->
-                <div *ngIf="Recipes.length == 0" class="flex justify-center">
-                    <div class="text-xl ml-2 mr-2">Рецептів за підписками не знайдено. Підписуйтесь на авторів для перегляду їх останніх рецептів.</div>
-                </div>
-                <div>
-                    <div *ngFor="let item of Recipes" class="group">
-                        <app-recipe-row (onClick)="recipeInfo(item.recipeId)" [item]="item"></app-recipe-row>
-                        <hr class="group-last:hidden">
+                <div *ngIf="active == 2" class="flex flex-col gap-3"> 
+                    <!-- <div class="flex justify-center">
+                        <div class="font-semibold text-3xl text-center">Останні рецепти авторів, на які ви підписалися</div>
+                    </div> -->
+                    <div *ngIf="Recipes.length == 0" class="flex justify-center">
+                        <div class="text-xl ml-2 mr-2">Рецептів за підписками не знайдено. Підписуйтесь на авторів для перегляду їх останніх рецептів.</div>
+                    </div>
+                    <div>
+                        <div *ngFor="let item of Recipes" class="group">
+                            <app-recipe-row (onClick)="recipeInfo(item.recipeId)" [item]="item"></app-recipe-row>
+                            <hr class="group-last:hidden">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div *ngIf="active == 3" class="flex flex-col gap-3"> 
-                <!-- <div class="flex justify-center">
-                    <div class="font-semibold text-3xl text-center">Ваші рецепти</div>
-                </div> -->
-                <div *ngIf="Recipes.length == 0" class="flex justify-center">
-                    <div class="text-xl ml-2 mr-2">Створених вами рецептів не знайдено. Натисніть на кнопку нижче для створення власного рецепту.</div>
-                </div>
-                <div>
-                    <div *ngFor="let item of Recipes" class="group">
-                        <app-recipe-row (onClick)="recipeInfo(item.recipeId)" (onEditClick)="editRecipe(item.recipeId)" (onDeleteClick)="deleteRecipe(item.recipeId)" [item]="item" [editable]="true"></app-recipe-row>
-                        <hr class="group-last:hidden">
+                <div *ngIf="active == 3" class="flex flex-col gap-3"> 
+                    <!-- <div class="flex justify-center">
+                        <div class="font-semibold text-3xl text-center">Ваші рецепти</div>
+                    </div> -->
+                    <div *ngIf="Recipes.length == 0" class="flex justify-center">
+                        <div class="text-xl ml-2 mr-2">Створених вами рецептів не знайдено. Натисніть на кнопку нижче для створення власного рецепту.</div>
+                    </div>
+                    <div>
+                        <div *ngFor="let item of Recipes" class="group">
+                            <app-recipe-row (onClick)="recipeInfo(item.recipeId)" (onEditClick)="editRecipe(item.recipeId)" (onDeleteClick)="deleteRecipe(item.recipeId)" [item]="item" [editable]="true"></app-recipe-row>
+                            <hr class="group-last:hidden">
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <button (click)="createRecipe()" class="bg-yellow-500 text-white items-center w-1/4 rounded aspect-[6/1] text-xl hover:brightness-95 active:bg-yellow-600 transition-all"> Створити новий рецепт </button>
                     </div>
                 </div>
-                <div class="flex justify-center">
-                    <button (click)="createRecipe()" class="bg-yellow-500 text-white items-center w-1/4 rounded aspect-[6/1] text-xl hover:brightness-95 active:bg-yellow-600 transition-all"> Створити новий рецепт </button>
-                </div>
-            </div>
-            <div *ngIf="active == 4" class="flex flex-col gap-3"> 
-                <!-- <div class="flex justify-center">
-                    <div class="font-semibold text-3xl text-center">Ваші рецепти</div>
-                </div> -->
-                <div *ngIf="Authors.length == 0" class="flex justify-center">
-                    <div class="text-xl ml-2 mr-2">Підписок на авторів не знайдено</div>
-                </div>
-                <div>
-                    <div *ngFor="let item of Authors" class="group">
-                        <app-author-row (onClick)="author(item.id)" (onDeleteClick)="deleteAuthor(item.id)" [item]="item" [editable]="true"></app-author-row>
-                        <hr class="group-last:hidden">
+                <div *ngIf="active == 4" class="flex flex-col gap-3"> 
+                    <!-- <div class="flex justify-center">
+                        <div class="font-semibold text-3xl text-center">Ваші рецепти</div>
+                    </div> -->
+                    <div *ngIf="Authors.length == 0" class="flex justify-center">
+                        <div class="text-xl ml-2 mr-2">Підписок на авторів не знайдено</div>
+                    </div>
+                    <div>
+                        <div *ngFor="let item of Authors" class="group">
+                            <app-author-row (onClick)="author(item.id)" (onDeleteClick)="deleteAuthor(item.id)" [item]="item" [editable]="true"></app-author-row>
+                            <hr class="group-last:hidden">
+                        </div>
                     </div>
                 </div>
             </div>

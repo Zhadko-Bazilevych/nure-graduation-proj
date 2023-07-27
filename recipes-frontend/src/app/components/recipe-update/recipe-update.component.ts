@@ -361,7 +361,7 @@ export class RecipeUpdateComponent implements OnInit {
     )
   }
 
-  Submit(isPublic: boolean){
+  async Submit(isPublic: boolean){
       let data: FormData = new FormData()
       data.append('id', this.Recipe.id.toString());
       if(this.name.valid){ data.append('name', this.name!.value); }
@@ -373,7 +373,7 @@ export class RecipeUpdateComponent implements OnInit {
       if(this.proteins.value != null){ data.append('proteins', this.proteins!.value); }
       if(this.fats.value != null){ data.append('fats', this.fats!.value); }
       if(this.carbohydrates.value != null){ data.append('carbohydrates', this.carbohydrates!.value); }
-      if(ValidateUrl(this.videoUrl.value) == null){ data.append('video', this.videoUrl!.value.split('=')[1].toString()); }
+      if(await ValidateUrl(this.videoUrl) == null){ data.append('video', this.videoUrl!.value.split('=')[1].toString()); }
       if(this.foodType.valid){ data.append('foodType', this.foodType!.value[0].id); }
       if(this.dishType.valid){ data.append('dishType', this.dishType!.value[0].id); }
       data.append('isPublished', isPublic.toString());
@@ -428,7 +428,6 @@ export class RecipeUpdateComponent implements OnInit {
       for (let i = 0; i < this.steps!.value.length; i++) {
         data.append('stepsDescriptions', (this.steps!.value[i].description).toString());
       }
-      console.log(this.backendStepImageToDelete)
       for (let i = 0; i < this.backendStepImageToDelete.length; i++) {
         data.append('backendStepImageToDelete', (this.backendStepImageToDelete[i]).toString());
       }
@@ -478,25 +477,28 @@ export class RecipeUpdateComponent implements OnInit {
 
 }
 
-function ValidateUrl(control: AbstractControl) {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const url = control.value as string;
-    const img = new Image();
-    img.src = 'http://img.youtube.com/vi/' + url.split('=')[1] + '/mqdefault.jpg';
+export async function ValidateUrl(control: AbstractControl): Promise<ValidationErrors | null> {
+  const url = control.value as string;
+  const videoId = url.split('=')[1]
+  const imageUrl = `http://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
 
-    return new Promise((resolve) => {
-      img.onload = () => {
-        if (img.width === 120) {
-          resolve({ invalidUrl: true });
-        } else {
-          resolve(null);
-        }
-      };
-      img.onerror = () => {
+  return new Promise<ValidationErrors | null>((resolve) => {
+    const img = new Image();
+
+    img.onload = () => {
+      if (img.width === 120) {
         resolve({ invalidUrl: true });
-      };
-    });
-  };
+      } else {
+        resolve(null);
+      }
+    };
+
+    img.onerror = () => {
+      resolve({ invalidUrl: true });
+    };
+
+    img.src = imageUrl;
+  });
 }
 
 function requiredList(fromControl: AbstractControl) {

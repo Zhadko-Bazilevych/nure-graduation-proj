@@ -168,7 +168,7 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <h2 class="text-2xl">Коментарі</h2>
-                    <app-comment-edit (commentCreated)="newBaseComment($event)" [recipeId]="Recipe.id"></app-comment-edit>
+                    <app-comment-edit *ngIf="global.isAuth" (commentCreated)="newBaseComment($event)" [recipeId]="Recipe.id"></app-comment-edit>
                     <div *ngFor="let item of comments">
                         <app-comment [comment]="item" [recipeId]="Recipe.id" (imageClicked)="showModal($event)"></app-comment>
                     </div>

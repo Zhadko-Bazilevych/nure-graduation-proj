@@ -15,6 +15,7 @@ export class UserActionsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private userRecipeService: UserRecipeService, private recipeService: RecipeService) { }
   
   active: number = 1;
+  isLoading: boolean = true;
 
   Recipes: recipe[] = [];
   Authors: Author[] = [];
@@ -29,6 +30,7 @@ export class UserActionsComponent implements OnInit {
   }
 
   getData(id: number){  
+    this.isLoading = true;
     this.active = id;
     if(id!=4)
     {
@@ -36,6 +38,7 @@ export class UserActionsComponent implements OnInit {
         response => {
           if(response.code == 200) {
             this.Recipes = response.recipes
+            this.isLoading = false;
           }
         }
       )
@@ -47,6 +50,7 @@ export class UserActionsComponent implements OnInit {
           if(response.code == 200)
           {
             this.Authors = response.authors
+            this.isLoading = false;
           }
         }
       )

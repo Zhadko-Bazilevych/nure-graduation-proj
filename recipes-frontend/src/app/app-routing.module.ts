@@ -8,7 +8,6 @@ import { UserInfoComponent } from './components/user-info/user-info.component';
 import { RecipeUpdateComponent } from './components/recipe-update/recipe-update.component';
 
 const routes: Routes = [
-  { path: 'home', component: HeaderComponent},
   { path: 'recipe/:id', component: RecipeInfoComponent},
   { path: '', component: FilterComponent},
   { path: 'useractions/:id', component: UserActionsComponent},

@@ -1,6 +1,6 @@
 <section class="flex m-1 hover:cursor-pointer gap-2 transition-colors hover:bg-gray-100" (click)="itemClicked()">
-    <div class="flex h-[100px] overflow-hidden rounded">
-        <img *ngIf="item.image != null" src = "{{BaseUrl}}{{item.image}}" alt="" class="h-100 object-contain p-1">
+    <div class="relative flex h-[100px] w-40">
+        <img *ngIf="item.image != null" src = "{{BaseUrl}}{{item.image}}" alt="" class="absolute object-cover w-full h-full p-1">
         <img *ngIf="item.image == null" src = "../../../assets/images/recipeStepPlaceholderTransparent.png" alt="" class="h-100 object-contain p-1">
     </div> 
     <div class="relative flex flex-col w-[90%]">
@@ -13,7 +13,7 @@
                 {{item.requiredTime??'--'}} хвилин
             </div>
             <div *ngIf="item.requiredTime! > 60">
-                {{item.requiredTime!/60}} годин
+                {{(+(item.requiredTime!/60*100).toFixed(0))/100}} годин
             </div>
           </div>
           <div class="flex flex-row w-max gap-1">

@@ -34,6 +34,7 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authenticationService.logout()
+    window.location.reload
   }
 
   random() {

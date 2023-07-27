@@ -24,32 +24,31 @@
                             </div>
                             <div class="flex flex-col gap-x-3 gap-y-1" formArrayName="ingredients">
                                 <div *ngFor="let group of this.ingredients.controls; let i = index" [formGroupName]="i" class="flex flex-row h-[31px] w-full justify-between">
-                                        <div>
-                                                - {{group.get('ingredient')!.value.name}}:
-                                        </div>
-                                        <div class="flex w-max gap-1">
-                                            <div class="flex w-full gap-1">
-                                                    <div>
-                                                        <input required min="0.01" type="number" id="amount-{{i}}" formControlName="amount" [ngClass]="{'border-red-500 placeholder:text-[#f7c6c6] text-red-500' : group.get('amount')!.invalid && isSubmit }" class="w-16 appearance-none border border-gray-400 rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="" /> 
-                                                    </div>
-                                                    <div class="customDropdown flex items-center h-[31px]">
-                                                        <ng-multiselect-dropdown required
-                                                        [ngClass]="{'invalid-select' : group.get('measurement')!.invalid && isSubmit}"
-                                                        class="w-28"
-                                                        [placeholder]="'міра'"
-                                                        [settings]="dropdownSettingsWithoutSearch"
-                                                        [data]="measurementList"
-                                                        formControlName="measurement"
-                                                        >
-                                                        </ng-multiselect-dropdown>
-                                                    </div>
-                                            </div>
-                                            <button (click)="remingr(i)" class="w-min px-1 h-full flex bg-red-500 rounded text-white items-center justify-center hover:bg-red-600 cursor-pointer">
-                                                Видалити
-                                            </button>
-                                        </div>
+                                    <div>
+                                            - {{group.get('ingredient')!.value.name}}:
                                     </div>
-                                
+                                    <div class="flex w-max gap-1">
+                                        <div class="flex w-full gap-1">
+                                                <div>
+                                                    <input required min="0.01" type="number" id="amount-{{i}}" formControlName="amount" [ngClass]="{'border-red-500 placeholder:text-[#f7c6c6] text-red-500' : group.get('amount')!.invalid && isSubmit }" class="w-16 appearance-none border border-gray-400 rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="" /> 
+                                                </div>
+                                                <div class="customDropdown flex items-center h-[31px]">
+                                                    <ng-multiselect-dropdown required
+                                                    [ngClass]="{'invalid-select' : group.get('measurement')!.invalid && isSubmit}"
+                                                    class="w-28"
+                                                    [placeholder]="'міра'"
+                                                    [settings]="dropdownSettingsWithoutSearch"
+                                                    [data]="measurementList"
+                                                    formControlName="measurement"
+                                                    >
+                                                    </ng-multiselect-dropdown>
+                                                </div>
+                                        </div>
+                                        <button (click)="remingr(i)" class="w-min px-1 h-full flex bg-red-500 rounded text-white items-center justify-center hover:bg-red-600 cursor-pointer">
+                                            Видалити
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="customDropdown w-full h-max">
